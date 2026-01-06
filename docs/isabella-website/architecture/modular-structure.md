@@ -6,9 +6,9 @@ Documenta a arquitetura modular do projeto com 3 módulos educacionais independe
 
 ## Contexto
 
-- **Contexto**: general
-- **Tipo**: architecture
-- **Tópicos**: estrutura de diretórios, modularização, independência entre módulos, deploy S3, organização de assets
+* **Contexto**: general
+* **Tipo**: architecture
+* **Tópicos**: estrutura de diretórios, modularização, independência entre módulos, deploy S3, organização de assets
 
 ## Conteúdo
 
@@ -65,25 +65,28 @@ isabella/website/
 ### Características dos Módulos
 
 #### 1. Lógica Programação Kids
-- **Objetivo:** Introduzir conceitos básicos de lógica de programação sem sintaxe específica
-- **Tema:** Roxo (#7C3AED) + Azul (#3B82F6)
-- **Estrutura:** 6 tópicos + 5 jogos
-- **Deploy:** S3 root
-- **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/index.html
+
+* **Objetivo:** Introduzir conceitos básicos de lógica de programação sem sintaxe específica
+* **Tema:** Roxo (#7C3AED) + Azul (#3B82F6)
+* **Estrutura:** 6 tópicos + 5 jogos
+* **Deploy:** S3 root
+* **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/index.html
 
 #### 2. Portugol Kids
-- **Objetivo:** Ensinar programação em Portugol (sintaxe real)
-- **Tema:** Roxo (#6B46C1) + Rosa (#9333EA)
-- **Estrutura:** 7 tópicos + 5 jogos + tutorial IDE
-- **Deploy:** S3 `/portugol-kids/`
-- **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/portugol-kids/index.html
+
+* **Objetivo:** Ensinar programação em Portugol (sintaxe real)
+* **Tema:** Roxo (#6B46C1) + Rosa (#9333EA)
+* **Estrutura:** 7 tópicos + 5 jogos + tutorial IDE
+* **Deploy:** S3 `/portugol-kids/`
+* **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/portugol-kids/index.html
 
 #### 3. Tutorial WhatsApp Windows
-- **Objetivo:** Ensinar instalação do WhatsApp Desktop
-- **Tema:** Verde (#25D366)
-- **Estrutura:** 1 página com 5 passos + checklist
-- **Deploy:** S3 `/tutorial-whatsapp/`
-- **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/tutorial-whatsapp/index.html
+
+* **Objetivo:** Ensinar instalação do WhatsApp Desktop
+* **Tema:** Verde (#25D366)
+* **Estrutura:** 1 página com 5 passos + checklist
+* **Deploy:** S3 `/tutorial-whatsapp/`
+* **URL:** https://chatgpt-actions-file-uploads.s3.us-east-1.amazonaws.com/tutorial-whatsapp/index.html
 
 ### Independência Entre Módulos
 
@@ -94,9 +97,9 @@ isabella/website/
 4. Escalabilidade sem refatoração
 
 **Assets NÃO Compartilhados:**
-- CSS: Cada módulo tem `styles.css` próprio
-- JS: Cada `main.js` é independente
-- Duplicação intencional de utilidades (tocarSom, feedback, confetes)
+* CSS: Cada módulo tem `styles.css` próprio
+* JS: Cada `main.js` é independente
+* Duplicação intencional de utilidades (tocarSom, feedback, confetes)
 
 ### Padrões Replicados
 
@@ -132,9 +135,6 @@ aws s3 sync . s3://chatgpt-actions-file-uploads/tutorial-whatsapp/ --exclude ".D
 | **TOTAL**                 | **31** | **~1780** | **~1000** | **10** | **14** |
 
 ## Referências
-
-
-
 
 ---
 *Documento gerado automaticamente pelo MCP*

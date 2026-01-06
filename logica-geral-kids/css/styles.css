@@ -1,0 +1,437 @@
+:root {
+    --cor-primaria: #10B981;
+    --cor-secundaria: #F59E0B;
+    --cor-acento: #06B6D4;
+    --cor-fundo: #0F172A;
+    --cor-card: #1E293B;
+    --cor-texto: #F1F5F9;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--cor-fundo);
+    color: var(--cor-texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Estrelas de fundo */
+.estrelas {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 60% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent),
+        radial-gradient(2px 2px at 90% 60%, white, transparent),
+        radial-gradient(1px 1px at 33% 80%, white, transparent),
+        radial-gradient(1px 1px at 65% 20%, white, transparent);
+    background-size: 200% 200%;
+    animation: estrelas 8s linear infinite;
+}
+
+@keyframes estrelas {
+    from { background-position: 0% 0%; }
+    to { background-position: 100% 100%; }
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(245, 158, 11, 0.2));
+    border-radius: 30px;
+    border: 2px solid var(--cor-primaria);
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo-logica {
+    font-weight: bold;
+    font-size: 3.5rem;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    color: #94A3B8;
+    margin-bottom: 30px;
+}
+
+/* Grade de Tópicos */
+.grade-topicos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.card-topico {
+    background: var(--cor-card);
+    border-radius: 20px;
+    padding: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-topico::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+}
+
+.card-topico:hover {
+    transform: translateY(-10px);
+    border-color: var(--cor-primaria);
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+}
+
+.card-topico-numero {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.card-topico h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--cor-primaria);
+}
+
+.card-topico p {
+    color: #94A3B8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.btn-comecar {
+    background: linear-gradient(135deg, var(--cor-primaria), var(--cor-acento));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-comecar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Grade de Jogos */
+.grade-jogos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin: 40px 0;
+}
+
+.card-jogo {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(245, 158, 11, 0.1));
+    border: 2px solid var(--cor-primaria);
+    border-radius: 20px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.card-jogo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(245, 158, 11, 0.2));
+}
+
+.icone-jogo {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: flutuar 3s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.card-jogo h3 {
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.card-jogo p {
+    color: #94A3B8;
+    font-size: 0.95rem;
+}
+
+/* Botão Voltar */
+.btn-voltar {
+    display: inline-block;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, var(--cor-card), #334155);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid var(--cor-primaria);
+}
+
+.btn-voltar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Animações */
+.animacao-aparecer {
+    animation: aparecer 0.8s ease-out;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 2rem;
+    }
+    
+    .logo-logica {
+        font-size: 2.5rem;
+    }
+    
+    .grade-topicos {
+        grid-template-columns: 1fr;
+    }
+    
+    .grade-jogos {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para páginas de tópicos */
+.topico-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--cor-card);
+    border-radius: 20px;
+    padding: 40px;
+    border: 2px solid var(--cor-primaria);
+}
+
+.topico-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.topico-header h1 {
+    font-size: 2.5rem;
+    color: var(--cor-primaria);
+    margin-bottom: 15px;
+}
+
+.topico-conteudo {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.topico-conteudo h2 {
+    color: var(--cor-secundaria);
+    margin: 30px 0 15px 0;
+    font-size: 1.8rem;
+}
+
+.topico-conteudo h3 {
+    color: var(--cor-acento);
+    margin: 25px 0 10px 0;
+}
+
+.exemplo {
+    background: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid var(--cor-primaria);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.exemplo-titulo {
+    font-weight: bold;
+    color: var(--cor-primaria);
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.dica {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 146, 60, 0.2));
+    border: 2px solid var(--cor-secundaria);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 15px;
+}
+
+.dica-icone {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+/* Estilos para jogos */
+.jogo-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.painel-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.info-card {
+    background: var(--cor-card);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    border: 2px solid var(--cor-primaria);
+}
+
+.info-card h3 {
+    font-size: 0.9rem;
+    color: var(--cor-secundaria);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.info-valor {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--cor-primaria);
+}
+
+.area-jogo {
+    background: var(--cor-card);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 2px solid var(--cor-primaria);
+    min-height: 400px;
+}
+
+.botoes-acao {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+.btn-acao {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.btn-acao:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+}
+
+.btn-acao:active {
+    transform: scale(0.98);
+}
+
+/* Feedback */
+.feedback {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px 50px;
+    border-radius: 20px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    z-index: 1000;
+    display: none;
+    text-align: center;
+}
+
+.feedback.sucesso {
+    color: var(--cor-primaria);
+}
+
+.feedback.erro {
+    color: #EF4444;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 999;
+}

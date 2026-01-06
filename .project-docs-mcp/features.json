@@ -159,6 +159,62 @@
       ],
       "createdAt": "2026-01-06T20:52:32.416Z",
       "updatedAt": "2026-01-06T20:52:32.416Z"
+    },
+    {
+      "id": "feat-1767741033377-mid8ku0p3",
+      "name": "Descobridor de Padr\\u00f5es - Racioc\\u00ednio L\\u00f3gico",
+      "context": "Jogos Educacionais - L\\u00f3gica Geral Kids",
+      "description": "Jogo interativo que ensina identificação de padrões matemáticos e visuais através de sequências. Jogador vê uma sequência incompleta e deve escolher o próximo elemento entre 4 opções.",
+      "businessRules": [
+        "5 níveis com padrões crescentes de complexidade",
+        "Tipos: números (+2, ímpares, +10) e emojis (alternados, repetidos)",
+        "4 opções de resposta embaralhadas",
+        "Sistema de dicas: -5 pontos",
+        "+20 pontos por acerto sem dica, +15 com dica",
+        "Explicação automática após acerto",
+        "Progresso salvo em localStorage",
+        "Confetes ao completar todos os níveis"
+      ],
+      "useCases": [
+        {
+          "description": "Criança desenvolve raciocínio lógico identificando padrões",
+          "name": "Identificação de Padrões",
+          "steps": [
+            "Visualiza sequência com 4 elementos + 1 vazio",
+            "Analisa o padrão (aritmético, visual, alternado)",
+            "Seleciona entre 4 opções a correta",
+            "Pode usar dica para entender o padrão",
+            "Verifica resposta e recebe explicação",
+            "Avança para próximo nível",
+            "Completa 5 níveis com confetes finais"
+          ]
+        }
+      ],
+      "relatedContracts": [],
+      "relatedPatterns": [],
+      "dependencies": [
+        "CSS Grid responsive",
+        "Web Audio API",
+        "Animações CSS (pulsar, aparecer)",
+        "LocalStorage API"
+      ],
+      "apiEndpoints": [],
+      "status": "completed",
+      "tags": [
+        "jogo",
+        "padrões",
+        "sequências",
+        "raciocinio",
+        "logica"
+      ],
+      "notes": "Novo m\\u00f3dulo: L\\u00f3gica Geral Kids (tema verde/amarelo). Primeiro jogo do m\\u00f3dulo focado em padr\\u00f5es num\\u00e9ricos e visuais com emojis.",
+      "filePaths": [
+        "logica-geral-kids/jogos/descobridor-padroes.html",
+        "logica-geral-kids/css/styles.css",
+        "logica-geral-kids/js/main.js"
+      ],
+      "createdAt": "2026-01-06T23:10:33.377Z",
+      "updatedAt": "2026-01-06T23:10:33.377Z"
     }
   ]
 }
