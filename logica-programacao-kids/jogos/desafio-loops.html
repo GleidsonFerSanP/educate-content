@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔁 Desafio dos Loops</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .grid {
+            display: grid !important;
+            grid-template-columns: repeat(5, 80px);
+            grid-template-rows: repeat(5, 80px);
+            gap: 5px;
+            justify-content: center;
+            margin: 30px auto;
+            background: #E0E0E0;
+            padding: 10px;
+            border-radius: 15px;
+            max-width: 450px;
+            width: fit-content;
+        }
+        
+        .celula {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .celula.estrela {
+            background: #FFD93D !important;
+        }
+        
+        .celula.coletada {
+            background: #6BCF7F;
+        }
+        
+        .programacao-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .blocos-disponiveis {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .blocos-disponiveis h3 {
+            color: #A960EE;
+            margin-bottom: 15px;
+        }
+        
+        .bloco-loop, .bloco-comando {
+            background: white;
+            border: 3px solid #A960EE;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .bloco-loop {
+            background: linear-gradient(135deg, #A960EE, #FF6B9D);
+            color: white;
+        }
+        
+        .bloco-loop:hover, .bloco-comando:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .area-codigo {
+            background: #2C3E50;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            min-height: 200px;
+        }
+        
+        .area-codigo h3 {
+            color: #6BCF7F;
+            margin-bottom: 15px;
+        }
+        
+        .linha-codigo {
+            background: #34495E;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .linha-loop {
+            background: #A960EE;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #FF6B9D;
+        }
+        
+        .linha-loop-interna {
+            background: #8B45D6;
+            padding: 8px;
+            margin: 5px 0 5px 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .btn-remover {
+            background: #E74C3C;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .modal-loop {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 1000;
+            min-width: 400px;
+        }
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        .input-repeticoes {
+            font-size: 2em;
+            text-align: center;
+            padding: 10px;
+            width: 100px;
+            border: 3px solid #A960EE;
+            border-radius: 10px;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+    
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()"></div>
+    <div class="modal-loop" id="modalLoop">
+        <h2 style="color: #A960EE; text-align: center;">🔁 Criar Loop</h2>
+        <div style="text-align: center; margin: 30px 0;">
+            <p style="font-size: 1.3em; margin-bottom: 20px;">Repetir quantas vezes?</p>
+            <input type="number" id="inputRepeticoes" class="input-repeticoes" value="3" min="1" max="10">
+        </div>
+        <div style="text-align: center;">
+            <button class="btn" onclick="confirmarLoop()">✅ Criar Loop</button>
+            <button class="btn" onclick="fecharModal()" style="background: #E74C3C;">❌ Cancelar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <h1 class="jogo-titulo">🔁 Desafio dos Loops</h1>
+            <p style="font-size: 1.3em; text-align: center;">
+                Use loops para repetir comandos e coletar todas as estrelas com MENOS código!
+            </p>
+            
+            <div class="pontuacao">
+                ⭐ Estrelas: <span id="estrelas">0</span>/3 | 
+                Nível: <span id="nivel">1</span>/3 |
+                📝 Linhas de código: <span id="linhasCodigo">0</span>
+            </div>
+
+            <div id="feedback" class="feedback" style="display: none;"></div>
+
+            <div class="jogo-area">
+                <div id="grid" class="grid"></div>
+                
+                <div class="programacao-area">
+                    <div class="blocos-disponiveis">
+                        <h3>🧩 Blocos Disponíveis</h3>
+                        <p style="color: #666; margin-bottom: 15px;">Clique para adicionar ao código</p>
+                        
+                        <div class="bloco-loop" onclick="abrirModalLoop()">
+                            <strong>🔁 REPITA [N] VEZES</strong><br>
+                            <small>Use para repetir comandos!</small>
+                        </div>
+                        
+                        <div class="bloco-comando" onclick="adicionarComando('direita')">
+                            ➡️ Mover para Direita
+                        </div>
+                        
+                        <div class="bloco-comando" onclick="adicionarComando('baixo')">
+                            ⬇️ Mover para Baixo
+                        </div>
+                        
+                        <div class="bloco-comando" onclick="adicionarComando('coletar')">
+                            ⭐ Coletar Estrela
+                        </div>
+                    </div>
+                    
+                    <div class="area-codigo">
+                        <h3>💻 Seu Programa</h3>
+                        <div id="codigo">
+                            <p style="color: #999;">Adicione blocos para começar...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="executarCodigo()">▶️ Executar Código</button>
+                    <button class="btn" onclick="limparCodigo()">🗑️ Limpar Tudo</button>
+                    <button class="btn" onclick="gerarNovoDesafio()" style="background: #FF6B9D;">
+                        🎲 Novo Desafio Aleatório
+                    </button>
+                    <button class="btn" onclick="proximoNivel()" id="btn-proximo" style="display: none;">
+                        ➡️ Próximo Nível
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../topicos/loops.html" class="btn">📚 Rever o Tópico</a>
+                <a href="../index.html" class="btn">🏠 Menu Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let nivelAtual = 0;
+        let roboX = 0;
+        let roboY = 0;
+        let programa = []; // Array de objetos: {tipo: 'comando'|'loop', acao: 'direita'|'baixo'|'coletar', repeticoes: N}
+        let estrelasColetadas = 0;
+        let loopEmEdicao = null;
+        let nivelAtualConfig = null; // Guarda o nível atual (pode ser gerado ou fixo)
+        
+        const niveis = [
+            { 
+                estrelas: [[1,0], [2,0], [3,0]], 
+                meta: 3, 
+                dica: "💡 Dica: Use um loop REPITA 3 VEZES com 'Mover Direita' e 'Coletar'!",
+                codigoIdeal: 6 // Com loop: repita 3 vezes (direita, coletar) = 1 linha loop + 2 linhas dentro
+            },
+            { 
+                estrelas: [[0,1], [0,2], [0,3]], 
+                meta: 3, 
+                dica: "💡 Dica: Use um loop REPITA 3 VEZES com 'Mover Baixo' e 'Coletar'!",
+                codigoIdeal: 6
+            },
+            { 
+                estrelas: [[1,1], [2,1], [3,1]], 
+                meta: 3, 
+                dica: "💡 Dica: Primeiro mova para baixo, depois use loop para ir para direita!",
+                codigoIdeal: 8
+            }
+        ];
+
+        function gerarPosicaoAleatoria(posicaoRobo = [0, 0]) {
+            let x, y;
+            do {
+                x = Math.floor(Math.random() * 5);
+                y = Math.floor(Math.random() * 5);
+            } while (x === posicaoRobo[0] && y === posicaoRobo[1]); // Não gerar na posição do robô
+            
+            return [x, y];
+        }
+
+        function gerarEstrelasAleatorias(quantidade = 3) {
+            const estrelas = [];
+            const posicoesUsadas = new Set(['0,0']); // Robô começa em [0,0]
+            
+            while (estrelas.length < quantidade) {
+                const pos = gerarPosicaoAleatoria();
+                const key = `${pos[0]},${pos[1]}`;
+                
+                if (!posicoesUsadas.has(key)) {
+                    estrelas.push(pos);
+                    posicoesUsadas.add(key);
+                }
+            }
+            
+            return estrelas;
+        }
+
+        function gerarNovoDesafio() {
+            const quantidadeEstrelas = Math.floor(Math.random() * 3) + 3; // 3 a 5 estrelas
+            const estrelas = gerarEstrelasAleatorias(quantidadeEstrelas);
+            
+            nivelAtualConfig = {
+                estrelas: estrelas,
+                meta: quantidadeEstrelas,
+                dica: `🎲 Desafio Aleatório! Colete ${quantidadeEstrelas} estrelas usando loops!`,
+                codigoIdeal: quantidadeEstrelas * 2 + 2,
+                aleatorio: true
+            };
+            
+            iniciarNivel();
+        }
+
+        function iniciarNivel() {
+            // Se não tem config customizada, usa o nível da sequência
+            if (!nivelAtualConfig || !nivelAtualConfig.aleatorio) {
+                nivelAtualConfig = niveis[nivelAtual];
+            }
+            
+            const nivel = nivelAtualConfig;
+            roboX = 0;
+            roboY = 0;
+            programa = [];
+            estrelasColetadas = 0;
+            
+            console.log('Iniciando nível:', nivelAtual + 1);
+            console.log('Estrelas do nível:', nivel.estrelas);
+            
+            document.getElementById('nivel').textContent = nivelAtual + 1;
+            document.getElementById('estrelas').textContent = '0';
+            document.getElementById('linhasCodigo').textContent = '0';
+            document.getElementById('btn-proximo').style.display = 'none';
+            limparCodigo();
+            
+            // Resetar flag de aleatório para próximas chamadas
+            if (nivelAtualConfig && nivelAtualConfig.aleatorio) {
+                document.getElementById('nivel').textContent = '🎲';
+            }
+            
+            const grid = document.getElementById('grid');
+            if (!grid) {
+                console.error('Elemento #grid não encontrado!');
+                return;
+            }
+            
+            grid.innerHTML = '';
+            console.log('Grid limpo, criando células...');
+            
+            let celulasComEstrela = 0;
+            
+            for (let y = 0; y < 5; y++) {
+                for (let x = 0; x < 5; x++) {
+                    const celula = document.createElement('div');
+                    celula.className = 'celula';
+                    celula.id = `cel-${x}-${y}`;
+                    
+                    const temEstrela = nivel.estrelas.some(e => e[0] === x && e[1] === y);
+                    const ehPosicaoRobo = (x === 0 && y === 0);
+                    
+                    if (temEstrela) {
+                        celula.classList.add('estrela');
+                        celula.innerHTML = '⭐';
+                        celulasComEstrela++;
+                        console.log(`Estrela criada em [${x},${y}]`);
+                    }
+                    
+                    if (ehPosicaoRobo) {
+                        // Se tiver estrela na posição do robô, mostra ambos
+                        if (temEstrela) {
+                            celula.innerHTML = '🤖⭐';
+                        } else {
+                            celula.innerHTML = '🤖';
+                        }
+                    }
+                    
+                    grid.appendChild(celula);
+                }
+            }
+            
+            console.log(`Total de células com estrela: ${celulasComEstrela}`);
+            console.log(`Total de células no grid: ${grid.children.length}`);
+            
+            // Mostrar dica
+            setTimeout(() => {
+                const feedbackDiv = document.getElementById('feedback');
+                feedbackDiv.textContent = nivel.dica;
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.style.display = 'block';
+                feedbackDiv.style.background = '#E3F2FD';
+                feedbackDiv.style.color = '#1976D2';
+                feedbackDiv.style.border = '2px solid #1976D2';
+                
+                setTimeout(() => {
+                    feedbackDiv.style.display = 'none';
+                }, 5000);
+            }, 500);
+        }
+
+        function abrirModalLoop() {
+            document.getElementById('modalOverlay').style.display = 'block';
+            document.getElementById('modalLoop').style.display = 'block';
+            document.getElementById('inputRepeticoes').value = 3;
+            document.getElementById('inputRepeticoes').focus();
+        }
+
+        function fecharModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('modalLoop').style.display = 'none';
+        }
+
+        function confirmarLoop() {
+            const repeticoes = parseInt(document.getElementById('inputRepeticoes').value);
+            if (repeticoes < 1 || repeticoes > 10) {
+                alert('❌ Digite um número entre 1 e 10!');
+                return;
+            }
+            
+            programa.push({
+                tipo: 'loop',
+                repeticoes: repeticoes,
+                comandos: []
+            });
+            
+            loopEmEdicao = programa.length - 1;
+            fecharModal();
+            atualizarCodigo();
+            tocarSomAcerto();
+        }
+
+        function adicionarComando(acao) {
+            if (loopEmEdicao !== null) {
+                // Adiciona dentro do loop
+                programa[loopEmEdicao].comandos.push({
+                    tipo: 'comando',
+                    acao: acao
+                });
+            } else {
+                // Adiciona comando normal
+                programa.push({
+                    tipo: 'comando',
+                    acao: acao
+                });
+            }
+            atualizarCodigo();
+        }
+
+        function removerItem(index, dentroLoop = false, loopIndex = -1) {
+            if (dentroLoop && loopIndex >= 0) {
+                programa[loopIndex].comandos.splice(index, 1);
+            } else {
+                if (programa[index].tipo === 'loop' && loopEmEdicao === index) {
+                    loopEmEdicao = null;
+                }
+                programa.splice(index, 1);
+                // Atualizar loopEmEdicao se necessário
+                if (loopEmEdicao !== null && loopEmEdicao > index) {
+                    loopEmEdicao--;
+                }
+            }
+            atualizarCodigo();
+        }
+
+        function fecharLoop(index) {
+            if (loopEmEdicao === index) {
+                loopEmEdicao = null;
+                tocarSomAcerto();
+            }
+            atualizarCodigo();
+        }
+
+        function atualizarCodigo() {
+            const codigoDiv = document.getElementById('codigo');
+            let linhasCodigo = 0;
+            
+            if (programa.length === 0) {
+                codigoDiv.innerHTML = '<p style="color: #999;">Adicione blocos para começar...</p>';
+                document.getElementById('linhasCodigo').textContent = '0';
+                return;
+            }
+            
+            let html = '';
+            programa.forEach((item, i) => {
+                if (item.tipo === 'loop') {
+                    linhasCodigo++; // Conta a linha do loop
+                    const aberto = loopEmEdicao === i;
+                    html += `
+                        <div class="linha-loop">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <strong>🔁 REPITA ${item.repeticoes} VEZES {</strong>
+                                <div>
+                                    ${aberto ? '<button class="btn-remover" onclick="fecharLoop(' + i + ')">✅ Fechar Loop</button>' : ''}
+                                    <button class="btn-remover" onclick="removerItem(' + i + ')">❌</button>
+                                </div>
+                            </div>
+                    `;
+                    
+                    if (item.comandos.length === 0 && aberto) {
+                        html += '<p style="color: #FFD93D; font-style: italic; margin-left: 20px;">← Adicione comandos dentro do loop</p>';
+                    }
+                    
+                    item.comandos.forEach((cmd, j) => {
+                        linhasCodigo++; // Conta comandos dentro do loop
+                        html += `
+                            <div class="linha-loop-interna">
+                                <span>${obterIconeComando(cmd.acao)} ${cmd.acao.toUpperCase()}</span>
+                                <button class="btn-remover" onclick="removerItem(${j}, true, ${i})">❌</button>
+                            </div>
+                        `;
+                    });
+                    
+                    html += `<div style="margin-top: 10px;"><strong>}</strong></div>`;
+                    html += `</div>`;
+                } else {
+                    linhasCodigo++; // Conta comando normal
+                    html += `
+                        <div class="linha-codigo">
+                            <span>${obterIconeComando(item.acao)} ${item.acao.toUpperCase()}</span>
+                            <button class="btn-remover" onclick="removerItem(${i})">❌</button>
+                        </div>
+                    `;
+                }
+            });
+            
+            if (loopEmEdicao !== null) {
+                html += '<p style="color: #FFD93D; margin-top: 15px; font-weight: bold;">⚡ Adicionando comandos no loop... Clique "Fechar Loop" quando terminar!</p>';
+            }
+            
+            codigoDiv.innerHTML = html;
+            document.getElementById('linhasCodigo').textContent = linhasCodigo;
+        }
+
+        function obterIconeComando(acao) {
+            const icones = {
+                'direita': '➡️',
+                'baixo': '⬇️',
+                'esquerda': '⬅️',
+                'cima': '⬆️',
+                'coletar': '⭐'
+            };
+            return icones[acao] || '❓';
+        }
+
+        function limparCodigo() {
+            programa = [];
+            loopEmEdicao = null;
+            atualizarCodigo();
+        }
+
+        async function executarCodigo() {
+            if (programa.length === 0) {
+                alert('❌ Adicione blocos ao programa primeiro!');
+                return;
+            }
+            
+            if (loopEmEdicao !== null) {
+                alert('⚠️ Feche o loop antes de executar!');
+                return;
+            }
+
+            roboX = 0;
+            roboY = 0;
+            estrelasColetadas = 0;
+            
+            // Resetar grid
+            document.querySelectorAll('.celula.coletada').forEach(cel => {
+                cel.classList.remove('coletada');
+                if (cel.innerHTML === '✅') {
+                    cel.innerHTML = '⭐';
+                }
+            });
+
+            for (const item of programa) {
+                if (item.tipo === 'loop') {
+                    for (let rep = 0; rep < item.repeticoes; rep++) {
+                        for (const cmd of item.comandos) {
+                            await executarComando(cmd.acao);
+                        }
+                    }
+                } else {
+                    await executarComando(item.acao);
+                }
+            }
+
+            await sleep(500);
+            verificarVitoria();
+        }
+
+        async function executarComando(acao) {
+            await sleep(400);
+            
+            // Limpar robô da posição atual
+            const celulaAnterior = document.getElementById(`cel-${roboX}-${roboY}`);
+            celulaAnterior.innerHTML = celulaAnterior.classList.contains('coletada') ? '✅' : 
+                                      celulaAnterior.classList.contains('estrela') ? '⭐' : '';
+            
+            // Mover robô
+            if (acao === 'direita' && roboX < 4) roboX++;
+            else if (acao === 'esquerda' && roboX > 0) roboX--;
+            else if (acao === 'baixo' && roboY < 4) roboY++;
+            else if (acao === 'cima' && roboY > 0) roboY--;
+            else if (acao === 'coletar') {
+                const celula = document.getElementById(`cel-${roboX}-${roboY}`);
+                if (celula.classList.contains('estrela') && !celula.classList.contains('coletada')) {
+                    estrelasColetadas++;
+                    celula.classList.add('coletada');
+                    celula.innerHTML = '🤖✅';
+                    document.getElementById('estrelas').textContent = estrelasColetadas;
+                    tocarSomAcerto();
+                    await sleep(200);
+                    return;
+                }
+            }
+            
+            // Mostrar robô na nova posição
+            const celulaAtual = document.getElementById(`cel-${roboX}-${roboY}`);
+            if (celulaAtual.classList.contains('coletada')) {
+                celulaAtual.innerHTML = '🤖✅';
+            } else {
+                celulaAtual.innerHTML = celulaAtual.classList.contains('estrela') ? '🤖⭐' : '🤖';
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function verificarVitoria() {
+            const nivel = niveis[nivelAtual];
+            const feedback = document.getElementById('feedback');
+            const linhas = parseInt(document.getElementById('linhasCodigo').textContent);
+            
+            if (estrelasColetadas === nivel.meta) {
+                let mensagem = '🎉 Parabéns! Você coletou todas as estrelas!';
+                
+                if (linhas <= nivel.codigoIdeal) {
+                    mensagem += '<br>⭐⭐⭐ Código perfeito! Você usou loops de forma eficiente!';
+                } else {
+                    mensagem += '<br>💡 Você usou ' + linhas + ' linhas. Tente usar loops para usar menos código!';
+                }
+                
+                mostrarFeedback(mensagem, 'sucesso');
+                document.getElementById('btn-proximo').style.display = 'inline-block';
+                criarConfetes();
+            } else {
+                mostrarFeedback(`❌ Você coletou ${estrelasColetadas}/${nivel.meta} estrelas. Tente novamente!`, 'erro');
+            }
+        }
+
+        function proximoNivel() {
+            nivelAtual++;
+            if (nivelAtual < niveis.length) {
+                iniciarNivel();
+            } else {
+                finalizarJogo();
+            }
+        }
+
+        function finalizarJogo() {
+            const jogo = document.querySelector('.jogo-area');
+            jogo.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="font-size: 3em;">🏆</h2>
+                    <h2 style="color: #A960EE; margin: 20px 0;">PARABÉNS!</h2>
+                    <p style="font-size: 1.5em;">
+                        Você completou todos os níveis do Desafio dos Loops!
+                    </p>
+                    <p style="font-size: 1.3em; margin: 20px 0; color: #666;">
+                        Agora você entende como loops economizam código e tornam<br>
+                        a programação mais eficiente! 🔁
+                    </p>
+                    <div style="background: #f0f0f0; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 500px;">
+                        <h3 style="color: #A960EE;">O que você aprendeu:</h3>
+                        <ul style="text-align: left; margin: 10px 0;">
+                            <li>✅ Loops repetem comandos automaticamente</li>
+                            <li>✅ Economizam linhas de código</li>
+                            <li>✅ Tornam programas mais eficientes</li>
+                            <li>✅ São essenciais na programação!</li>
+                        </ul>
+                    </div>
+                    <button class="btn" onclick="location.reload()">🔄 Jogar Novamente</button>
+                    <a href="../index.html" class="btn">🏠 Menu Principal</a>
+                </div>
+            `;
+            criarConfetes();
+            salvarProgresso('desafio-loops', true);
+        }
+
+        window.addEventListener('load', iniciarNivel);
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variáveis e Tipos - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <a href="../index.html" class="nav-voltar">← Voltar ao Início</a>
+
+        <div class="conteudo-topico animacao-aparecer">
+            <h2>📦 Variáveis e Tipos de Dados</h2>
+            
+            <p>Imagine que você tem várias caixinhas onde pode guardar coisas diferentes: uma para guardar números, outra para guardar palavras, outra para guardar verdadeiro ou falso... Essas caixinhas são as <strong>variáveis</strong>!</p>
+
+            <h3>O que são Variáveis?</h3>
+            <p>Variáveis são como <strong>caixinhas mágicas</strong> que guardam informações na memória do computador. Cada caixinha tem:</p>
+            <ul class="lista-exemplos">
+                <li>Um <strong>nome</strong> para você identificá-la</li>
+                <li>Um <strong>tipo</strong> que define o que ela pode guardar</li>
+                <li>Um <strong>valor</strong> que está guardado dentro dela</li>
+            </ul>
+
+            <h3>Tipos de Dados</h3>
+            
+            <div class="exemplo-box">
+                <h4>🔢 inteiro - Números inteiros</h4>
+                <p>Guarda números sem vírgula: 1, 2, 100, -5, 42</p>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> idade
+idade = 10
+
+<span class="keyword">inteiro</span> pontos
+pontos = 250
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>💰 real - Números com vírgula</h4>
+                <p>Guarda números com casas decimais: 3.14, 2.5, 10.99</p>
+                <div class="codigo-portugol">
+<span class="keyword">real</span> altura
+altura = 1.45
+
+<span class="keyword">real</span> preco
+preco = 25.50
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>📝 cadeia - Textos</h4>
+                <p>Guarda palavras e frases (sempre entre aspas!)</p>
+                <div class="codigo-portugol">
+<span class="keyword">cadeia</span> nome
+nome = <span class="string">"Maria"</span>
+
+<span class="keyword">cadeia</span> mensagem
+mensagem = <span class="string">"Olá, mundo!"</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>✓ logico - Verdadeiro ou Falso</h4>
+                <p>Guarda apenas dois valores: verdadeiro ou falso</p>
+                <div class="codigo-portugol">
+<span class="keyword">logico</span> estaChovendo
+estaChovendo = <span class="keyword">falso</span>
+
+<span class="keyword">logico</span> termineiLicao
+termineiLicao = <span class="keyword">verdadeiro</span>
+                </div>
+            </div>
+
+            <h3>Como Declarar e Usar Variáveis</h3>
+            <p>Para usar uma variável, você precisa seguir 3 passos:</p>
+
+            <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="comment">// 1. Declarar a variável (criar a caixinha)</span>
+        <span class="keyword">inteiro</span> idade
+        
+        <span class="comment">// 2. Atribuir um valor (colocar algo dentro)</span>
+        idade = 9
+        
+        <span class="comment">// 3. Usar a variável</span>
+        <span class="function">escreva</span>(<span class="string">"Minha idade é: "</span>, idade)
+    }
+}
+            </div>
+
+            <div class="exemplo-box">
+                <h4>💡 Dica Pro:</h4>
+                <p>Você pode declarar e atribuir ao mesmo tempo!</p>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> idade = 9
+<span class="keyword">cadeia</span> nome = <span class="string">"João"</span>
+<span class="keyword">real</span> altura = 1.35
+                </div>
+            </div>
+
+            <h3>Regras para Nomes de Variáveis</h3>
+            <ul class="lista-exemplos">
+                <li>Deve começar com letra (não pode começar com número)</li>
+                <li>Pode conter letras, números e _ (underline)</li>
+                <li>Não pode ter espaços (use minhaIdade, não "minha idade")</li>
+                <li>Não pode usar palavras reservadas (programa, funcao, se, etc)</li>
+                <li>Escolha nomes que façam sentido (idade é melhor que x)</li>
+            </ul>
+
+            <h3>Exemplo Prático Completo</h3>
+            <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="comment">// Declarando variáveis</span>
+        <span class="keyword">cadeia</span> nome = <span class="string">"Ana"</span>
+        <span class="keyword">inteiro</span> idade = 10
+        <span class="keyword">real</span> altura = 1.42
+        <span class="keyword">logico</span> gostaDeProgramar = <span class="keyword">verdadeiro</span>
+        
+        <span class="comment">// Mostrando os valores</span>
+        <span class="function">escreva</span>(<span class="string">"Nome: "</span>, nome, <span class="string">"\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Idade: "</span>, idade, <span class="string">" anos\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Altura: "</span>, altura, <span class="string">" metros\n"</span>)
+        
+        <span class="keyword">se</span> (gostaDeProgramar) {
+            <span class="function">escreva</span>(<span class="string">"Ama programar! 💜"</span>)
+        }
+    }
+}
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-jogo" onclick="window.location.href='../jogos/monte-programa.html'">
+                    🎮 Praticar com Variáveis
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-comecar" onclick="window.location.href='entrada-saida.html'">
+                    Próximo Tópico: Entrada e Saída →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aprenda lógica de programação de forma divertida! Para crianças de 8 a 10 anos.">
+    <title>🚀 Lógica de Programação para Crianças</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Estrelas decorativas -->
+    <div class="estrelas" id="estrelas"></div>
+
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header>
+            <h1>🚀 Lógica de Programação 🎮</h1>
+            <p class="subtitulo">Aprenda a pensar como um programador de forma divertida!</p>
+            <p style="font-size: 1.2em; margin-top: 10px;">✨ Para crianças de 8 a 10 anos ✨</p>
+        </header>
+
+        <!-- Introdução -->
+        <div class="conteudo-topico">
+            <h2>🌟 Bem-vindo(a) à Aventura da Programação! 🌟</h2>
+            <p style="text-align: center; font-size: 1.4em; margin: 20px 0;">
+                Você sabia que <strong>programar é como dar instruções para um robô?</strong> 
+                Ou como criar receitas mágicas para o computador? 🤖✨
+            </p>
+            <p style="text-align: center; font-size: 1.3em;">
+                Aqui você vai aprender a pensar como um programador de verdade! 
+                Vamos resolver problemas, criar jogos e se divertir muito! 🎉
+            </p>
+            
+            <div class="exemplo-box" style="margin-top: 30px;">
+                <strong>💡 O que você vai aprender:</strong>
+                <ul class="lista-exemplos">
+                    <li>Como dar instruções em ordem (Sequências)</li>
+                    <li>Como encontrar padrões escondidos</li>
+                    <li>Como tomar decisões inteligentes</li>
+                    <li>Como repetir coisas sem cansar</li>
+                    <li>Como criar receitas para resolver problemas</li>
+                    <li>Como encontrar e corrigir erros</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Grid de Tópicos -->
+        <h2 style="text-align: center; color: white; font-size: 2.5em; margin: 40px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+            🎯 Escolha um Tópico para Começar! 🎯
+        </h2>
+        
+        <div class="topicos-grid">
+            <!-- Tópico 1: Sequências -->
+            <div class="card-topico" onclick="navegarPara('topicos/sequencias.html')">
+                <div class="icone-topico">🎯</div>
+                <h2>Sequências e Ordem</h2>
+                <p>Aprenda que a ordem das coisas é super importante! Como fazer um sanduíche ou escovar os dentes.</p>
+            </div>
+
+            <!-- Tópico 2: Padrões -->
+            <div class="card-topico" onclick="navegarPara('topicos/padroes.html')">
+                <div class="icone-topico">🔄</div>
+                <h2>Padrões e Repetições</h2>
+                <p>Descubra padrões escondidos! Como as listras da zebra ou os dias da semana que se repetem.</p>
+            </div>
+
+            <!-- Tópico 3: Decisões -->
+            <div class="card-topico" onclick="navegarPara('topicos/decisoes.html')">
+                <div class="icone-topico">🤔</div>
+                <h2>Decisões (Se... Então...)</h2>
+                <p>Aprenda a tomar decisões como um computador! Se está chovendo, então levo guarda-chuva.</p>
+            </div>
+
+            <!-- Tópico 4: Loops -->
+            <div class="card-topico" onclick="navegarPara('topicos/loops.html')">
+                <div class="icone-topico">🔁</div>
+                <h2>Loops (Fazer Várias Vezes)</h2>
+                <p>Repita ações sem escrever tudo de novo! Como dar 10 pulinhos ou contar até 100.</p>
+            </div>
+
+            <!-- Tópico 5: Algoritmos -->
+            <div class="card-topico" onclick="navegarPara('topicos/algoritmos.html')">
+                <div class="icone-topico">📝</div>
+                <h2>Algoritmos (Receitas)</h2>
+                <p>Crie receitas mágicas para resolver problemas! Passo a passo para fazer qualquer coisa.</p>
+            </div>
+
+            <!-- Tópico 6: Debug -->
+            <div class="card-topico" onclick="navegarPara('topicos/debug.html')">
+                <div class="icone-topico">🐛</div>
+                <h2>Encontrar e Corrigir Erros</h2>
+                <p>Seja um detetive de erros! Aprenda a encontrar e consertar problemas como um profissional.</p>
+            </div>
+        </div>
+
+        <!-- Seção de Jogos -->
+        <div class="conteudo-topico" style="margin-top: 50px; background: linear-gradient(135deg, #FFF5E6, #E8F5E9);">
+            <h2>🎮 Jogos e Desafios! 🎮</h2>
+            <p style="text-align: center; font-size: 1.3em; margin-bottom: 30px;">
+                Depois de aprender os tópicos, teste seus conhecimentos com jogos super divertidos!
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <button class="btn" onclick="navegarPara('jogos/quiz-sequencias.html')">
+                    🎯 Quiz das Sequências
+                </button>
+                <button class="btn" onclick="navegarPara('jogos/jogo-padroes.html')">
+                    🔄 Jogo dos Padrões
+                </button>
+                <button class="btn" onclick="navegarPara('jogos/labirinto-decisoes.html')">
+                    🤔 Labirinto das Decisões
+                </button>
+                <button class="btn" onclick="navegarPara('jogos/desafio-loops.html')">
+                    🔁 Desafio dos Loops
+                </button>
+                <button class="btn" onclick="navegarPara('jogos/debug-detetive.html')">
+                    🐛 Debug do Detetive
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>✨ Feito com 💖 para crianças curiosas e criativas! ✨</p>
+            <p style="font-size: 1em; margin-top: 10px;">Continue explorando e se divertindo! 🚀</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript para animações e navegação -->
+    <script src="js/main.js"></script>
+    <script>
+        // Criar estrelas decorativas
+        const estrelasContainer = document.getElementById('estrelas');
+        for (let i = 0; i < 50; i++) {
+            const estrela = document.createElement('div');
+            estrela.className = 'estrela';
+            estrela.style.width = Math.random() * 3 + 'px';
+            estrela.style.height = estrela.style.width;
+            estrela.style.left = Math.random() * 100 + '%';
+            estrela.style.top = Math.random() * 100 + '%';
+            estrela.style.animationDelay = Math.random() * 2 + 's';
+            estrelasContainer.appendChild(estrela);
+        }
+
+        // Função de navegação
+        function navegarPara(url) {
+            // Adiciona efeito de transição
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => {
+                window.location.href = url;
+            }, 300);
+        }
+
+        // Animação de entrada
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+                document.body.style.transition = 'opacity 0.5s ease';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

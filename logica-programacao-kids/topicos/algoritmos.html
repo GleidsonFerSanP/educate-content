@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Algoritmos (Receitas) - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>📝 Algoritmos (Receitas Mágicas)</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="350" height="200" viewBox="0 0 350 200">
+                    <!-- Livro de receitas -->
+                    <rect x="100" y="40" width="150" height="120" fill="#FFD93D" stroke="#FF8C42" stroke-width="3" rx="5"/>
+                    <rect x="100" y="40" width="10" height="120" fill="#FF8C42"/>
+                    
+                    <!-- Linhas do texto -->
+                    <line x1="130" y1="70" x2="220" y2="70" stroke="#2C3E50" stroke-width="2"/>
+                    <line x1="130" y1="90" x2="220" y2="90" stroke="#2C3E50" stroke-width="2"/>
+                    <line x1="130" y1="110" x2="220" y2="110" stroke="#2C3E50" stroke-width="2"/>
+                    <line x1="130" y1="130" x2="220" y2="130" stroke="#2C3E50" stroke-width="2"/>
+                    
+                    <!-- Ícones -->
+                    <text x="120" y="75" font-size="16">1.</text>
+                    <text x="120" y="95" font-size="16">2.</text>
+                    <text x="120" y="115" font-size="16">3.</text>
+                    <text x="120" y="135" font-size="16">4.</text>
+                    
+                    <!-- Estrelas mágicas -->
+                    <text x="260" y="80" font-size="30">✨</text>
+                    <text x="270" y="130" font-size="25">⭐</text>
+                </svg>
+            </div>
+
+            <h3>🤔 O que é um Algoritmo?</h3>
+            <p>
+                Um <strong>algoritmo</strong> é como uma receita! É uma lista de passos que você 
+                segue em ordem para fazer alguma coisa. Se você seguir os passos direitinho, 
+                vai conseguir fazer o que quer! 🎯
+            </p>
+            <p>
+                Pense em algoritmos como <strong>instruções passo a passo</strong> para resolver 
+                um problema ou fazer uma tarefa. Todo mundo usa algoritmos o tempo todo, 
+                mesmo sem saber! 😄
+            </p>
+
+            <div class="exemplo-box">
+                <strong>🍰 Exemplo: Algoritmo para Fazer Brigadeiro</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px;">
+                    <li>Pegue 1 lata de leite condensado</li>
+                    <li>Coloque na panela</li>
+                    <li>Adicione 1 colher de manteiga</li>
+                    <li>Adicione 3 colheres de chocolate em pó</li>
+                    <li>Mexa sem parar em fogo baixo</li>
+                    <li>Quando começar a desgrudar do fundo, está pronto!</li>
+                    <li>Espere esfriar</li>
+                    <li>Faça bolinhas com as mãos</li>
+                    <li>Passe no chocolate granulado</li>
+                    <li>Brigadeiro pronto! 🍫</li>
+                </ol>
+            </div>
+
+            <h3>📚 Algoritmos no Dia a Dia</h3>
+            <p>
+                Você usa algoritmos todos os dias! Aqui estão alguns exemplos:
+            </p>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9);">
+                <strong>🏫 Algoritmo: Ir para a Escola</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li>Acordar com o despertador</li>
+                    <li>Tomar banho</li>
+                    <li>Vestir o uniforme</li>
+                    <li>Tomar café da manhã</li>
+                    <li>Escovar os dentes</li>
+                    <li>Pegar a mochila</li>
+                    <li>Sair de casa</li>
+                    <li>Caminhar/ir de ônibus até a escola</li>
+                    <li>Chegar na escola! 🎒</li>
+                </ol>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E1F5FE, #B3E5FC);">
+                <strong>🧃 Algoritmo: Fazer Suco de Laranja</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li>Pegue 3 laranjas</li>
+                    <li>Lave as laranjas</li>
+                    <li>Corte as laranjas ao meio</li>
+                    <li>Esprema no espremedor</li>
+                    <li>Coe o suco (opcional)</li>
+                    <li>Coloque açúcar se quiser</li>
+                    <li>Mexa bem</li>
+                    <li>Sirva gelado! 🧃</li>
+                </ol>
+            </div>
+
+            <h3>🎮 Algoritmos em Jogos</h3>
+            <p>
+                Jogos estão cheios de algoritmos! Cada ação no jogo segue um algoritmo:
+            </p>
+
+            <ul class="lista-exemplos">
+                <li>🏃 <strong>Personagem pular:</strong> Apertar botão → personagem sobe → gravidade puxa para baixo → personagem aterrissa</li>
+                <li>⚔️ <strong>Atacar inimigo:</strong> Apertar ataque → verificar se acertou → diminuir vida do inimigo → mostrar efeito</li>
+                <li>🪙 <strong>Coletar moeda:</strong> Tocar na moeda → moeda desaparece → adicionar pontos → tocar som</li>
+            </ul>
+
+            <h3>🔧 Partes de um Bom Algoritmo</h3>
+            
+            <div class="exemplo-box">
+                <strong>✅ Um algoritmo precisa ser:</strong>
+                <ul class="lista-exemplos" style="margin-top: 15px;">
+                    <li>📋 <strong>Completo:</strong> Ter todos os passos necessários</li>
+                    <li>🎯 <strong>Claro:</strong> Fácil de entender</li>
+                    <li>🔢 <strong>Ordenado:</strong> Os passos na ordem certa</li>
+                    <li>✅ <strong>Finito:</strong> Ter um fim (não pode durar para sempre)</li>
+                    <li>🎬 <strong>Executável:</strong> Ser possível de fazer</li>
+                </ul>
+            </div>
+
+            <h3>🗺️ Algoritmo: Chegar na Casa do Amigo</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFF59D);">
+                <strong>🏠 Exemplo de Algoritmo com Decisões:</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li>Saia da sua casa</li>
+                    <li>Vire à direita na esquina</li>
+                    <li>Caminhe 3 quarteirões</li>
+                    <li><strong>SE</strong> o semáforo estiver vermelho, <strong>ENTÃO</strong> espere ficar verde</li>
+                    <li>Atravesse a rua</li>
+                    <li>Vire à esquerda</li>
+                    <li>Caminhe até a casa número 42</li>
+                    <li>Toque a campainha</li>
+                    <li>Chegou! 🎉</li>
+                </ol>
+                <p style="margin-top: 15px;">
+                    <strong>Viu?</strong> Algoritmos podem incluir decisões (SE/ENTÃO) e loops (repetir)!
+                </p>
+            </div>
+
+            <h3>🤖 Algoritmos na Programação</h3>
+            <p>
+                Quando programamos, estamos criando algoritmos! O computador segue 
+                nosso algoritmo exatamente como escrevemos. Por isso, precisamos ser 
+                muito claros e completos! 💻
+            </p>
+
+            <div class="exemplo-box">
+                <strong>🎨 Algoritmo: Desenhar um Quadrado</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li>Comece em um ponto</li>
+                    <li>Desenhe uma linha reta de 10cm para frente</li>
+                    <li>Vire 90 graus para a direita</li>
+                    <li><strong>Repita</strong> os passos 2 e 3 mais <strong>3 vezes</strong></li>
+                    <li>Quadrado pronto! ⬜</li>
+                </ol>
+                <p style="margin-top: 15px;">
+                    <strong>Legal!</strong> Esse algoritmo usa um <strong>loop</strong> (repetição)!
+                </p>
+            </div>
+
+            <h3>🎯 Crie Seus Próprios Algoritmos!</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #F3E5F5, #E1BEE7);">
+                <strong>💭 Tente criar algoritmos para:</strong>
+                <ul class="lista-exemplos" style="margin-top: 15px;">
+                    <li>🛏️ Arrumar sua cama</li>
+                    <li>🐕 Dar banho no cachorro</li>
+                    <li>🌳 Plantar uma árvore</li>
+                    <li>🎨 Desenhar uma estrela</li>
+                    <li>🎮 Passar de fase em um jogo</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    <strong>Dica:</strong> Lembre-se de colocar os passos na ordem certa! 📝
+                </p>
+            </div>
+
+            <h3>🎮 Atividade Prática!</h3>
+            <p>
+                Agora é hora de criar e testar algoritmos! Volte ao menu principal 
+                para jogar todos os jogos - cada um usa diferentes conceitos de 
+                algoritmos que você aprendeu! 🎮
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../index.html" class="btn">
+                    🎮 Voltar ao Menu e Jogar!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Algoritmo é uma lista de passos para fazer algo</li>
+                    <li>É como uma receita que você segue em ordem</li>
+                    <li>Usamos algoritmos todos os dias sem perceber</li>
+                    <li>Algoritmos podem incluir decisões e loops</li>
+                    <li>Programar é criar algoritmos para computadores</li>
+                    <li>Algoritmos precisam ser claros, completos e ordenados</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="loops.html" class="btn">
+                    ← Tópico Anterior
+                </a>
+                <a href="debug.html" class="btn">
+                    Próximo Tópico: Debug 🐛
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            salvarProgresso('algoritmos', true);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estruturas de Repetição - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <a href="../index.html" class="nav-voltar">← Voltar ao Início</a>
+
+        <div class="conteudo-topico animacao-aparecer">
+            <h2>🔄 Estruturas de Repetição (Loops)</h2>
+            
+            <p>Imagine ter que escrever "Olá!" 100 vezes. Cansativo, né? Com estruturas de repetição, você pode fazer o computador repetir tarefas automaticamente!</p>
+
+            <h3>Loop PARA (for)</h3>
+            <p>Use quando você sabe EXATAMENTE quantas vezes quer repetir algo.</p>
+
+            <div class="exemplo-box">
+                <h4>Sintaxe:</h4>
+                <div class="codigo-portugol">
+<span class="keyword">para</span> (inicio; condição; incremento) {
+    <span class="comment">// comandos a repetir</span>
+}
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 1: Contando até 10</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> i
+        
+        <span class="keyword">para</span> (i = 1; i <= 10; i++) {
+            <span class="function">escreva</span>(i, <span class="string">" "</span>)
+        }
+    }
+}
+                </div>
+                <p><strong>Resultado:</strong> 1 2 3 4 5 6 7 8 9 10</p>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>🔍 Entendendo cada parte:</h4>
+                <ul class="lista-exemplos">
+                    <li><code>i = 1</code> → Começa com i valendo 1</li>
+                    <li><code>i <= 10</code> → Continua enquanto i for menor ou igual a 10</li>
+                    <li><code>i++</code> → Aumenta i em 1 a cada volta (i++ é o mesmo que i = i + 1)</li>
+                </ul>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 2: Tabuada</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> numero, i, resultado
+        
+        <span class="function">escreva</span>(<span class="string">"Tabuada de qual número? "</span>)
+        <span class="function">leia</span>(numero)
+        
+        <span class="function">escreva</span>(<span class="string">"\n=== TABUADA DO "</span>, numero, <span class="string">" ===\n"</span>)
+        
+        <span class="keyword">para</span> (i = 1; i <= 10; i++) {
+            resultado = numero * i
+            <span class="function">escreva</span>(numero, <span class="string">" x "</span>, i, <span class="string">" = "</span>, resultado, <span class="string">"\n"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Loop ENQUANTO (while)</h3>
+            <p>Use quando você NÃO sabe quantas vezes vai repetir, mas tem uma condição para parar.</p>
+
+            <div class="exemplo-box">
+                <h4>Sintaxe:</h4>
+                <div class="codigo-portugol">
+<span class="keyword">enquanto</span> (condição) {
+    <span class="comment">// comandos a repetir</span>
+}
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 3: Adivinhação com Tentativas Ilimitadas</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> numeroSecreto = 7
+        <span class="keyword">inteiro</span> palpite = 0
+        
+        <span class="function">escreva</span>(<span class="string">"Adivinhe o número entre 1 e 10!\n"</span>)
+        
+        <span class="keyword">enquanto</span> (palpite != numeroSecreto) {
+            <span class="function">escreva</span>(<span class="string">"Seu palpite: "</span>)
+            <span class="function">leia</span>(palpite)
+            
+            <span class="keyword">se</span> (palpite < numeroSecreto) {
+                <span class="function">escreva</span>(<span class="string">"Muito baixo! Tente novamente.\n"</span>)
+            } <span class="keyword">senao se</span> (palpite > numeroSecreto) {
+                <span class="function">escreva</span>(<span class="string">"Muito alto! Tente novamente.\n"</span>)
+            } <span class="keyword">senao</span> {
+                <span class="function">escreva</span>(<span class="string">"🎉 ACERTOU!"</span>)
+            }
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Loop FAÇA-ENQUANTO (do-while)</h3>
+            <p>Parecido com o ENQUANTO, mas garante que o código execute PELO MENOS UMA VEZ.</p>
+
+            <div class="exemplo-box">
+                <h4>Sintaxe:</h4>
+                <div class="codigo-portugol">
+<span class="keyword">faca</span> {
+    <span class="comment">// comandos a repetir</span>
+} <span class="keyword">enquanto</span> (condição)
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 4: Menu de Opções</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> opcao
+        
+        <span class="keyword">faca</span> {
+            <span class="function">escreva</span>(<span class="string">"\n=== MENU ===\n"</span>)
+            <span class="function">escreva</span>(<span class="string">"1 - Jogar\n"</span>)
+            <span class="function">escreva</span>(<span class="string">"2 - Configurações\n"</span>)
+            <span class="function">escreva</span>(<span class="string">"3 - Sair\n"</span>)
+            <span class="function">escreva</span>(<span class="string">"Escolha: "</span>)
+            <span class="function">leia</span>(opcao)
+            
+            <span class="keyword">escolha</span> (opcao) {
+                <span class="keyword">caso</span> 1:
+                    <span class="function">escreva</span>(<span class="string">"Iniciando jogo...\n"</span>)
+                    <span class="keyword">pare</span>
+                <span class="keyword">caso</span> 2:
+                    <span class="function">escreva</span>(<span class="string">"Abrindo configurações...\n"</span>)
+                    <span class="keyword">pare</span>
+                <span class="keyword">caso</span> 3:
+                    <span class="function">escreva</span>(<span class="string">"Saindo... Até logo! 👋\n"</span>)
+                    <span class="keyword">pare</span>
+                <span class="keyword">caso contrario</span>:
+                    <span class="function">escreva</span>(<span class="string">"Opção inválida!\n"</span>)
+            }
+            
+        } <span class="keyword">enquanto</span> (opcao != 3)
+    }
+}
+                </div>
+            </div>
+
+            <h3>Loops Aninhados (Um dentro do outro)</h3>
+            <p>Você pode colocar um loop dentro de outro!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 5: Desenhando um Quadrado</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> linha, coluna
+        
+        <span class="comment">// Loop externo: controla as linhas</span>
+        <span class="keyword">para</span> (linha = 1; linha <= 5; linha++) {
+            
+            <span class="comment">// Loop interno: controla as colunas</span>
+            <span class="keyword">para</span> (coluna = 1; coluna <= 5; coluna++) {
+                <span class="function">escreva</span>(<span class="string">"* "</span>)
+            }
+            
+            <span class="function">escreva</span>(<span class="string">"\n"</span>)  <span class="comment">// Pula para próxima linha</span>
+        }
+    }
+}
+                </div>
+                <p><strong>Resultado:</strong></p>
+                <pre style="background: #1e1e1e; color: #fff; padding: 10px; border-radius: 5px;">
+* * * * *
+* * * * *
+* * * * *
+* * * * *
+* * * * *</pre>
+            </div>
+
+            <h3>Comandos de Controle</h3>
+
+            <div class="exemplo-box">
+                <h4>🛑 pare - Sai do loop</h4>
+                <div class="codigo-portugol">
+<span class="keyword">para</span> (i = 1; i <= 10; i++) {
+    <span class="keyword">se</span> (i == 5) {
+        <span class="keyword">pare</span>  <span class="comment">// Para quando chegar em 5</span>
+    }
+    <span class="function">escreva</span>(i, <span class="string">" "</span>)
+}
+<span class="comment">// Resultado: 1 2 3 4</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>⏭️ continue - Pula para próxima iteração</h4>
+                <div class="codigo-portugol">
+<span class="keyword">para</span> (i = 1; i <= 10; i++) {
+    <span class="keyword">se</span> (i == 5) {
+        <span class="keyword">continue</span>  <span class="comment">// Pula o 5</span>
+    }
+    <span class="function">escreva</span>(i, <span class="string">" "</span>)
+}
+<span class="comment">// Resultado: 1 2 3 4 6 7 8 9 10</span>
+                </div>
+            </div>
+
+            <h3>Dicas para Evitar Loops Infinitos</h3>
+            <ul class="lista-exemplos">
+                <li>Sempre verifique se a condição vai se tornar falsa em algum momento</li>
+                <li>Certifique-se de incrementar/decrementar a variável de controle</li>
+                <li>Use <code>pare</code> como uma "saída de emergência" quando necessário</li>
+                <li>Teste seus loops com números pequenos primeiro</li>
+            </ul>
+
+            <div class="exemplo-box" style="border-color: #EF4444;">
+                <h4>⚠️ Cuidado com Loop Infinito:</h4>
+                <div class="codigo-portugol">
+<span class="comment">// ERRADO - Loop infinito!</span>
+<span class="keyword">inteiro</span> i = 1
+<span class="keyword">enquanto</span> (i <= 10) {
+    <span class="function">escreva</span>(i)
+    <span class="comment">// Esqueceu de incrementar i!</span>
+}
+
+<span class="comment">// CORRETO</span>
+<span class="keyword">inteiro</span> i = 1
+<span class="keyword">enquanto</span> (i <= 10) {
+    <span class="function">escreva</span>(i)
+    i++  <span class="comment">// Agora i aumenta!</span>
+}
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-jogo" onclick="window.location.href='../jogos/robo-repetidor.html'">
+                    🎮 Jogar: Robô Repetidor
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-comecar" onclick="window.location.href='../index.html'">
+                    ← Voltar ao Início
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

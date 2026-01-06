@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robô Repetidor - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .jogo-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .painel-jogo {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .painel-grid {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .painel-grid h3 {
+            color: #6B46C1;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .grid-robo {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .celula-grid {
+            aspect-ratio: 1;
+            background: #F3F4F6;
+            border: 3px solid #D1D5DB;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .celula-grid.robo {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            border-color: #6B21A8;
+            animation: pulsar-robo 1s ease-in-out infinite;
+        }
+
+        @keyframes pulsar-robo {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .celula-grid.estrela {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            border-color: #FF6F00;
+        }
+
+        .celula-grid.coletada {
+            background: #D1FAE5;
+            border-color: #10B981;
+        }
+
+        .painel-comandos {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .painel-comandos h3 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .area-comandos {
+            background: #F9FAFB;
+            border: 3px dashed #9333EA;
+            border-radius: 15px;
+            padding: 15px;
+            min-height: 300px;
+            margin: 15px 0;
+        }
+
+        .bloco-comando {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+
+        .bloco-comando:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.4);
+        }
+
+        .bloco-comando.loop {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .bloco-comando .btn-remover {
+            background: #EF4444;
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .botoes-comando {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn-comando {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 1rem;
+        }
+
+        .btn-comando:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-cima { background: linear-gradient(135deg, #06B6D4, #0891B2); color: white; }
+        .btn-baixo { background: linear-gradient(135deg, #14B8A6, #0D9488); color: white; }
+        .btn-esquerda { background: linear-gradient(135deg, #8B5CF6, #7C3AED); color: white; }
+        .btn-direita { background: linear-gradient(135deg, #EC4899, #DB2777); color: white; }
+
+        .btn-loop {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .botoes-acao {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-acao {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-executar {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        .btn-limpar {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+        }
+
+        .btn-acao:hover {
+            transform: scale(1.05);
+        }
+
+        .painel-codigo {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .painel-codigo h3 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .editor-codigo {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        .codigo-linha {
+            color: #E2E8F0;
+            padding: 3px 0;
+            line-height: 1.6;
+        }
+
+        .keyword { color: #C792EA; font-weight: bold; }
+        .function { color: #82AAFF; }
+        .string { color: #C3E88D; }
+        .number { color: #F78C6C; }
+        .variable { color: #FFCB6B; }
+        .comment { color: #546E7A; font-style: italic; }
+
+        .info-nivel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card h4 {
+            color: #6B46C1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .info-valor {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #9333EA;
+        }
+
+        .modal-loop {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: none;
+        }
+
+        .modal-loop.ativo {
+            display: block;
+            animation: aparecer 0.3s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal-loop h2 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+        }
+
+        .input-loop {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 3px solid #9333EA;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .btn-modal {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-confirmar {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        .btn-cancelar {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            color: white;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.ativo {
+            display: block;
+        }
+
+        .dica-nivel {
+            background: rgba(251, 191, 36, 0.2);
+            border: 3px solid #F59E0B;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .dica-nivel h3 {
+            color: #FCD34D;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .painel-jogo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="modal-loop" id="modal-loop">
+        <h2>🔄 Criar Loop</h2>
+        <p>Quantas vezes você quer repetir?</p>
+        <input type="number" id="input-repeticoes" class="input-loop" min="1" max="10" value="3" placeholder="Digite um número">
+        <div style="text-align: center;">
+            <button class="btn-modal btn-confirmar" onclick="confirmarLoop()">✓ Confirmar</button>
+            <button class="btn-modal btn-cancelar" onclick="fecharModal()">✗ Cancelar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🤖 Robô Repetidor</h1>
+                <p style="font-size: 1.2rem;">Programe o robô usando loops PARA e ENQUANTO!</p>
+            </div>
+
+            <!-- Info Nível -->
+            <div class="info-nivel">
+                <div class="info-card">
+                    <h4>NÍVEL</h4>
+                    <div class="info-valor" id="nivel">1</div>
+                </div>
+                <div class="info-card">
+                    <h4>ESTRELAS COLETADAS</h4>
+                    <div class="info-valor"><span id="estrelas-coletadas">0</span>/<span id="total-estrelas">0</span></div>
+                </div>
+                <div class="info-card">
+                    <h4>LOOPS USADOS</h4>
+                    <div class="info-valor" id="loops-usados">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>PONTOS</h4>
+                    <div class="info-valor" id="pontos">0</div>
+                </div>
+            </div>
+
+            <!-- Dica -->
+            <div class="dica-nivel">
+                <h3>💡 Dica:</h3>
+                <p id="dica-texto" style="font-size: 1.1rem;">Use loops para repetir comandos e coletar todas as estrelas!</p>
+            </div>
+
+            <!-- Painel do Jogo -->
+            <div class="painel-jogo">
+                <!-- Grid do Robô -->
+                <div class="painel-grid">
+                    <h3>🎮 Arena do Robô</h3>
+                    <div class="grid-robo" id="grid-robo"></div>
+                </div>
+
+                <!-- Comandos -->
+                <div class="painel-comandos">
+                    <h3>⚙️ Programação</h3>
+                    
+                    <div class="botoes-comando">
+                        <button class="btn-comando btn-cima" onclick="adicionarComando('cima')">↑ CIMA</button>
+                        <button class="btn-comando btn-baixo" onclick="adicionarComando('baixo')">↓ BAIXO</button>
+                        <button class="btn-comando btn-esquerda" onclick="adicionarComando('esquerda')">← ESQUERDA</button>
+                        <button class="btn-comando btn-direita" onclick="adicionarComando('direita')">→ DIREITA</button>
+                        <button class="btn-comando btn-loop" onclick="abrirModalLoop()">🔄 LOOP (PARA)</button>
+                    </div>
+
+                    <div class="area-comandos" id="area-comandos">
+                        <p style="text-align: center; color: #6B7280; padding: 20px;">
+                            Adicione comandos aqui...
+                        </p>
+                    </div>
+
+                    <div class="botoes-acao">
+                        <button class="btn-acao btn-executar" onclick="executarPrograma()">▶️ Executar</button>
+                        <button class="btn-acao btn-limpar" onclick="limparComandos()">🗑️ Limpar</button>
+                    </div>
+                </div>
+
+                <!-- Código Portugol -->
+                <div class="painel-codigo">
+                    <h3>📝 Código Portugol</h3>
+                    <div class="editor-codigo" id="codigo-portugol"></div>
+                    <button onclick="proximoNivel()" id="btn-proximo" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; margin-top: 15px; display: none;">
+                        ⏭️ Próximo Nível
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let nivelAtual = 1;
+        let pontos = 0;
+        let loopsUsados = 0;
+        let comandos = [];
+        let posicaoRobo = { x: 0, y: 0 };
+        let estrelasColetadas = 0;
+        let loopEmCriacao = false;
+
+        const niveis = [
+            {
+                tamanho: 6,
+                inicio: { x: 0, y: 0 },
+                estrelas: [[3, 0], [3, 1], [3, 2]],
+                dica: 'Use um loop PARA para mover o robô 3 vezes para a direita!'
+            },
+            {
+                tamanho: 6,
+                inicio: { x: 0, y: 0 },
+                estrelas: [[0, 1], [0, 2], [0, 3], [0, 4]],
+                dica: 'Use um loop PARA para mover o robô 4 vezes para baixo!'
+            },
+            {
+                tamanho: 6,
+                inicio: { x: 0, y: 0 },
+                estrelas: [[1, 0], [2, 0], [2, 1], [2, 2]],
+                dica: 'Combine loops com comandos! Vá para direita 2x, depois para baixo 2x.'
+            },
+            {
+                tamanho: 6,
+                inicio: { x: 2, y: 2 },
+                estrelas: [[3, 2], [4, 2], [4, 3], [4, 4]],
+                dica: 'Use loops aninhados! Um loop para ir para direita, outro para ir para baixo.'
+            },
+            {
+                tamanho: 6,
+                inicio: { x: 0, y: 0 },
+                estrelas: [[1, 0], [1, 1], [2, 1], [2, 2], [3, 2], [3, 3]],
+                dica: 'Desafio final! Use múltiplos loops para coletar todas as estrelas em escada.'
+            }
+        ];
+
+        function carregarNivel() {
+            const nivel = niveis[nivelAtual - 1];
+            posicaoRobo = { ...nivel.inicio };
+            estrelasColetadas = 0;
+            comandos = [];
+            loopsUsados = 0;
+
+            document.getElementById('nivel').textContent = nivelAtual;
+            document.getElementById('total-estrelas').textContent = nivel.estrelas.length;
+            document.getElementById('estrelas-coletadas').textContent = '0';
+            document.getElementById('loops-usados').textContent = '0';
+            document.getElementById('dica-texto').textContent = nivel.dica;
+            document.getElementById('btn-proximo').style.display = 'none';
+            document.getElementById('area-comandos').innerHTML = '<p style="text-align: center; color: #6B7280; padding: 20px;">Adicione comandos aqui...</p>';
+
+            renderizarGrid();
+            atualizarCodigo();
+        }
+
+        function renderizarGrid() {
+            const nivel = niveis[nivelAtual - 1];
+            const container = document.getElementById('grid-robo');
+            container.innerHTML = '';
+
+            for (let y = 0; y < nivel.tamanho; y++) {
+                for (let x = 0; x < nivel.tamanho; x++) {
+                    const div = document.createElement('div');
+                    div.className = 'celula-grid';
+                    div.dataset.x = x;
+                    div.dataset.y = y;
+
+                    if (x === posicaoRobo.x && y === posicaoRobo.y) {
+                        div.classList.add('robo');
+                        div.textContent = '🤖';
+                    } else if (nivel.estrelas.some(e => e[0] === x && e[1] === y)) {
+                        const coletada = estrelasColetadas > 0 && !nivel.estrelas.some(e => e[0] === x && e[1] === y && !foiColetada(x, y));
+                        if (!foiColetada(x, y)) {
+                            div.classList.add('estrela');
+                            div.textContent = '⭐';
+                        } else {
+                            div.classList.add('coletada');
+                            div.textContent = '✓';
+                        }
+                    }
+
+                    container.appendChild(div);
+                }
+            }
+        }
+
+        let estrelasColetadasPosicoes = [];
+
+        function foiColetada(x, y) {
+            return estrelasColetadasPosicoes.some(e => e[0] === x && e[1] === y);
+        }
+
+        function adicionarComando(direcao) {
+            const simbolo = direcao === 'cima' ? '↑' : direcao === 'baixo' ? '↓' : direcao === 'esquerda' ? '←' : '→';
+            comandos.push({ tipo: 'movimento', direcao, texto: `${simbolo} ${direcao.toUpperCase()}` });
+            atualizarAreaComandos();
+            atualizarCodigo();
+            tocarSom(440, 0.05);
+        }
+
+        function abrirModalLoop() {
+            document.getElementById('modal-loop').classList.add('ativo');
+            document.getElementById('overlay').classList.add('ativo');
+            document.getElementById('input-repeticoes').value = 3;
+            document.getElementById('input-repeticoes').focus();
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-loop').classList.remove('ativo');
+            document.getElementById('overlay').classList.remove('ativo');
+        }
+
+        function confirmarLoop() {
+            const repeticoes = parseInt(document.getElementById('input-repeticoes').value);
+            if (repeticoes < 1 || repeticoes > 10) {
+                alert('Digite um número entre 1 e 10!');
+                return;
+            }
+
+            comandos.push({
+                tipo: 'loop',
+                repeticoes,
+                comandos: [],
+                texto: `🔄 PARA (1 até ${repeticoes})`
+            });
+
+            loopsUsados++;
+            document.getElementById('loops-usados').textContent = loopsUsados;
+
+            fecharModal();
+            atualizarAreaComandos();
+            atualizarCodigo();
+            tocarSom(523.25, 0.1);
+        }
+
+        function atualizarAreaComandos() {
+            const container = document.getElementById('area-comandos');
+            
+            if (comandos.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #6B7280; padding: 20px;">Adicione comandos aqui...</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            comandos.forEach((cmd, index) => {
+                const div = document.createElement('div');
+                div.className = 'bloco-comando';
+                if (cmd.tipo === 'loop') div.classList.add('loop');
+                
+                div.innerHTML = `
+                    <span>${cmd.texto}</span>
+                    <button class="btn-remover" onclick="removerComando(${index})">×</button>
+                `;
+                
+                container.appendChild(div);
+
+                if (cmd.tipo === 'loop') {
+                    const loopArea = document.createElement('div');
+                    loopArea.style.marginLeft = '20px';
+                    loopArea.style.borderLeft = '3px solid #F59E0B';
+                    loopArea.style.paddingLeft = '15px';
+                    loopArea.innerHTML = '<p style="color: #6B7280; font-size: 0.9rem; margin: 10px 0;">Adicione comandos ao loop clicando nos botões acima</p>';
+                    container.appendChild(loopArea);
+                }
+            });
+        }
+
+        function removerComando(index) {
+            if (comandos[index].tipo === 'loop') loopsUsados--;
+            comandos.splice(index, 1);
+            document.getElementById('loops-usados').textContent = loopsUsados;
+            atualizarAreaComandos();
+            atualizarCodigo();
+            tocarSom(300, 0.1);
+        }
+
+        async function executarPrograma() {
+            const nivel = niveis[nivelAtual - 1];
+            posicaoRobo = { ...nivel.inicio };
+            estrelasColetadasPosicoes = [];
+            estrelasColetadas = 0;
+
+            for (const cmd of comandos) {
+                if (cmd.tipo === 'movimento') {
+                    await moverRobo(cmd.direcao);
+                } else if (cmd.tipo === 'loop') {
+                    for (let i = 0; i < cmd.repeticoes; i++) {
+                        for (const cmdLoop of cmd.comandos) {
+                            await moverRobo(cmdLoop.direcao);
+                        }
+                    }
+                }
+            }
+
+            verificarVitoria();
+        }
+
+        async function moverRobo(direcao) {
+            const nivel = niveis[nivelAtual - 1];
+            let novaX = posicaoRobo.x;
+            let novaY = posicaoRobo.y;
+
+            switch(direcao) {
+                case 'cima': novaY--; break;
+                case 'baixo': novaY++; break;
+                case 'esquerda': novaX--; break;
+                case 'direita': novaX++; break;
+            }
+
+            if (novaX < 0 || novaX >= nivel.tamanho || novaY < 0 || novaY >= nivel.tamanho) {
+                return;
+            }
+
+            posicaoRobo.x = novaX;
+            posicaoRobo.y = novaY;
+
+            // Verificar estrela
+            if (nivel.estrelas.some(e => e[0] === novaX && e[1] === novaY) && !foiColetada(novaX, novaY)) {
+                estrelasColetadasPosicoes.push([novaX, novaY]);
+                estrelasColetadas++;
+                document.getElementById('estrelas-coletadas').textContent = estrelasColetadas;
+                tocarSom(659.25, 0.1);
+            }
+
+            renderizarGrid();
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+
+        function verificarVitoria() {
+            const nivel = niveis[nivelAtual - 1];
+            
+            if (estrelasColetadas === nivel.estrelas.length) {
+                pontos += 200 + (loopsUsados * 50);
+                document.getElementById('pontos').textContent = pontos;
+                
+                tocarSomSucesso();
+                criarConfetes();
+                
+                setTimeout(() => {
+                    alert(`🎉 Parabéns! Você completou o nível!\n\n⭐ Estrelas: ${estrelasColetadas}/${nivel.estrelas.length}\n🔄 Loops: ${loopsUsados}\n💎 +${200 + (loopsUsados * 50)} pontos`);
+                    document.getElementById('btn-proximo').style.display = 'block';
+                }, 500);
+            } else {
+                alert(`❌ Quase lá! Você coletou ${estrelasColetadas} de ${nivel.estrelas.length} estrelas.\nTente novamente!`);
+                tocarSomErro();
+                carregarNivel();
+            }
+        }
+
+        function limparComandos() {
+            comandos = [];
+            loopsUsados = 0;
+            document.getElementById('loops-usados').textContent = '0';
+            atualizarAreaComandos();
+            atualizarCodigo();
+        }
+
+        function proximoNivel() {
+            if (nivelAtual < niveis.length) {
+                nivelAtual++;
+                carregarNivel();
+            } else {
+                alert(`🏆 Você completou todos os níveis!\n\n📊 Pontuação Final: ${pontos} pontos\n🔄 Total de Loops: ${loopsUsados}\n\nVocê é um mestre da repetição em Portugol! 🎉`);
+                criarConfetes();
+            }
+        }
+
+        function atualizarCodigo() {
+            const codigo = ['programa {', '    funcao inicio() {'];
+            
+            comandos.forEach(cmd => {
+                if (cmd.tipo === 'movimento') {
+                    codigo.push(`        mover_${cmd.direcao}()`);
+                } else if (cmd.tipo === 'loop') {
+                    codigo.push(`        para (inteiro i = 1; i <= ${cmd.repeticoes}; i++) {`);
+                    cmd.comandos.forEach(c => {
+                        codigo.push(`            mover_${c.direcao}()`);
+                    });
+                    codigo.push(`        }`);
+                }
+            });
+
+            codigo.push('    }');
+            codigo.push('}');
+
+            const container = document.getElementById('codigo-portugol');
+            container.innerHTML = codigo.map(linha => {
+                let html = linha;
+                html = html.replace(/\b(programa|funcao|inicio|para|inteiro)\b/g, '<span class="keyword">$1</span>');
+                html = html.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+                html = html.replace(/\b(\w+)\s*\(/g, '<span class="function">$1</span>(');
+                html = html.replace(/\b(i)\b/g, '<span class="variable">$1</span>');
+                return `<div class="codigo-linha">${html}</div>`;
+            }).join('');
+        }
+
+        function tocarSom(frequencia, duracao) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequencia;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {}
+        }
+
+        function tocarSomSucesso() {
+            tocarSom(523.25, 0.1);
+            setTimeout(() => tocarSom(659.25, 0.1), 100);
+            setTimeout(() => tocarSom(783.99, 0.2), 200);
+        }
+
+        function tocarSomErro() {
+            tocarSom(200, 0.2);
+            setTimeout(() => tocarSom(150, 0.2), 200);
+        }
+
+        // Iniciar jogo
+        carregarNivel();
+    </script>
+</body>
+</html>

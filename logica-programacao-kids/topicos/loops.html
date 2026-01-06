@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔁 Loops (Fazer Várias Vezes) - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>🔁 Loops (Fazer Várias Vezes)</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="300" height="200" viewBox="0 0 300 200">
+                    <!-- Loop circular -->
+                    <circle cx="150" cy="100" r="60" fill="none" stroke="#4ECDC4" stroke-width="4"/>
+                    <path d="M 210 100 Q 220 80 200 70" stroke="#4ECDC4" stroke-width="4" marker-end="url(#arrowloop)"/>
+                    
+                    <!-- Texto no centro -->
+                    <text x="150" y="95" font-size="18" text-anchor="middle" fill="#FF6B9D" font-weight="bold">Repita</text>
+                    <text x="150" y="115" font-size="18" text-anchor="middle" fill="#FF6B9D" font-weight="bold">10 vezes!</text>
+                    
+                    <defs>
+                        <marker id="arrowloop" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#4ECDC4"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <h3>🤔 O que é um Loop?</h3>
+            <p>
+                Um <strong>loop</strong> (em português, "laço" ou "repetição") é quando fazemos 
+                a mesma coisa várias e várias vezes! É como quando você escova os dentes: 
+                você repete o movimento de vai e vem muitas vezes, não é? 🪥
+            </p>
+            <p>
+                Na programação, loops são super úteis porque <strong>economizam trabalho</strong>! 
+                Em vez de escrever a mesma coisa 100 vezes, você só escreve uma vez e diz quantas 
+                vezes quer repetir! 🔄
+            </p>
+
+            <div class="exemplo-box">
+                <strong>💡 Sem Loop (do jeito difícil):</strong>
+                <p style="background: #FFE6E6; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace;">
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!<br>
+                    Pule!
+                </p>
+                <p style="margin-top: 15px;"><strong>😓 Cansativo, não é?</strong></p>
+                
+                <strong>✨ Com Loop (do jeito inteligente):</strong>
+                <p style="background: #E8F5E9; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace; font-size: 1.2em;">
+                    Repita 10 vezes: Pule!
+                </p>
+                <p><strong>😄 Muito mais fácil!</strong></p>
+            </div>
+
+            <h3>🏃 Loops no Dia a Dia</h3>
+            
+            <ul class="lista-exemplos">
+                <li>🪥 <strong>Escovar os dentes:</strong> Repetir movimento 20 vezes de cada lado</li>
+                <li>🏃 <strong>Dar voltas na quadra:</strong> Correr 5 voltas completas</li>
+                <li>🔢 <strong>Contar até 100:</strong> Repetir contagem de 1 até 100</li>
+                <li>🍽️ <strong>Lavar a louça:</strong> Repetir até acabar todos os pratos</li>
+                <li>💪 <strong>Polichinelos:</strong> Fazer 20 polichinelos na aula de educação física</li>
+            </ul>
+
+            <h3>🎯 Tipos de Loops</h3>
+            
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E1F5FE, #B3E5FC);">
+                <strong>1️⃣ Loop com Número Exato</strong>
+                <p style="margin-top: 10px;">
+                    Quando você sabe <strong>exatamente quantas vezes</strong> quer repetir algo.
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Pule 10 vezes" 🦘
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #F3E5F5, #E1BEE7);">
+                <strong>2️⃣ Loop Até Algo Acontecer</strong>
+                <p style="margin-top: 10px;">
+                    Quando você repete <strong>até</strong> uma condição ser verdadeira.
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Lave os pratos até não ter mais nenhum sujo" 🍽️
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFF59D);">
+                <strong>3️⃣ Loop Para Cada Item</strong>
+                <p style="margin-top: 10px;">
+                    Quando você faz algo <strong>para cada</strong> item de uma lista.
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Dê um abraço em cada amigo da turma" 🤗
+                </p>
+            </div>
+
+            <h3>🤖 Loops na Programação</h3>
+            <p>
+                Loops são uma das coisas mais importantes na programação! Veja alguns exemplos:
+            </p>
+
+            <div class="exemplo-box">
+                <strong>🎨 Exemplo: Robô Pintor</strong>
+                <p style="margin-top: 15px;">
+                    Imagine um robô que precisa pintar uma parede com 100 listras coloridas. 
+                    Em vez de programar 100 vezes "pinte uma listra", você programa assim:
+                </p>
+                <p style="background: #E8F5E9; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace;">
+                    Repita 100 vezes:<br>
+                    &nbsp;&nbsp;- Escolha uma cor<br>
+                    &nbsp;&nbsp;- Pinte uma listra<br>
+                    &nbsp;&nbsp;- Mova para a próxima posição
+                </p>
+                <p><strong>Pronto! 100 listras com apenas 4 linhas de código! 🎉</strong></p>
+            </div>
+
+            <h3>🎮 Loops em Jogos</h3>
+            <ul class="lista-exemplos">
+                <li>🏃 <strong>Animação de personagem:</strong> Repetir movimento das pernas para parecer que está andando</li>
+                <li>🌟 <strong>Estrelas piscando:</strong> Repetir efeito de brilho continuamente</li>
+                <li>🎵 <strong>Música de fundo:</strong> Repetir a música quando terminar</li>
+                <li>👾 <strong>Inimigos aparecendo:</strong> A cada 5 segundos, criar um novo inimigo</li>
+            </ul>
+
+            <h3>⚠️ Cuidado com Loops Infinitos!</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFEBEE, #FFCDD2);">
+                <strong>🚨 Loop Infinito = Problema!</strong>
+                <p style="margin-top: 10px;">
+                    Um <strong>loop infinito</strong> é quando a repetição nunca para! 
+                    É como se você dissesse "conte até o infinito" - nunca vai terminar! 😵
+                </p>
+                <p style="margin-top: 10px;">
+                    <strong>Exemplo ruim:</strong> "Coma doces até acabar" - mas se você continua 
+                    comprando mais doces, nunca vai acabar! 🍭
+                </p>
+                <p style="margin-top: 10px;">
+                    <strong>Na programação:</strong> Loops infinitos fazem o programa travar. 
+                    Sempre tenha certeza de que seu loop vai terminar em algum momento! ✅
+                </p>
+            </div>
+
+            <h3>🎯 Desafio de Pensamento!</h3>
+            <div class="exemplo-box">
+                <strong>💭 Pense: Como você usaria um loop para...</strong>
+                <ul class="lista-exemplos" style="margin-top: 15px;">
+                    <li>🌳 Plantar 50 árvores em um jardim?</li>
+                    <li>📚 Ler todas as páginas de um livro?</li>
+                    <li>🎨 Pintar cada estrela do céu de amarelo?</li>
+                    <li>🍕 Dividir uma pizza em 8 pedaços?</li>
+                </ul>
+            </div>
+
+            <h3>🎮 Atividade Prática!</h3>
+            <p>
+                Hora de praticar loops! Clique no botão abaixo para 
+                jogar o <strong>Desafio dos Loops</strong> e programar um robô 
+                para executar tarefas repetitivas! 🤖
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../jogos/desafio-loops.html" class="btn">
+                    🎮 Jogar Desafio dos Loops!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Loop é repetir a mesma ação várias vezes</li>
+                    <li>Loops economizam tempo e esforço!</li>
+                    <li>Existem loops com número exato, loops condicionais e loops para cada item</li>
+                    <li>Loops são usados em jogos, apps e programas</li>
+                    <li>Cuidado com loops infinitos - sempre tenha uma forma de parar!</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="decisoes.html" class="btn">
+                    ← Tópico Anterior
+                </a>
+                <a href="algoritmos.html" class="btn">
+                    Próximo Tópico: Algoritmos 📝
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            salvarProgresso('loops', true);
+        });
+    </script>
+</body>
+</html>

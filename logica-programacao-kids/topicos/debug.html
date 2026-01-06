@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐛 Encontrar e Corrigir Erros (Debug) - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>🐛 Encontrar e Corrigir Erros (Debug)</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="350" height="180" viewBox="0 0 350 180">
+                    <!-- Detetive com lupa -->
+                    <circle cx="100" cy="90" r="40" fill="#FFD93D"/>
+                    <circle cx="90" cy="85" r="5" fill="#2C3E50"/>
+                    <circle cx="110" cy="85" r="5" fill="#2C3E50"/>
+                    <path d="M 85 105 Q 100 110 115 105" stroke="#2C3E50" stroke-width="2" fill="none"/>
+                    
+                    <!-- Lupa -->
+                    <circle cx="200" cy="90" r="40" fill="none" stroke="#4ECDC4" stroke-width="4"/>
+                    <line x1="230" y1="120" x2="260" y2="150" stroke="#4ECDC4" stroke-width="4"/>
+                    
+                    <!-- Bug dentro da lupa -->
+                    <text x="200" y="100" font-size="35" text-anchor="middle">🐛</text>
+                    
+                    <!-- Chapéu de detetive -->
+                    <path d="M 70 60 L 100 40 L 130 60" fill="#A960EE" stroke="#2C3E50" stroke-width="2"/>
+                </svg>
+            </div>
+
+            <h3>🤔 O que é Debug?</h3>
+            <p>
+                <strong>Debug</strong> (ou "depuração" em português) é procurar e consertar erros! 
+                É como ser um <strong>detetive</strong> 🕵️ que procura pistas para descobrir 
+                o que está errado e como consertar!
+            </p>
+            <p>
+                Sabe por que chamamos erros de <strong>"bugs"</strong> (bichinhos em inglês)? 🐛 
+                Há muito tempo atrás, um inseto de verdade entrou em um computador gigante e causou 
+                um problema! Desde então, chamamos os erros de "bugs"! 😄
+            </p>
+
+            <div class="exemplo-box">
+                <strong>💡 Fato Divertido:</strong>
+                <p style="margin-top: 10px;">
+                    <strong>Todo mundo comete erros!</strong> Até os programadores mais experientes 
+                    do mundo! O importante não é nunca errar, mas sim <strong>saber encontrar e 
+                    consertar os erros</strong>! 🎯
+                </p>
+            </div>
+
+            <h3>🔍 Erros no Dia a Dia</h3>
+            <p>
+                Você já teve que encontrar e consertar erros antes? Veja alguns exemplos:
+            </p>
+
+            <ul class="lista-exemplos">
+                <li>🧸 <strong>Brinquedo não funciona:</strong> Verificar se as pilhas estão boas ou se está ligado</li>
+                <li>🚪 <strong>Porta não abre:</strong> Será que é a chave certa? Está trancada?</li>
+                <li>🎮 <strong>Jogo travou:</strong> Reiniciar o console ou computador</li>
+                <li>🍰 <strong>Bolo não cresceu:</strong> Esqueceu o fermento? Forno estava na temperatura certa?</li>
+                <li>🚲 <strong>Bicicleta furou:</strong> Encontrar o furo no pneu e tampar</li>
+            </ul>
+
+            <h3>🎯 Tipos de Erros (Bugs)</h3>
+            
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFEBEE, #FFCDD2);">
+                <strong>1️⃣ Erros de Sintaxe</strong>
+                <p style="margin-top: 10px;">
+                    É quando você escreve algo errado, como uma palavra com erro de ortografia!
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Pgle o brnquedo" em vez de "Pegue o brinquedo"
+                </p>
+                <p style="margin-top: 10px;">
+                    O computador não entende e mostra uma mensagem de erro! ❌
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFF59D);">
+                <strong>2️⃣ Erros de Lógica</strong>
+                <p style="margin-top: 10px;">
+                    É quando as instruções estão escritas certo, mas na ordem errada ou 
+                    fazem a coisa errada!
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Coloque o bolo no forno. Misture os ingredientes."
+                </p>
+                <p style="margin-top: 10px;">
+                    Ops! A ordem está errada! Precisa misturar ANTES de colocar no forno! 🍰
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E1F5FE, #B3E5FC);">
+                <strong>3️⃣ Erros de Runtime (Tempo de Execução)</strong>
+                <p style="margin-top: 10px;">
+                    É quando algo dá errado enquanto o programa está rodando!
+                </p>
+                <p style="margin-top: 10px; font-size: 1.2em;">
+                    <strong>Exemplo:</strong> "Divida o número por zero"
+                </p>
+                <p style="margin-top: 10px;">
+                    Não dá para dividir por zero! O programa trava! 💥
+                </p>
+            </div>
+
+            <h3>🕵️ Como Fazer Debug (Ser um Detetive de Erros)</h3>
+            
+            <div class="exemplo-box">
+                <strong>🔍 Passo a Passo para Encontrar Bugs:</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li><strong>🧐 Observe o problema:</strong> O que está acontecendo de errado?</li>
+                    <li><strong>🤔 Pense onde pode estar o erro:</strong> Em qual parte?</li>
+                    <li><strong>🔬 Teste suas ideias:</strong> Mude uma coisa de cada vez</li>
+                    <li><strong>📝 Verifique passo a passo:</strong> Cada instrução está certa?</li>
+                    <li><strong>✅ Teste novamente:</strong> Funcionou? Se não, continue procurando!</li>
+                    <li><strong>🎉 Consertou!</strong> Aprendeu algo novo!</li>
+                </ol>
+            </div>
+
+            <h3>🎮 Exemplo: Debug em um Jogo</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9);">
+                <strong>🐛 Problema:</strong> O personagem do jogo não está pulando!
+                
+                <p style="margin-top: 15px;"><strong>🕵️ Investigação:</strong></p>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px;">
+                    <li>O botão de pular está funcionando? ✅ Sim</li>
+                    <li>O comando de pular está escrito certo? ✅ Sim</li>
+                    <li>A gravidade está muito forte? ✅ Sim! Encontramos o bug!</li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>🔧 Solução:</strong> Diminuir a força da gravidade!</p>
+                <p style="margin-top: 10px;"><strong>✨ Resultado:</strong> Personagem pula normal agora! 🎉</p>
+            </div>
+
+            <h3>💡 Dicas de Ouro para Debug</h3>
+            
+            <ul class="lista-exemplos">
+                <li>🧘 <strong>Fique calmo!</strong> Erros acontecem com todo mundo!</li>
+                <li>📖 <strong>Leia com atenção:</strong> Às vezes o erro está onde você menos espera</li>
+                <li>👥 <strong>Peça ajuda:</strong> Duas cabeças pensam melhor que uma!</li>
+                <li>🔄 <strong>Teste pequenas partes:</strong> Não tente consertar tudo de uma vez</li>
+                <li>📝 <strong>Anote o que você já tentou:</strong> Para não fazer a mesma coisa duas vezes</li>
+                <li>🎯 <strong>Seja paciente:</strong> Às vezes demora um pouco para achar o erro</li>
+            </ul>
+
+            <h3>🎨 Exemplo: Encontrar o Erro na Receita</h3>
+            <div class="exemplo-box">
+                <strong>🍪 Receita de Biscoito com Erro:</strong>
+                <ol class="lista-exemplos" style="list-style: decimal; padding-left: 30px; margin-top: 10px;">
+                    <li>Coloque os biscoitos no forno</li>
+                    <li>Misture farinha, açúcar e manteiga</li>
+                    <li>Faça bolinhas com a massa</li>
+                    <li>Asse por 15 minutos</li>
+                </ol>
+                
+                <p style="margin-top: 15px;"><strong>🐛 Qual é o bug?</strong></p>
+                <p style="margin-top: 10px; background: #FFE6E6; padding: 15px; border-radius: 10px;">
+                    <strong>O passo 1 está errado!</strong> Não dá para colocar os biscoitos no 
+                    forno ANTES de fazer a massa! A ordem correta é: 2 → 3 → 1 → 4
+                </p>
+            </div>
+
+            <h3>🌟 Transforme Erros em Aprendizado!</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #F3E5F5, #E1BEE7);">
+                <strong>💪 Mentalidade de Crescimento:</strong>
+                <p style="margin-top: 10px;">
+                    Cada erro que você encontra e conserta te torna um programador melhor! 
+                    Não tenha medo de errar - tenha medo de NÃO tentar! 🚀
+                </p>
+                <ul class="lista-exemplos" style="margin-top: 15px;">
+                    <li>❌ <strong>Não pense:</strong> "Eu não consigo"</li>
+                    <li>✅ <strong>Pense:</strong> "Ainda não consegui, mas vou descobrir!"</li>
+                </ul>
+            </div>
+
+            <h3>🎮 Atividade Prática!</h3>
+            <p>
+                Agora é sua vez de ser um detetive de bugs! Clique no botão abaixo para 
+                jogar o <strong>Debug do Detetive</strong> e encontrar erros em algoritmos! 🕵️
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../jogos/debug-detetive.html" class="btn">
+                    🎮 Jogar Debug do Detetive!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Debug é encontrar e consertar erros (bugs)</li>
+                    <li>Todo mundo comete erros, até programadores experientes!</li>
+                    <li>Existem diferentes tipos de erros: sintaxe, lógica e runtime</li>
+                    <li>Ser um bom debugger é como ser um detetive 🕵️</li>
+                    <li>Teste passo a passo e seja paciente</li>
+                    <li>Erros são oportunidades de aprender!</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="algoritmos.html" class="btn">
+                    ← Tópico Anterior
+                </a>
+                <a href="../index.html" class="btn" style="background: linear-gradient(135deg, #6BCF7F, #4ECDC4);">
+                    🎉 Voltar ao Menu Principal
+                </a>
+            </div>
+
+            <div class="conteudo-topico" style="background: linear-gradient(135deg, #FFE6F0, #FFF5E6); margin-top: 30px;">
+                <h2 style="text-align: center;">🎊 Parabéns! 🎊</h2>
+                <p style="text-align: center; font-size: 1.4em;">
+                    Você completou todos os tópicos de <strong>Lógica de Programação</strong>! 
+                    Agora você já pensa como um programador de verdade! 🚀
+                </p>
+                <p style="text-align: center; font-size: 1.3em; margin-top: 20px;">
+                    Não esqueça de jogar todos os jogos para praticar o que aprendeu! 🎮
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            salvarProgresso('debug', true);
+            
+            // Adicionar confetes se completou todos os tópicos
+            const topicosConcluidos = ['sequencias', 'padroes', 'decisoes', 'loops', 'algoritmos', 'debug'];
+            const todosCompletos = topicosConcluidos.every(topico => carregarProgresso(topico));
+            
+            if (todosCompletos) {
+                setTimeout(() => {
+                    criarConfetes();
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

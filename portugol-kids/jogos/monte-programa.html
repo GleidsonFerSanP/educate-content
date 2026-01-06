@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte seu Programa - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .jogo-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .painel-jogo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .area-pecas {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px dashed rgba(107, 70, 193, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        .area-pecas h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .pecas-disponiveis {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .peca-codigo {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+
+        .peca-codigo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(147, 51, 234, 0.5);
+        }
+
+        .peca-codigo:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+
+        .peca-codigo.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .area-construcao {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #9333EA;
+            border-radius: 20px;
+            padding: 20px;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .area-construcao h3 {
+            color: #6B46C1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .programa-montado {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-height: 300px;
+            padding: 15px;
+            background: #F9FAFB;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .linha-codigo {
+            padding: 10px 15px;
+            background: white;
+            border-left: 4px solid #9333EA;
+            border-radius: 5px;
+            color: #1F2937;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .linha-codigo:hover {
+            background: #FEF3C7;
+            transform: translateX(5px);
+        }
+
+        .linha-codigo .btn-remover {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #EF4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .linha-codigo:hover .btn-remover {
+            opacity: 1;
+        }
+
+        .programa-montado.drag-over {
+            background: #E0E7FF;
+            border: 2px dashed #6B46C1;
+        }
+
+        .botoes-acao {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-acao {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-executar {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        .btn-executar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-limpar {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+        }
+
+        .btn-limpar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .resultado {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .resultado.sucesso {
+            background: #D1FAE5;
+            border: 3px solid #10B981;
+            color: #065F46;
+        }
+
+        .resultado.erro {
+            background: #FEE2E2;
+            border: 3px solid #EF4444;
+            color: #991B1B;
+        }
+
+        .dica-desafio {
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #F59E0B;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dica-desafio h3 {
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+
+        .nivel-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .nivel-info span {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #6B46C1;
+        }
+
+        @media (max-width: 768px) {
+            .painel-jogo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🧩 Monte seu Programa</h1>
+                <p style="font-size: 1.2rem;">Arraste as peças de código e monte um programa em Portugol!</p>
+            </div>
+
+            <!-- Nível e Pontuação -->
+            <div class="nivel-info">
+                <span>Nível: <span id="nivel">1</span></span>
+                <span>🏆 Pontos: <span id="pontos">0</span></span>
+            </div>
+
+            <!-- Dica do Desafio -->
+            <div class="dica-desafio">
+                <h3>🎯 Desafio:</h3>
+                <p id="descricao-desafio" style="font-size: 1.1rem; color: #1F2937;"></p>
+            </div>
+
+            <!-- Painel do Jogo -->
+            <div class="painel-jogo">
+                <!-- Peças Disponíveis -->
+                <div class="area-pecas">
+                    <h3>📦 Peças Disponíveis</h3>
+                    <div class="pecas-disponiveis" id="pecas-disponiveis"></div>
+                </div>
+
+                <!-- Área de Construção -->
+                <div class="area-construcao">
+                    <h3>⚙️ Seu Programa</h3>
+                    <div class="programa-montado" id="programa-montado"></div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="botoes-acao">
+                <button class="btn-acao btn-executar" onclick="executarPrograma()">▶️ Executar</button>
+                <button class="btn-acao btn-limpar" onclick="limparPrograma()">🗑️ Limpar</button>
+                <button class="btn-acao" style="background: linear-gradient(135deg, #6366F1, #4F46E5); color: white;" onclick="proximoNivel()">
+                    ⏭️ Próximo Nível
+                </button>
+            </div>
+
+            <!-- Resultado -->
+            <div class="resultado" id="resultado"></div>
+
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let nivelAtual = 1;
+        let pontos = 0;
+
+        const niveis = [
+            {
+                desafio: "Crie um programa que escreve 'Olá, Mundo!' na tela",
+                pecas: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "escreva(\"Olá, Mundo!\")",
+                    "}",
+                    "}"
+                ],
+                solucao: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "escreva(\"Olá, Mundo!\")",
+                    "}",
+                    "}"
+                ]
+            },
+            {
+                desafio: "Crie uma variável chamada 'idade' com o valor 10 e mostre na tela",
+                pecas: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro idade = 10",
+                    "escreva(idade)",
+                    "}",
+                    "}"
+                ],
+                solucao: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro idade = 10",
+                    "escreva(idade)",
+                    "}",
+                    "}"
+                ]
+            },
+            {
+                desafio: "Faça um programa que some dois números (5 + 3) e mostre o resultado",
+                pecas: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro resultado = 5 + 3",
+                    "escreva(\"Resultado: \", resultado)",
+                    "}",
+                    "}"
+                ],
+                solucao: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro resultado = 5 + 3",
+                    "escreva(\"Resultado: \", resultado)",
+                    "}",
+                    "}"
+                ]
+            },
+            {
+                desafio: "Use SE para verificar se idade é maior que 10",
+                pecas: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro idade = 15",
+                    "se (idade > 10) {",
+                    "escreva(\"Você tem mais de 10 anos!\")",
+                    "}",
+                    "}",
+                    "}"
+                ],
+                solucao: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "inteiro idade = 15",
+                    "se (idade > 10) {",
+                    "escreva(\"Você tem mais de 10 anos!\")",
+                    "}",
+                    "}",
+                    "}"
+                ]
+            },
+            {
+                desafio: "Use um loop PARA para contar de 1 até 5",
+                pecas: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "para (inteiro i = 1; i <= 5; i++) {",
+                    "escreva(i, \"\\n\")",
+                    "}",
+                    "}",
+                    "}"
+                ],
+                solucao: [
+                    "programa {",
+                    "funcao inicio() {",
+                    "para (inteiro i = 1; i <= 5; i++) {",
+                    "escreva(i, \"\\n\")",
+                    "}",
+                    "}",
+                    "}"
+                ]
+            }
+        ];
+
+        function iniciarNivel() {
+            const nivel = niveis[nivelAtual - 1];
+            document.getElementById('nivel').textContent = nivelAtual;
+            document.getElementById('descricao-desafio').textContent = nivel.desafio;
+            document.getElementById('resultado').style.display = 'none';
+            
+            // Embaralhar peças
+            const pecasEmbaralhadas = [...nivel.pecas].sort(() => Math.random() - 0.5);
+            
+            const pecasContainer = document.getElementById('pecas-disponiveis');
+            pecasContainer.innerHTML = '';
+            
+            pecasEmbaralhadas.forEach((peca, index) => {
+                const div = document.createElement('div');
+                div.className = 'peca-codigo';
+                div.textContent = peca;
+                div.draggable = true;
+                div.dataset.codigo = peca;
+                div.dataset.id = index;
+                
+                div.addEventListener('dragstart', handleDragStart);
+                div.addEventListener('dragend', handleDragEnd);
+                
+                pecasContainer.appendChild(div);
+            });
+            
+            // Limpar programa montado
+            document.getElementById('programa-montado').innerHTML = '';
+        }
+
+        function handleDragStart(e) {
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.codigo);
+            e.dataTransfer.setData('id', this.dataset.id);
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        // Configurar área de drop
+        const programaMontado = document.getElementById('programa-montado');
+
+        programaMontado.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            programaMontado.classList.add('drag-over');
+        });
+
+        programaMontado.addEventListener('dragleave', () => {
+            programaMontado.classList.remove('drag-over');
+        });
+
+        programaMontado.addEventListener('drop', (e) => {
+            e.preventDefault();
+            programaMontado.classList.remove('drag-over');
+            
+            const codigo = e.dataTransfer.getData('text/plain');
+            const id = e.dataTransfer.getData('id');
+            
+            // Adicionar linha ao programa
+            const linha = document.createElement('div');
+            linha.className = 'linha-codigo';
+            linha.textContent = codigo;
+            linha.dataset.codigo = codigo;
+            
+            const btnRemover = document.createElement('button');
+            btnRemover.className = 'btn-remover';
+            btnRemover.textContent = '×';
+            btnRemover.onclick = function() {
+                linha.remove();
+            };
+            
+            linha.appendChild(btnRemover);
+            programaMontado.appendChild(linha);
+            
+            // Remover peça da área disponível
+            const pecaOrigem = document.querySelector(`.peca-codigo[data-id="${id}"]`);
+            if (pecaOrigem) {
+                pecaOrigem.style.opacity = '0.3';
+                pecaOrigem.draggable = false;
+            }
+            
+            tocarSom(523.25, 0.1);
+        });
+
+        function executarPrograma() {
+            const linhas = Array.from(document.querySelectorAll('.linha-codigo')).map(l => l.dataset.codigo);
+            const solucao = niveis[nivelAtual - 1].solucao;
+            
+            const resultado = document.getElementById('resultado');
+            
+            if (linhas.length === 0) {
+                resultado.className = 'resultado erro';
+                resultado.textContent = '❌ Ops! Seu programa está vazio. Arraste as peças para começar!';
+                resultado.style.display = 'block';
+                tocarSomErro();
+                return;
+            }
+            
+            if (linhas.length !== solucao.length) {
+                resultado.className = 'resultado erro';
+                resultado.textContent = '❌ Quase lá! Verifique se você usou todas as peças necessárias.';
+                resultado.style.display = 'block';
+                tocarSomErro();
+                return;
+            }
+            
+            let correto = true;
+            for (let i = 0; i < linhas.length; i++) {
+                if (linhas[i] !== solucao[i]) {
+                    correto = false;
+                    break;
+                }
+            }
+            
+            if (correto) {
+                pontos += 100;
+                document.getElementById('pontos').textContent = pontos;
+                resultado.className = 'resultado sucesso';
+                resultado.textContent = '🎉 Parabéns! Seu programa está perfeito! Clique em "Próximo Nível" para continuar.';
+                resultado.style.display = 'block';
+                tocarSomSucesso();
+                criarConfetes();
+            } else {
+                resultado.className = 'resultado erro';
+                resultado.textContent = '❌ Quase! As peças estão na ordem errada. Tente novamente!';
+                resultado.style.display = 'block';
+                tocarSomErro();
+            }
+        }
+
+        function limparPrograma() {
+            document.getElementById('programa-montado').innerHTML = '';
+            
+            // Reativar todas as peças
+            document.querySelectorAll('.peca-codigo').forEach(peca => {
+                peca.style.opacity = '1';
+                peca.draggable = true;
+            });
+            
+            document.getElementById('resultado').style.display = 'none';
+        }
+
+        function proximoNivel() {
+            if (nivelAtual < niveis.length) {
+                nivelAtual++;
+                iniciarNivel();
+            } else {
+                const resultado = document.getElementById('resultado');
+                resultado.className = 'resultado sucesso';
+                resultado.innerHTML = '🏆 <strong>Você completou todos os níveis!</strong><br>Pontuação Final: ' + pontos + ' pontos<br>Você é um mestre do Portugol! 🎉';
+                resultado.style.display = 'block';
+                criarConfetes();
+            }
+        }
+
+        function tocarSom(frequencia, duracao) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequencia;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {}
+        }
+
+        function tocarSomSucesso() {
+            tocarSom(523.25, 0.15);
+            setTimeout(() => tocarSom(659.25, 0.15), 150);
+            setTimeout(() => tocarSom(783.99, 0.3), 300);
+        }
+
+        function tocarSomErro() {
+            tocarSom(200, 0.2);
+            setTimeout(() => tocarSom(150, 0.3), 200);
+        }
+
+        // Iniciar jogo
+        iniciarNivel();
+    </script>
+</body>
+</html>

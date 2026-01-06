@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Quiz das Sequências</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .card-sequencia {
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+            cursor: grab;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1.2em;
+            user-select: none;
+            transition: all 0.3s ease;
+        }
+        
+        .card-sequencia:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-sequencia.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        
+        .area-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            min-height: 150px;
+            padding: 20px;
+            background: linear-gradient(135deg, #F5F7FA, #C3CFE2);
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+        
+        .area-resposta {
+            min-height: 150px;
+            border: 3px dashed #4ECDC4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            background: rgba(78, 205, 196, 0.1);
+        }
+        
+        .area-resposta.over {
+            background: rgba(78, 205, 196, 0.3);
+            border-color: #FF6B9D;
+        }
+        
+        .nivel-tag {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .facil { background: #6BCF7F; color: white; }
+        .medio { background: #FFD93D; color: #2C3E50; }
+        .dificil { background: #FF6B9D; color: white; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="jogo-container">
+            <h1 class="jogo-titulo">🎯 Quiz das Sequências</h1>
+            <p style="font-size: 1.3em; text-align: center;">
+                Coloque os passos na ordem certa! Arraste e solte os cards.
+            </p>
+            
+            <div class="pontuacao">
+                ⭐ Pontos: <span id="pontos">0</span> | 
+                ✅ Acertos: <span id="acertos">0</span> | 
+                Nível: <span id="nivel">1</span>/5
+            </div>
+
+            <div id="feedback" class="feedback" style="display: none;"></div>
+
+            <div class="jogo-area">
+                <h3 id="pergunta" style="color: #A960EE; margin-bottom: 20px;"></h3>
+                <span id="nivel-tag" class="nivel-tag"></span>
+                
+                <h4 style="margin-top: 20px;">📦 Arraste os cards daqui:</h4>
+                <div id="area-cards" class="area-cards"></div>
+                
+                <h4>📝 Solte os cards na ordem certa aqui:</h4>
+                <div id="area-resposta" class="area-resposta">
+                    <p style="text-align: center; color: #666;">Arraste os cards para cá em ordem!</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="verificarResposta()">✅ Verificar Resposta</button>
+                    <button class="btn" onclick="proximoDesafio()" id="btn-proximo" style="display: none;">
+                        ➡️ Próximo Desafio
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../topicos/sequencias.html" class="btn">📚 Rever o Tópico</a>
+                <a href="../index.html" class="btn">🏠 Menu Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const desafios = [
+            {
+                nivel: 'facil',
+                pergunta: '🥪 Como fazer um sanduíche?',
+                passos: [
+                    'Pegar duas fatias de pão',
+                    'Passar manteiga no pão',
+                    'Colocar o recheio',
+                    'Fechar o sanduíche'
+                ],
+                pontos: 10
+            },
+            {
+                nivel: 'facil',
+                pergunta: '🪥 Como escovar os dentes?',
+                passos: [
+                    'Pegar a escova',
+                    'Colocar pasta na escova',
+                    'Escovar os dentes',
+                    'Enxaguar a boca'
+                ],
+                pontos: 10
+            },
+            {
+                nivel: 'medio',
+                pergunta: '🎒 Como se arrumar para ir à escola?',
+                passos: [
+                    'Acordar',
+                    'Tomar banho',
+                    'Vestir o uniforme',
+                    'Tomar café',
+                    'Pegar a mochila',
+                    'Sair de casa'
+                ],
+                pontos: 15
+            },
+            {
+                nivel: 'medio',
+                pergunta: '🍰 Como fazer um bolo?',
+                passos: [
+                    'Pegar os ingredientes',
+                    'Misturar tudo em uma tigela',
+                    'Colocar a massa na forma',
+                    'Colocar no forno',
+                    'Esperar assar',
+                    'Retirar do forno'
+                ],
+                pontos: 15
+            },
+            {
+                nivel: 'dificil',
+                pergunta: '🌳 Como plantar uma árvore?',
+                passos: [
+                    'Escolher um bom lugar',
+                    'Cavar um buraco',
+                    'Colocar a muda no buraco',
+                    'Cobrir com terra',
+                    'Apertar bem a terra',
+                    'Regar com água',
+                    'Cuidar todos os dias'
+                ],
+                pontos: 20
+            }
+        ];
+
+        let nivelAtual = 0;
+        let pontos = 0;
+        let acertos = 0;
+        let cartasEmResposta = [];
+
+        function iniciarJogo() {
+            carregarDesafio();
+        }
+
+        function carregarDesafio() {
+            if (nivelAtual >= desafios.length) {
+                finalizarJogo();
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            document.getElementById('pergunta').textContent = desafio.pergunta;
+            document.getElementById('nivel').textContent = nivelAtual + 1;
+            
+            const nivelTag = document.getElementById('nivel-tag');
+            nivelTag.textContent = desafio.nivel.toUpperCase();
+            nivelTag.className = 'nivel-tag ' + desafio.nivel;
+
+            // Embaralhar os passos
+            const passosEmbaralhados = embaralhar([...desafio.passos]);
+            
+            const areaCards = document.getElementById('area-cards');
+            areaCards.innerHTML = '';
+            cartasEmResposta = [];
+
+            passosEmbaralhados.forEach((passo, index) => {
+                const card = document.createElement('div');
+                card.className = 'card-sequencia';
+                card.draggable = true;
+                card.textContent = passo;
+                card.dataset.passo = passo;
+                card.dataset.id = 'card-' + index;
+
+                card.addEventListener('dragstart', handleDragStart);
+                card.addEventListener('dragend', handleDragEnd);
+
+                areaCards.appendChild(card);
+            });
+
+            const areaResposta = document.getElementById('area-resposta');
+            areaResposta.innerHTML = '<p style="text-align: center; color: #666;">Arraste os cards para cá em ordem!</p>';
+            
+            setupDropZone();
+            
+            document.getElementById('btn-proximo').style.display = 'none';
+            document.getElementById('feedback').style.display = 'none';
+        }
+
+        function handleDragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', e.target.dataset.passo);
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function setupDropZone() {
+            const areaResposta = document.getElementById('area-resposta');
+            
+            areaResposta.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                areaResposta.classList.add('over');
+            });
+
+            areaResposta.addEventListener('dragleave', () => {
+                areaResposta.classList.remove('over');
+            });
+
+            areaResposta.addEventListener('drop', (e) => {
+                e.preventDefault();
+                areaResposta.classList.remove('over');
+                
+                const passo = e.dataTransfer.getData('text/plain');
+                const cardOriginal = document.querySelector(`[data-passo="${passo}"]`);
+                
+                if (cardOriginal && cardOriginal.parentElement.id === 'area-cards') {
+                    // Remover da área de cards
+                    cardOriginal.remove();
+                    
+                    // Adicionar na área de resposta
+                    const novoCard = document.createElement('div');
+                    novoCard.className = 'card-sequencia';
+                    novoCard.textContent = passo;
+                    novoCard.dataset.passo = passo;
+                    novoCard.style.cursor = 'default';
+                    
+                    // Adicionar botão de remover
+                    const btnRemover = document.createElement('span');
+                    btnRemover.textContent = ' ❌';
+                    btnRemover.style.cursor = 'pointer';
+                    btnRemover.style.marginLeft = '10px';
+                    btnRemover.onclick = () => {
+                        novoCard.remove();
+                        cartasEmResposta = cartasEmResposta.filter(p => p !== passo);
+                        
+                        // Recriar card na área original
+                        const cardRecriado = document.createElement('div');
+                        cardRecriado.className = 'card-sequencia';
+                        cardRecriado.draggable = true;
+                        cardRecriado.textContent = passo;
+                        cardRecriado.dataset.passo = passo;
+                        cardRecriado.addEventListener('dragstart', handleDragStart);
+                        cardRecriado.addEventListener('dragend', handleDragEnd);
+                        document.getElementById('area-cards').appendChild(cardRecriado);
+                        
+                        if (cartasEmResposta.length === 0) {
+                            areaResposta.innerHTML = '<p style="text-align: center; color: #666;">Arraste os cards para cá em ordem!</p>';
+                        }
+                    };
+                    
+                    novoCard.appendChild(btnRemover);
+                    
+                    if (areaResposta.querySelector('p')) {
+                        areaResposta.innerHTML = '';
+                    }
+                    
+                    areaResposta.appendChild(novoCard);
+                    cartasEmResposta.push(passo);
+                }
+            });
+        }
+
+        function verificarResposta() {
+            if (cartasEmResposta.length === 0) {
+                alert('❌ Você precisa colocar os cards na ordem certa primeiro!');
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            const correto = JSON.stringify(cartasEmResposta) === JSON.stringify(desafio.passos);
+
+            const feedback = document.getElementById('feedback');
+            
+            if (correto) {
+                pontos += desafio.pontos;
+                acertos++;
+                mostrarFeedback(feedback, '🎉 Perfeito! Você colocou na ordem certa!', 'correto');
+                document.getElementById('btn-proximo').style.display = 'inline-block';
+                
+                // Desabilitar verificação
+                event.target.disabled = true;
+                event.target.style.opacity = '0.5';
+            } else {
+                mostrarFeedback(feedback, '❌ Ops! A ordem não está certa. Tente de novo!', 'incorreto');
+            }
+
+            document.getElementById('pontos').textContent = pontos;
+            document.getElementById('acertos').textContent = acertos;
+        }
+
+        function proximoDesafio() {
+            nivelAtual++;
+            if (nivelAtual < desafios.length) {
+                carregarDesafio();
+                // Reabilitar botão verificar
+                const btnVerificar = document.querySelector('button[onclick="verificarResposta()"]');
+                btnVerificar.disabled = false;
+                btnVerificar.style.opacity = '1';
+            } else {
+                finalizarJogo();
+            }
+        }
+
+        function finalizarJogo() {
+            const jogo = document.querySelector('.jogo-area');
+            const taxa = ((acertos / desafios.length) * 100).toFixed(0);
+            
+            let mensagem = '';
+            let emoji = '';
+            
+            if (taxa === '100') {
+                mensagem = 'INCRÍVEL! Você acertou TUDO!';
+                emoji = '🏆';
+                criarConfetes();
+            } else if (taxa >= '80') {
+                mensagem = 'Muito bem! Você está arrasando!';
+                emoji = '🌟';
+            } else if (taxa >= '60') {
+                mensagem = 'Bom trabalho! Continue praticando!';
+                emoji = '👍';
+            } else {
+                mensagem = 'Continue tentando! Você vai melhorar!';
+                emoji = '💪';
+            }
+            
+            jogo.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="font-size: 3em;">${emoji}</h2>
+                    <h2 style="color: #A960EE; margin: 20px 0;">${mensagem}</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Total de Pontos: <strong style="color: #6BCF7F;">${pontos}</strong>
+                    </p>
+                    <p style="font-size: 1.3em;">
+                        Você acertou <strong>${acertos}</strong> de <strong>${desafios.length}</strong> desafios!
+                    </p>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Taxa de Acerto: <strong style="color: #FF6B9D;">${taxa}%</strong>
+                    </p>
+                    <button class="btn" onclick="location.reload()">🔄 Jogar Novamente</button>
+                    <a href="../index.html" class="btn">🏠 Menu Principal</a>
+                </div>
+            `;
+            
+            salvarProgresso('quiz-sequencias', true);
+        }
+
+        // Iniciar o jogo quando a página carregar
+        window.addEventListener('load', iniciarJogo);
+    </script>
+</body>
+</html>

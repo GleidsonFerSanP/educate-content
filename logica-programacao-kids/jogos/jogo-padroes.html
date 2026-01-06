@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Jogo dos Padrões</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .padrao-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px;
+            font-size: 2em;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .padrao-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .opcao {
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        
+        .opcao.selecionada {
+            border-color: #4ECDC4;
+            transform: scale(1.2);
+        }
+        
+        .padrao-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+        
+        .opcoes-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="jogo-container">
+            <h1 class="jogo-titulo">🔄 Jogo dos Padrões</h1>
+            <p style="font-size: 1.3em; text-align: center;">
+                Descubra o padrão e escolha o que vem depois!
+            </p>
+            
+            <div class="pontuacao">
+                ⭐ Pontos: <span id="pontos">0</span> | 
+                ✅ Acertos: <span id="acertos">0</span> | 
+                Nível: <span id="nivel">1</span>/6
+            </div>
+
+            <div id="feedback" class="feedback" style="display: none;"></div>
+
+            <div class="jogo-area">
+                <h3 style="color: #A960EE; margin-bottom: 20px;">❓ O que vem depois neste padrão?</h3>
+                
+                <div id="padrao" class="padrao-container"></div>
+                
+                <h4 style="text-align: center; margin: 30px 0;">Escolha uma opção:</h4>
+                <div id="opcoes" class="opcoes-container"></div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="verificarResposta()" id="btn-verificar">
+                        ✅ Verificar Resposta
+                    </button>
+                    <button class="btn" onclick="proximoNivel()" id="btn-proximo" style="display: none;">
+                        ➡️ Próximo Padrão
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../topicos/padroes.html" class="btn">📚 Rever o Tópico</a>
+                <a href="../index.html" class="btn">🏠 Menu Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const cores = ['#FF6B9D', '#4ECDC4', '#FFD93D', '#A960EE', '#FF8C42', '#6BCF7F'];
+        const formas = ['●', '■', '▲', '★', '♦', '♥'];
+        
+        const desafios = [
+            { padrao: [0, 1, 0, 1, 0], resposta: 1, tipo: 'cor', descricao: 'cores alternadas' },
+            { padrao: [0, 1, 2, 0, 1], resposta: 2, tipo: 'cor', descricao: 'três cores repetindo' },
+            { padrao: [0, 0, 1, 0, 0], resposta: 1, tipo: 'forma', descricao: 'formas com padrão' },
+            { padrao: [0, 1, 0, 1, 1, 0, 1, 1, 1], resposta: 0, tipo: 'cor', descricao: 'sequência crescente' },
+            { padrao: [0, 1, 2, 1, 0, 1], resposta: 2, tipo: 'forma', descricao: 'padrão complexo' },
+            { padrao: [0, 2, 0, 2, 1, 0, 2, 0, 2], resposta: 1, tipo: 'cor', descricao: 'padrão de 4' }
+        ];
+
+        let nivelAtual = 0;
+        let pontos = 0;
+        let acertos = 0;
+        let respostaSelecionada = null;
+
+        function carregarNivel() {
+            if (nivelAtual >= desafios.length) {
+                finalizarJogo();
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            document.getElementById('nivel').textContent = nivelAtual + 1;
+            respostaSelecionada = null;
+
+            const padraoDiv = document.getElementById('padrao');
+            padraoDiv.innerHTML = '';
+
+            const elementos = desafio.tipo === 'cor' ? cores : formas;
+            
+            desafio.padrao.forEach(index => {
+                const item = document.createElement('div');
+                item.className = 'padrao-item';
+                
+                if (desafio.tipo === 'cor') {
+                    item.style.background = elementos[index];
+                } else {
+                    item.textContent = elementos[index];
+                    item.style.background = cores[Math.floor(Math.random() * cores.length)];
+                }
+                
+                padraoDiv.appendChild(item);
+            });
+
+            // Adicionar ponto de interrogação
+            const interrogacao = document.createElement('div');
+            interrogacao.className = 'padrao-item';
+            interrogacao.style.background = '#E0E0E0';
+            interrogacao.style.fontSize = '3em';
+            interrogacao.textContent = '?';
+            padraoDiv.appendChild(interrogacao);
+
+            // Criar opções
+            const opcoesDiv = document.getElementById('opcoes');
+            opcoesDiv.innerHTML = '';
+            
+            const opcoes = [desafio.resposta];
+            while (opcoes.length < 3) {
+                const random = Math.floor(Math.random() * (desafio.tipo === 'cor' ? cores.length : formas.length));
+                if (!opcoes.includes(random)) {
+                    opcoes.push(random);
+                }
+            }
+            
+            embaralhar(opcoes).forEach((index, i) => {
+                const opcao = document.createElement('div');
+                opcao.className = 'padrao-item opcao';
+                opcao.dataset.valor = index;
+                
+                if (desafio.tipo === 'cor') {
+                    opcao.style.background = elementos[index];
+                } else {
+                    opcao.textContent = elementos[index];
+                    opcao.style.background = cores[Math.floor(Math.random() * cores.length)];
+                }
+                
+                opcao.onclick = () => selecionarOpcao(opcao, index);
+                opcoesDiv.appendChild(opcao);
+            });
+
+            document.getElementById('btn-proximo').style.display = 'none';
+            document.getElementById('btn-verificar').style.display = 'inline-block';
+            document.getElementById('feedback').style.display = 'none';
+        }
+
+        function selecionarOpcao(elemento, valor) {
+            document.querySelectorAll('.opcao').forEach(op => op.classList.remove('selecionada'));
+            elemento.classList.add('selecionada');
+            respostaSelecionada = valor;
+        }
+
+        function verificarResposta() {
+            if (respostaSelecionada === null) {
+                alert('❌ Escolha uma opção primeiro!');
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            const feedback = document.getElementById('feedback');
+            
+            if (respostaSelecionada === desafio.resposta) {
+                pontos += 15;
+                acertos++;
+                mostrarFeedback(feedback, '🎉 Isso mesmo! Você descobriu o padrão!', 'correto');
+                document.getElementById('btn-proximo').style.display = 'inline-block';
+                document.getElementById('btn-verificar').style.display = 'none';
+            } else {
+                mostrarFeedback(feedback, '❌ Não é essa! Olhe o padrão com mais atenção!', 'incorreto');
+            }
+
+            document.getElementById('pontos').textContent = pontos;
+            document.getElementById('acertos').textContent = acertos;
+        }
+
+        function proximoNivel() {
+            nivelAtual++;
+            carregarNivel();
+        }
+
+        function finalizarJogo() {
+            const jogo = document.querySelector('.jogo-area');
+            const taxa = ((acertos / desafios.length) * 100).toFixed(0);
+            
+            let mensagem = taxa === '100' ? 'PERFEITO! Mestre dos Padrões!' : 
+                          taxa >= '80' ? 'Excelente! Você é ótimo em padrões!' :
+                          taxa >= '60' ? 'Bom trabalho! Continue praticando!' :
+                          'Não desista! Pratique mais!';
+            
+            jogo.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="font-size: 3em;">${taxa === '100' ? '🏆' : '🌟'}</h2>
+                    <h2 style="color: #A960EE; margin: 20px 0;">${mensagem}</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Pontos: <strong style="color: #6BCF7F;">${pontos}</strong>
+                    </p>
+                    <p style="font-size: 1.3em;">
+                        Acertos: <strong>${acertos}</strong>/${desafios.length} (${taxa}%)
+                    </p>
+                    <button class="btn" onclick="location.reload()">🔄 Jogar Novamente</button>
+                    <a href="../index.html" class="btn">🏠 Menu Principal</a>
+                </div>
+            `;
+            
+            if (taxa === '100') criarConfetes();
+            salvarProgresso('jogo-padroes', true);
+        }
+
+        window.addEventListener('load', carregarNivel);
+    </script>
+</body>
+</html>

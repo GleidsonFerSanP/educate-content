@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto das Decisões - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .jogo-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .painel-jogo {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .labirinto-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .labirinto {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin: 20px 0;
+            max-width: 560px;
+        }
+
+        .celula {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .celula.caminho {
+            background: #E8F5E9;
+            border: 2px solid #81C784;
+        }
+
+        .celula.parede {
+            background: #424242;
+            border: 2px solid #212121;
+        }
+
+        .celula.decisao {
+            background: linear-gradient(135deg, #FFF9C4, #FFEB3B);
+            border: 3px solid #FBC02D;
+            animation: pulsar 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulsar {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .celula.perigo {
+            background: linear-gradient(135deg, #FFCDD2, #EF5350);
+            border: 3px solid #C62828;
+        }
+
+        .celula.tesouro {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            border: 3px solid #FF6F00;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .celula.jogador {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            border: 3px solid #6B21A8;
+            animation: brilho 1s ease-in-out infinite;
+        }
+
+        @keyframes brilho {
+            0%, 100% { box-shadow: 0 0 10px rgba(147, 51, 234, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(147, 51, 234, 0.8); }
+        }
+
+        .painel-codigo {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .painel-codigo h3 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .editor-codigo {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .codigo-linha {
+            color: #E2E8F0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            padding: 3px 0;
+            line-height: 1.6;
+        }
+
+        .keyword { color: #C792EA; font-weight: bold; }
+        .function { color: #82AAFF; }
+        .string { color: #C3E88D; }
+        .number { color: #F78C6C; }
+        .operator { color: #89DDFF; }
+        .variable { color: #FFCB6B; }
+        .comment { color: #546E7A; font-style: italic; }
+
+        .modal-decisao {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            max-width: 500px;
+            display: none;
+        }
+
+        .modal-decisao.ativo {
+            display: block;
+            animation: aparecer 0.3s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal-decisao h2 {
+            color: #6B46C1;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .modal-decisao p {
+            color: #4B5563;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .opcoes-decisao {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-opcao {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-opcao:hover {
+            transform: translateX(10px);
+            box-shadow: 0 6px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .btn-opcao.correta {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .btn-opcao.errada {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+        }
+
+        .overlay.ativo {
+            display: block;
+        }
+
+        .info-nivel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card h4 {
+            color: #6B46C1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .info-valor {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #9333EA;
+        }
+
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .btn-direcao {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-direcao:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-direcao:active {
+            transform: scale(0.95);
+        }
+
+        .grid-controles {
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .legenda {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .legenda-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #4B5563;
+        }
+
+        .legenda-cor {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 968px) {
+            .painel-jogo {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="modal-decisao" id="modal-decisao">
+        <h2>🤔 Decisão!</h2>
+        <p id="pergunta-decisao"></p>
+        <div class="opcoes-decisao" id="opcoes-container"></div>
+    </div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🗺️ Labirinto das Decisões</h1>
+                <p style="font-size: 1.2rem;">Use SE e SENÃO para tomar decisões e encontrar o tesouro!</p>
+            </div>
+
+            <!-- Info Nível -->
+            <div class="info-nivel">
+                <div class="info-card">
+                    <h4>NÍVEL</h4>
+                    <div class="info-valor" id="nivel">1</div>
+                </div>
+                <div class="info-card">
+                    <h4>DECISÕES CERTAS</h4>
+                    <div class="info-valor" id="decisoes">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>MOVIMENTOS</h4>
+                    <div class="info-valor" id="movimentos">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>PONTOS</h4>
+                    <div class="info-valor" id="pontos">0</div>
+                </div>
+            </div>
+
+            <!-- Legenda -->
+            <div class="legenda">
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #9333EA;"></div>
+                    <span>Você</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #FFD700;"></div>
+                    <span>Tesouro</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #FFEB3B;"></div>
+                    <span>Decisão</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #EF5350;"></div>
+                    <span>Perigo</span>
+                </div>
+                <div class="legenda-item">
+                    <div class="legenda-cor" style="background: #424242;"></div>
+                    <span>Parede</span>
+                </div>
+            </div>
+
+            <!-- Painel do Jogo -->
+            <div class="painel-jogo">
+                <!-- Labirinto -->
+                <div class="labirinto-container">
+                    <h3 style="color: #6B46C1; text-align: center; margin-bottom: 20px;">🎮 Labirinto</h3>
+                    <div class="labirinto" id="labirinto"></div>
+                    
+                    <!-- Controles -->
+                    <div class="grid-controles">
+                        <div></div>
+                        <button class="btn-direcao" onclick="mover('cima')">↑</button>
+                        <div></div>
+                        <button class="btn-direcao" onclick="mover('esquerda')">←</button>
+                        <button class="btn-direcao" onclick="mover('baixo')">↓</button>
+                        <button class="btn-direcao" onclick="mover('direita')">→</button>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button onclick="reiniciarNivel()" style="padding: 12px 30px; background: linear-gradient(135deg, #F59E0B, #D97706); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold;">
+                            🔄 Reiniciar Nível
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Código Portugol -->
+                <div class="painel-codigo">
+                    <h3>📝 Código Portugol</h3>
+                    <div class="editor-codigo" id="codigo-portugol"></div>
+                    <button onclick="proximoNivel()" id="btn-proximo" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; border-radius: 15px; cursor: pointer; font-weight: bold; margin-top: 15px; display: none;">
+                        ⏭️ Próximo Nível
+                    </button>
+                </div>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let nivelAtual = 1;
+        let pontos = 0;
+        let decisoesCertas = 0;
+        let movimentos = 0;
+        let posicaoJogador = { x: 0, y: 0 };
+        let codigoGerado = [];
+
+        const niveis = [
+            {
+                mapa: [
+                    ['J', 'C', 'D', 'C', 'P', 'P', 'P'],
+                    ['P', 'C', 'P', 'C', 'P', 'C', 'T'],
+                    ['P', 'C', 'C', 'C', 'P', 'C', 'P'],
+                    ['P', 'P', 'P', 'P', 'P', 'C', 'P'],
+                    ['P', 'C', 'C', 'C', 'C', 'C', 'P'],
+                    ['P', 'C', 'P', 'P', 'P', 'P', 'P'],
+                    ['P', 'C', 'C', 'C', 'C', 'C', 'P']
+                ],
+                decisoes: {
+                    '0,2': {
+                        pergunta: 'Você encontrou uma bifurcação! Há uma parede à direita e caminho em baixo.',
+                        condicao: 'existe parede à direita',
+                        opcoes: [
+                            { texto: 'SE (parede_direita) ENTÃO ir para baixo', correto: true },
+                            { texto: 'SE (parede_direita) ENTÃO ir para direita', correto: false }
+                        ]
+                    }
+                },
+                inicio: { x: 0, y: 0 },
+                tesouro: { x: 6, y: 0 }
+            },
+            {
+                mapa: [
+                    ['J', 'C', 'C', 'P', 'P', 'P', 'P'],
+                    ['P', 'P', 'C', 'D', 'C', 'C', 'T'],
+                    ['P', 'C', 'C', 'P', 'P', 'C', 'P'],
+                    ['P', 'C', 'P', 'P', 'P', 'C', 'P'],
+                    ['P', 'C', 'D', 'C', 'C', 'C', 'P'],
+                    ['P', 'C', 'P', 'P', 'P', 'P', 'P'],
+                    ['P', 'C', 'C', 'X', 'C', 'C', 'P']
+                ],
+                decisoes: {
+                    '1,3': {
+                        pergunta: 'Você vê dois caminhos! Um vai para baixo, outro para direita.',
+                        condicao: 'caminho para baixo está livre',
+                        opcoes: [
+                            { texto: 'SE (caminho_baixo_livre) ENTÃO ir para baixo', correto: false },
+                            { texto: 'SE (caminho_direita_livre) ENTÃO ir para direita', correto: true }
+                        ]
+                    },
+                    '4,2': {
+                        pergunta: 'Atenção! Há um perigo abaixo. O que fazer?',
+                        condicao: 'perigo abaixo',
+                        opcoes: [
+                            { texto: 'SE (perigo_abaixo) ENTÃO ir para direita', correto: true },
+                            { texto: 'SE (perigo_abaixo) ENTÃO ir para baixo', correto: false }
+                        ]
+                    }
+                },
+                inicio: { x: 0, y: 0 },
+                tesouro: { x: 6, y: 1 }
+            },
+            {
+                mapa: [
+                    ['J', 'D', 'C', 'P', 'P', 'C', 'T'],
+                    ['P', 'P', 'C', 'C', 'C', 'C', 'P'],
+                    ['P', 'C', 'C', 'P', 'P', 'D', 'P'],
+                    ['P', 'C', 'P', 'P', 'P', 'C', 'P'],
+                    ['P', 'C', 'D', 'X', 'C', 'C', 'P'],
+                    ['P', 'C', 'C', 'P', 'P', 'P', 'P'],
+                    ['P', 'P', 'P', 'P', 'P', 'P', 'P']
+                ],
+                decisoes: {
+                    '0,1': {
+                        pergunta: 'Logo no início! Caminho livre ou parede?',
+                        condicao: 'caminho à direita está livre',
+                        opcoes: [
+                            { texto: 'SE (caminho_livre) ENTÃO ir para direita', correto: true },
+                            { texto: 'SENÃO ir para baixo', correto: false }
+                        ]
+                    },
+                    '2,5': {
+                        pergunta: 'Você precisa virar! Para onde?',
+                        condicao: 'existe caminho acima',
+                        opcoes: [
+                            { texto: 'SE (caminho_acima) ENTÃO ir para cima', correto: true },
+                            { texto: 'SE (caminho_acima) ENTÃO ir para direita', correto: false }
+                        ]
+                    },
+                    '4,2': {
+                        pergunta: 'Cuidado! Há perigo à direita. E agora?',
+                        condicao: 'perigo à direita',
+                        opcoes: [
+                            { texto: 'SE (perigo_direita) ENTÃO ir para direita', correto: false },
+                            { texto: 'SE (perigo_direita) ENTÃO ir para esquerda', correto: true }
+                        ]
+                    }
+                },
+                inicio: { x: 0, y: 0 },
+                tesouro: { x: 6, y: 0 }
+            }
+        ];
+
+        function carregarNivel() {
+            const nivel = niveis[nivelAtual - 1];
+            posicaoJogador = { ...nivel.inicio };
+            movimentos = 0;
+            codigoGerado = [
+                'programa {',
+                '    funcao inicio() {'
+            ];
+
+            document.getElementById('nivel').textContent = nivelAtual;
+            document.getElementById('movimentos').textContent = '0';
+            document.getElementById('btn-proximo').style.display = 'none';
+            
+            renderizarLabirinto();
+            atualizarCodigo();
+        }
+
+        function renderizarLabirinto() {
+            const nivel = niveis[nivelAtual - 1];
+            const container = document.getElementById('labirinto');
+            container.innerHTML = '';
+
+            nivel.mapa.forEach((linha, y) => {
+                linha.forEach((celula, x) => {
+                    const div = document.createElement('div');
+                    div.className = 'celula';
+                    div.dataset.x = x;
+                    div.dataset.y = y;
+
+                    if (x === posicaoJogador.x && y === posicaoJogador.y) {
+                        div.classList.add('jogador');
+                        div.textContent = '🧙';
+                    } else if (celula === 'P') {
+                        div.classList.add('parede');
+                        div.textContent = '🧱';
+                    } else if (celula === 'D') {
+                        div.classList.add('decisao');
+                        div.textContent = '❓';
+                    } else if (celula === 'X') {
+                        div.classList.add('perigo');
+                        div.textContent = '💀';
+                    } else if (celula === 'T') {
+                        div.classList.add('tesouro');
+                        div.textContent = '💎';
+                    } else {
+                        div.classList.add('caminho');
+                    }
+
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function mover(direcao) {
+            const nivel = niveis[nivelAtual - 1];
+            let novaX = posicaoJogador.x;
+            let novaY = posicaoJogador.y;
+
+            switch(direcao) {
+                case 'cima': novaY--; break;
+                case 'baixo': novaY++; break;
+                case 'esquerda': novaX--; break;
+                case 'direita': novaX++; break;
+            }
+
+            // Verificar limites
+            if (novaX < 0 || novaX >= 7 || novaY < 0 || novaY >= 7) {
+                tocarSomErro();
+                return;
+            }
+
+            const celula = nivel.mapa[novaY][novaX];
+
+            // Verificar parede
+            if (celula === 'P') {
+                tocarSomErro();
+                return;
+            }
+
+            // Verificar perigo
+            if (celula === 'X') {
+                tocarSomErro();
+                alert('💀 Oh não! Você caiu em uma armadilha! Tente novamente.');
+                reiniciarNivel();
+                return;
+            }
+
+            // Movimento válido
+            posicaoJogador.x = novaX;
+            posicaoJogador.y = novaY;
+            movimentos++;
+            document.getElementById('movimentos').textContent = movimentos;
+
+            codigoGerado.push(`        // Movimento ${movimentos}: ${direcao}`);
+            
+            tocarSom(440, 0.1);
+            renderizarLabirinto();
+            atualizarCodigo();
+
+            // Verificar decisão
+            const chaveDecisao = `${novaY},${novaX}`;
+            if (nivel.decisoes[chaveDecisao]) {
+                setTimeout(() => mostrarDecisao(chaveDecisao), 300);
+            }
+
+            // Verificar tesouro
+            if (celula === 'T') {
+                setTimeout(() => {
+                    pontos += 200 - (movimentos * 5);
+                    document.getElementById('pontos').textContent = pontos;
+                    
+                    codigoGerado.push('        escreva("Tesouro encontrado!")');
+                    codigoGerado.push('    }');
+                    codigoGerado.push('}');
+                    atualizarCodigo();
+                    
+                    tocarSomSucesso();
+                    criarConfetes();
+                    alert(`🎉 Parabéns! Você encontrou o tesouro!\n\n💎 +${200 - (movimentos * 5)} pontos\n🚶 ${movimentos} movimentos`);
+                    
+                    document.getElementById('btn-proximo').style.display = 'block';
+                }, 500);
+            }
+        }
+
+        function mostrarDecisao(chave) {
+            const nivel = niveis[nivelAtual - 1];
+            const decisao = nivel.decisoes[chave];
+
+            document.getElementById('pergunta-decisao').textContent = decisao.pergunta;
+            
+            const opcoesContainer = document.getElementById('opcoes-container');
+            opcoesContainer.innerHTML = '';
+
+            decisao.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-opcao';
+                btn.textContent = opcao.texto;
+                btn.onclick = () => responderDecisao(opcao.correto, decisao.condicao);
+                opcoesContainer.appendChild(btn);
+            });
+
+            document.getElementById('modal-decisao').classList.add('ativo');
+            document.getElementById('overlay').classList.add('ativo');
+        }
+
+        function responderDecisao(correto, condicao) {
+            if (correto) {
+                decisoesCertas++;
+                pontos += 50;
+                document.getElementById('decisoes').textContent = decisoesCertas;
+                document.getElementById('pontos').textContent = pontos;
+                
+                codigoGerado.push(`        se (${condicao}) {`);
+                codigoGerado.push(`            // Decisão correta!`);
+                codigoGerado.push(`        }`);
+                
+                tocarSomSucesso();
+            } else {
+                pontos -= 20;
+                document.getElementById('pontos').textContent = Math.max(0, pontos);
+                tocarSomErro();
+            }
+
+            fecharModal();
+            atualizarCodigo();
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-decisao').classList.remove('ativo');
+            document.getElementById('overlay').classList.remove('ativo');
+        }
+
+        function atualizarCodigo() {
+            const container = document.getElementById('codigo-portugol');
+            container.innerHTML = codigoGerado.map(linha => {
+                let html = linha;
+                html = html.replace(/\b(programa|funcao|inicio|se|senao|escreva)\b/g, '<span class="keyword">$1</span>');
+                html = html.replace(/"([^"]*)"/g, '<span class="string">"$1"</span>');
+                html = html.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+                html = html.replace(/\/\/(.*)/g, '<span class="comment">//$1</span>');
+                return `<div class="codigo-linha">${html}</div>`;
+            }).join('');
+        }
+
+        function reiniciarNivel() {
+            carregarNivel();
+        }
+
+        function proximoNivel() {
+            if (nivelAtual < niveis.length) {
+                nivelAtual++;
+                carregarNivel();
+            } else {
+                alert(`🏆 Você completou todos os níveis!\n\n📊 Pontuação Final: ${pontos} pontos\n✅ Decisões Certas: ${decisoesCertas}\n\nVocê é um mestre das decisões em Portugol! 🎉`);
+                criarConfetes();
+            }
+        }
+
+        function tocarSom(frequencia, duracao) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequencia;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {}
+        }
+
+        function tocarSomSucesso() {
+            tocarSom(523.25, 0.1);
+            setTimeout(() => tocarSom(659.25, 0.1), 100);
+            setTimeout(() => tocarSom(783.99, 0.2), 200);
+        }
+
+        function tocarSomErro() {
+            tocarSom(200, 0.2);
+        }
+
+        // Suporte para teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') { e.preventDefault(); mover('cima'); }
+            else if (e.key === 'ArrowDown') { e.preventDefault(); mover('baixo'); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); mover('esquerda'); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); mover('direita'); }
+        });
+
+        // Iniciar jogo
+        carregarNivel();
+    </script>
+</body>
+</html>

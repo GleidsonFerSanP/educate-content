@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estruturas de Decisão - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <a href="../index.html" class="nav-voltar">← Voltar ao Início</a>
+
+        <div class="conteudo-topico animacao-aparecer">
+            <h2>🤔 Estruturas de Decisão</h2>
+            
+            <p>As estruturas de decisão permitem que seu programa tome decisões e execute diferentes comandos dependendo das condições! É como quando você decide: "SE está chovendo, levo guarda-chuva, SENÃO levo boné".</p>
+
+            <h3>Estrutura SE (if)</h3>
+            <p>Executa um bloco de código apenas SE uma condição for verdadeira.</p>
+
+            <div class="exemplo-box">
+                <h4>Sintaxe Básica:</h4>
+                <div class="codigo-portugol">
+<span class="keyword">se</span> (condição) {
+    <span class="comment">// comandos executados se a condição for verdadeira</span>
+}
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 1: Verificando Idade</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> idade
+        
+        <span class="function">escreva</span>(<span class="string">"Qual sua idade? "</span>)
+        <span class="function">leia</span>(idade)
+        
+        <span class="keyword">se</span> (idade >= 18) {
+            <span class="function">escreva</span>(<span class="string">"Você é maior de idade!"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Estrutura SE-SENÃO (if-else)</h3>
+            <p>Executa um bloco SE a condição for verdadeira, ou outro bloco SENÃO.</p>
+
+            <div class="exemplo-box">
+                <h4>Sintaxe:</h4>
+                <div class="codigo-portugol">
+<span class="keyword">se</span> (condição) {
+    <span class="comment">// comandos se verdadeiro</span>
+} <span class="keyword">senao</span> {
+    <span class="comment">// comandos se falso</span>
+}
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 2: Aprovado ou Reprovado</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">real</span> nota
+        
+        <span class="function">escreva</span>(<span class="string">"Digite sua nota: "</span>)
+        <span class="function">leia</span>(nota)
+        
+        <span class="keyword">se</span> (nota >= 7.0) {
+            <span class="function">escreva</span>(<span class="string">"Parabéns! Você foi APROVADO! 🎉"</span>)
+        } <span class="keyword">senao</span> {
+            <span class="function">escreva</span>(<span class="string">"Você foi reprovado. Estude mais! 📚"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>SE Encadeado (else if)</h3>
+            <p>Você pode ter várias condições em sequência!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 3: Sistema de Notas</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">real</span> nota
+        
+        <span class="function">escreva</span>(<span class="string">"Digite sua nota (0-10): "</span>)
+        <span class="function">leia</span>(nota)
+        
+        <span class="keyword">se</span> (nota >= 9.0) {
+            <span class="function">escreva</span>(<span class="string">"Excelente! ⭐⭐⭐"</span>)
+        } <span class="keyword">senao se</span> (nota >= 7.0) {
+            <span class="function">escreva</span>(<span class="string">"Bom! ⭐⭐"</span>)
+        } <span class="keyword">senao se</span> (nota >= 5.0) {
+            <span class="function">escreva</span>(<span class="string">"Regular ⭐"</span>)
+        } <span class="keyword">senao</span> {
+            <span class="function">escreva</span>(<span class="string">"Precisa melhorar 📚"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Condições Compostas</h3>
+            <p>Você pode usar operadores lógicos (e, ou, nao) para criar condições mais complexas!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 4: Verificando Permissões</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> idade
+        <span class="keyword">logico</span> temAutorizacao
+        
+        <span class="function">escreva</span>(<span class="string">"Qual sua idade? "</span>)
+        <span class="function">leia</span>(idade)
+        
+        <span class="function">escreva</span>(<span class="string">"Tem autorização dos pais? (verdadeiro/falso): "</span>)
+        <span class="function">leia</span>(temAutorizacao)
+        
+        <span class="keyword">se</span> (idade >= 12 <span class="keyword">e</span> temAutorizacao) {
+            <span class="function">escreva</span>(<span class="string">"Pode assistir ao filme! 🎬"</span>)
+        } <span class="keyword">senao</span> {
+            <span class="function">escreva</span>(<span class="string">"Não pode assistir 🚫"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Estrutura ESCOLHA-CASO (switch)</h3>
+            <p>Útil quando você tem muitas opções para verificar!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 5: Dias da Semana</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> dia
+        
+        <span class="function">escreva</span>(<span class="string">"Digite um número (1-7): "</span>)
+        <span class="function">leia</span>(dia)
+        
+        <span class="keyword">escolha</span> (dia) {
+            <span class="keyword">caso</span> 1:
+                <span class="function">escreva</span>(<span class="string">"Domingo! 🌞"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 2:
+                <span class="function">escreva</span>(<span class="string">"Segunda-feira 📚"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 3:
+                <span class="function">escreva</span>(<span class="string">"Terça-feira"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 4:
+                <span class="function">escreva</span>(<span class="string">"Quarta-feira"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 5:
+                <span class="function">escreva</span>(<span class="string">"Quinta-feira"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 6:
+                <span class="function">escreva</span>(<span class="string">"Sexta-feira 🎉"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso</span> 7:
+                <span class="function">escreva</span>(<span class="string">"Sábado! 🎮"</span>)
+                <span class="keyword">pare</span>
+            <span class="keyword">caso contrario</span>:
+                <span class="function">escreva</span>(<span class="string">"Dia inválido!"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <h3>Dicas Importantes</h3>
+            <ul class="lista-exemplos">
+                <li>Use parênteses <code>()</code> ao redor das condições</li>
+                <li>Use chaves <code>{}</code> para agrupar os comandos</li>
+                <li>Teste sempre os casos verdadeiro E falso</li>
+                <li>Indente (dê espaço) o código dentro das estruturas</li>
+                <li>Use <code>pare</code> no final de cada caso do escolha</li>
+            </ul>
+
+            <div class="exemplo-box">
+                <h4>💡 Projeto Prático: Jogo de Adivinhação</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> numeroSecreto = 7
+        <span class="keyword">inteiro</span> palpite
+        
+        <span class="function">escreva</span>(<span class="string">"=== JOGO DE ADIVINHAÇÃO ===\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Adivinhe o número entre 1 e 10: "</span>)
+        <span class="function">leia</span>(palpite)
+        
+        <span class="keyword">se</span> (palpite == numeroSecreto) {
+            <span class="function">escreva</span>(<span class="string">"🎉 PARABÉNS! Você acertou!"</span>)
+        } <span class="keyword">senao se</span> (palpite < numeroSecreto) {
+            <span class="function">escreva</span>(<span class="string">"📈 Muito baixo! Tente um número maior."</span>)
+        } <span class="keyword">senao</span> {
+            <span class="function">escreva</span>(<span class="string">"📉 Muito alto! Tente um número menor."</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-jogo" onclick="window.location.href='../jogos/labirinto-decisoes.html'">
+                    🎮 Jogar: Labirinto das Decisões
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-comecar" onclick="window.location.href='repeticoes.html'">
+                    Próximo Tópico: Repetições →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

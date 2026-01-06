@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Mágica - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .jogo-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .calculadora {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            margin: 30px 0;
+        }
+
+        .display {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            min-height: 120px;
+        }
+
+        .display-resultado {
+            font-size: 3rem;
+            color: #10B981;
+            text-align: right;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 10px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .display-expressao {
+            font-size: 1.2rem;
+            color: #94A3B8;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            min-height: 30px;
+        }
+
+        .teclado {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .tecla {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: #1F2937;
+        }
+
+        .tecla:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            background: white;
+        }
+
+        .tecla:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .tecla.operador {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+            color: white;
+        }
+
+        .tecla.igual {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .tecla.limpar {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+        }
+
+        .tecla.especial {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+        }
+
+        .codigo-gerado {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .codigo-gerado h3 {
+            color: #10B981;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .codigo-linha {
+            color: #E2E8F0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            padding: 5px 10px;
+            line-height: 1.8;
+        }
+
+        .keyword { color: #C792EA; }
+        .function { color: #82AAFF; }
+        .string { color: #C3E88D; }
+        .number { color: #F78C6C; }
+        .operator { color: #89DDFF; }
+        .variable { color: #FFCB6B; }
+
+        .painel-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card h4 {
+            color: #6B46C1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .info-valor {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #9333EA;
+        }
+
+        .missao {
+            background: rgba(251, 191, 36, 0.2);
+            border: 3px solid #F59E0B;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .missao h3 {
+            color: #FCD34D;
+            margin-bottom: 10px;
+        }
+
+        .btn-copiar {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-copiar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .historico {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .historico h3 {
+            color: #6B46C1;
+            margin-bottom: 15px;
+        }
+
+        .historico-item {
+            padding: 10px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+            color: #1F2937;
+        }
+
+        @media (max-width: 768px) {
+            .teclado {
+                gap: 10px;
+            }
+            
+            .tecla {
+                padding: 20px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🧮 Calculadora Mágica</h1>
+                <p style="font-size: 1.2rem;">Crie uma calculadora e veja o código Portugol sendo gerado!</p>
+            </div>
+
+            <!-- Painel de Info -->
+            <div class="painel-info">
+                <div class="info-card">
+                    <h4>CÁLCULOS FEITOS</h4>
+                    <div class="info-valor" id="calculos">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>OPERAÇÕES USADAS</h4>
+                    <div class="info-valor" id="operacoes">0</div>
+                </div>
+                <div class="info-card">
+                    <h4>PONTOS</h4>
+                    <div class="info-valor" id="pontos">0</div>
+                </div>
+            </div>
+
+            <!-- Missão -->
+            <div class="missao">
+                <h3>🎯 Missão Atual:</h3>
+                <p id="missao-texto" style="font-size: 1.1rem;">Faça seu primeiro cálculo para começar!</p>
+            </div>
+
+            <!-- Calculadora -->
+            <div class="calculadora">
+                <div class="display">
+                    <div class="display-expressao" id="expressao"></div>
+                    <div class="display-resultado" id="resultado">0</div>
+                </div>
+
+                <div class="teclado">
+                    <button class="tecla" onclick="adicionarNumero('7')">7</button>
+                    <button class="tecla" onclick="adicionarNumero('8')">8</button>
+                    <button class="tecla" onclick="adicionarNumero('9')">9</button>
+                    <button class="tecla operador" onclick="adicionarOperador('/')">÷</button>
+
+                    <button class="tecla" onclick="adicionarNumero('4')">4</button>
+                    <button class="tecla" onclick="adicionarNumero('5')">5</button>
+                    <button class="tecla" onclick="adicionarNumero('6')">6</button>
+                    <button class="tecla operador" onclick="adicionarOperador('*')">×</button>
+
+                    <button class="tecla" onclick="adicionarNumero('1')">1</button>
+                    <button class="tecla" onclick="adicionarNumero('2')">2</button>
+                    <button class="tecla" onclick="adicionarNumero('3')">3</button>
+                    <button class="tecla operador" onclick="adicionarOperador('-')">−</button>
+
+                    <button class="tecla" onclick="adicionarNumero('0')">0</button>
+                    <button class="tecla especial" onclick="adicionarNumero('.')">.</button>
+                    <button class="tecla limpar" onclick="limpar()">C</button>
+                    <button class="tecla operador" onclick="adicionarOperador('+')">+</button>
+
+                    <button class="tecla igual" onclick="calcular()">=</button>
+                    <button class="tecla especial" onclick="deletar()">⌫</button>
+                    <button class="tecla especial" onclick="usarParenteses()">()</button>
+                </div>
+            </div>
+
+            <!-- Código Gerado -->
+            <div class="codigo-gerado">
+                <h3>📝 Código Portugol Gerado:</h3>
+                <div id="codigo-portugol"></div>
+                <button class="btn-copiar" onclick="copiarCodigo()">📋 Copiar Código</button>
+            </div>
+
+            <!-- Histórico -->
+            <div class="historico">
+                <h3>📊 Histórico de Cálculos</h3>
+                <div id="historico-calculos">
+                    <p style="color: #6B7280; text-align: center;">Nenhum cálculo ainda...</p>
+                </div>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let expressaoAtual = '';
+        let resultadoAtual = 0;
+        let calculosFeitos = 0;
+        let operacoesUsadas = new Set();
+        let pontos = 0;
+        let historico = [];
+        let parentesesAbertos = 0;
+
+        const missoes = [
+            { descricao: 'Faça uma soma (+)', tipo: '+', concluida: false },
+            { descricao: 'Faça uma subtração (−)', tipo: '-', concluida: false },
+            { descricao: 'Faça uma multiplicação (×)', tipo: '*', concluida: false },
+            { descricao: 'Faça uma divisão (÷)', tipo: '/', concluida: false },
+            { descricao: 'Use parênteses em um cálculo', tipo: 'parenteses', concluida: false }
+        ];
+
+        function adicionarNumero(num) {
+            expressaoAtual += num;
+            atualizarDisplay();
+            tocarSom(440, 0.05);
+        }
+
+        function adicionarOperador(op) {
+            if (expressaoAtual === '' && op !== '-') return;
+            
+            const ultimoChar = expressaoAtual.slice(-1);
+            if ('+-*/'.includes(ultimoChar) && op !== '-') {
+                expressaoAtual = expressaoAtual.slice(0, -1) + op;
+            } else {
+                expressaoAtual += op;
+            }
+            
+            operacoesUsadas.add(op);
+            atualizarDisplay();
+            tocarSom(523.25, 0.05);
+            
+            // Verificar missão
+            let missaoOp = op === '+' ? '+' : op === '-' ? '-' : op === '*' ? '*' : '/';
+            verificarMissao(missaoOp);
+        }
+
+        function usarParenteses() {
+            const ultimoChar = expressaoAtual.slice(-1);
+            
+            if (expressaoAtual === '' || '+-*/('.includes(ultimoChar)) {
+                expressaoAtual += '(';
+                parentesesAbertos++;
+            } else if (parentesesAbertos > 0) {
+                expressaoAtual += ')';
+                parentesesAbertos--;
+                verificarMissao('parenteses');
+            }
+            
+            atualizarDisplay();
+            tocarSom(659.25, 0.05);
+        }
+
+        function calcular() {
+            if (expressaoAtual === '') return;
+            
+            try {
+                // Fechar parênteses abertos
+                while (parentesesAbertos > 0) {
+                    expressaoAtual += ')';
+                    parentesesAbertos--;
+                }
+                
+                resultadoAtual = eval(expressaoAtual);
+                
+                // Adicionar ao histórico
+                historico.unshift({
+                    expressao: expressaoAtual,
+                    resultado: resultadoAtual
+                });
+                
+                if (historico.length > 10) historico.pop();
+                
+                calculosFeitos++;
+                pontos += 10;
+                
+                atualizarDisplay();
+                atualizarHistorico();
+                gerarCodigoPortugol();
+                atualizarEstatisticas();
+                
+                tocarSomSucesso();
+                
+                // Verificar se completou todas as missões
+                if (missoes.every(m => m.concluida)) {
+                    setTimeout(() => {
+                        alert('🎉 Parabéns! Você completou todas as missões!\n\n🏆 Pontuação Final: ' + pontos + ' pontos\n\nVocê é um mestre da Calculadora Mágica!');
+                        criarConfetes();
+                    }, 500);
+                }
+                
+            } catch (error) {
+                document.getElementById('resultado').textContent = 'ERRO';
+                tocarSomErro();
+            }
+        }
+
+        function limpar() {
+            expressaoAtual = '';
+            resultadoAtual = 0;
+            parentesesAbertos = 0;
+            atualizarDisplay();
+            tocarSom(200, 0.1);
+        }
+
+        function deletar() {
+            if (expressaoAtual.slice(-1) === '(') parentesesAbertos--;
+            if (expressaoAtual.slice(-1) === ')') parentesesAbertos++;
+            expressaoAtual = expressaoAtual.slice(0, -1);
+            atualizarDisplay();
+            tocarSom(300, 0.05);
+        }
+
+        function atualizarDisplay() {
+            document.getElementById('expressao').textContent = expressaoAtual || ' ';
+            
+            if (expressaoAtual === '') {
+                document.getElementById('resultado').textContent = '0';
+            } else {
+                document.getElementById('resultado').textContent = resultadoAtual || ' ';
+            }
+        }
+
+        function atualizarEstatisticas() {
+            document.getElementById('calculos').textContent = calculosFeitos;
+            document.getElementById('operacoes').textContent = operacoesUsadas.size;
+            document.getElementById('pontos').textContent = pontos;
+        }
+
+        function verificarMissao(tipo) {
+            const missao = missoes.find(m => m.tipo === tipo && !m.concluida);
+            if (missao) {
+                missao.concluida = true;
+                pontos += 50;
+                atualizarEstatisticas();
+                
+                // Atualizar texto da missão
+                const proximaMissao = missoes.find(m => !m.concluida);
+                if (proximaMissao) {
+                    document.getElementById('missao-texto').textContent = proximaMissao.descricao;
+                } else {
+                    document.getElementById('missao-texto').textContent = '🎉 Todas as missões concluídas!';
+                }
+            }
+        }
+
+        function atualizarHistorico() {
+            const container = document.getElementById('historico-calculos');
+            
+            if (historico.length === 0) {
+                container.innerHTML = '<p style="color: #6B7280; text-align: center;">Nenhum cálculo ainda...</p>';
+                return;
+            }
+            
+            container.innerHTML = historico.map(item => 
+                `<div class="historico-item">${item.expressao} = ${item.resultado}</div>`
+            ).join('');
+        }
+
+        function gerarCodigoPortugol() {
+            if (historico.length === 0) return;
+            
+            const ultimo = historico[0];
+            
+            const codigo = `<div class="codigo-linha"><span class="keyword">programa</span> {</div>
+<div class="codigo-linha">    <span class="keyword">funcao</span> <span class="function">inicio</span>() {</div>
+<div class="codigo-linha">        <span class="keyword">real</span> <span class="variable">resultado</span></div>
+<div class="codigo-linha">        <span class="variable">resultado</span> <span class="operator">=</span> <span class="number">${ultimo.expressao}</span></div>
+<div class="codigo-linha">        <span class="function">escreva</span>(<span class="string">"Resultado: "</span>, <span class="variable">resultado</span>)</div>
+<div class="codigo-linha">    }</div>
+<div class="codigo-linha">}</div>`;
+            
+            document.getElementById('codigo-portugol').innerHTML = codigo;
+        }
+
+        function copiarCodigo() {
+            const codigo = document.getElementById('codigo-portugol').innerText;
+            navigator.clipboard.writeText(codigo).then(() => {
+                alert('✅ Código copiado com sucesso!');
+                pontos += 5;
+                atualizarEstatisticas();
+            });
+        }
+
+        function tocarSom(frequencia, duracao) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequencia;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {}
+        }
+
+        function tocarSomSucesso() {
+            tocarSom(523.25, 0.1);
+            setTimeout(() => tocarSom(659.25, 0.1), 100);
+        }
+
+        function tocarSomErro() {
+            tocarSom(200, 0.2);
+        }
+
+        // Suporte para teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') adicionarNumero(e.key);
+            else if (e.key === '.') adicionarNumero('.');
+            else if (e.key === '+') adicionarOperador('+');
+            else if (e.key === '-') adicionarOperador('-');
+            else if (e.key === '*') adicionarOperador('*');
+            else if (e.key === '/') { e.preventDefault(); adicionarOperador('/'); }
+            else if (e.key === 'Enter') { e.preventDefault(); calcular(); }
+            else if (e.key === 'Escape') limpar();
+            else if (e.key === 'Backspace') { e.preventDefault(); deletar(); }
+            else if (e.key === '(' || e.key === ')') usarParenteses();
+        });
+
+        // Inicializar
+        document.getElementById('missao-texto').textContent = missoes[0].descricao;
+    </script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrada e Saída - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <a href="../index.html" class="nav-voltar">← Voltar ao Início</a>
+
+        <div class="conteudo-topico animacao-aparecer">
+            <h2>💬 Entrada e Saída de Dados</h2>
+            
+            <p>Agora você vai aprender a fazer seus programas <strong>conversarem</strong> com você! Eles vão poder mostrar mensagens e também perguntar coisas!</p>
+
+            <h3>Comando escreva() - Mostrando Mensagens</h3>
+            <p>O comando <code>escreva()</code> é usado para mostrar informações na tela. É como se o computador estivesse falando com você!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 1: Mensagem Simples</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="function">escreva</span>(<span class="string">"Olá! Bem-vindo ao meu programa!"</span>)
+    }
+}
+                </div>
+                <p><strong>Resultado:</strong> Olá! Bem-vindo ao meu programa!</p>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 2: Mostrando Variáveis</h4>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> idade = 10
+<span class="function">escreva</span>(<span class="string">"Minha idade é: "</span>, idade)
+                </div>
+                <p><strong>Resultado:</strong> Minha idade é: 10</p>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 3: Quebrando Linhas</h4>
+                <p>Use <code>\n</code> para pular para a próxima linha!</p>
+                <div class="codigo-portugol">
+<span class="function">escreva</span>(<span class="string">"Linha 1\n"</span>)
+<span class="function">escreva</span>(<span class="string">"Linha 2\n"</span>)
+<span class="function">escreva</span>(<span class="string">"Linha 3"</span>)
+                </div>
+                <p><strong>Resultado:</strong><br>
+                Linha 1<br>
+                Linha 2<br>
+                Linha 3</p>
+            </div>
+
+            <h3>Comando leia() - Recebendo Informações</h3>
+            <p>O comando <code>leia()</code> permite que o usuário digite informações que serão guardadas em variáveis!</p>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 1: Perguntando o Nome</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">cadeia</span> nome
+        
+        <span class="function">escreva</span>(<span class="string">"Qual é seu nome? "</span>)
+        <span class="function">leia</span>(nome)
+        
+        <span class="function">escreva</span>(<span class="string">"Olá, "</span>, nome, <span class="string">"!"</span>)
+    }
+}
+                </div>
+                <p><strong>Interação:</strong><br>
+                → Qual é seu nome? <em>João</em><br>
+                ← Olá, João!</p>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Exemplo 2: Calculando com Entrada</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> numero1, numero2, soma
+        
+        <span class="function">escreva</span>(<span class="string">"Digite o primeiro número: "</span>)
+        <span class="function">leia</span>(numero1)
+        
+        <span class="function">escreva</span>(<span class="string">"Digite o segundo número: "</span>)
+        <span class="function">leia</span>(numero2)
+        
+        soma = numero1 + numero2
+        
+        <span class="function">escreva</span>(<span class="string">"A soma é: "</span>, soma)
+    }
+}
+                </div>
+            </div>
+
+            <h3>Programa Interativo Completo</h3>
+            <p>Vamos criar um programa que faz várias perguntas e monta um perfil!</p>
+
+            <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="comment">// Declarando variáveis</span>
+        <span class="keyword">cadeia</span> nome, corFavorita
+        <span class="keyword">inteiro</span> idade
+        <span class="keyword">real</span> altura
+        
+        <span class="comment">// Coletando informações</span>
+        <span class="function">escreva</span>(<span class="string">"=== CRIANDO SEU PERFIL ===\n\n"</span>)
+        
+        <span class="function">escreva</span>(<span class="string">"Qual é seu nome? "</span>)
+        <span class="function">leia</span>(nome)
+        
+        <span class="function">escreva</span>(<span class="string">"Quantos anos você tem? "</span>)
+        <span class="function">leia</span>(idade)
+        
+        <span class="function">escreva</span>(<span class="string">"Qual sua altura (em metros)? "</span>)
+        <span class="function">leia</span>(altura)
+        
+        <span class="function">escreva</span>(<span class="string">"Qual sua cor favorita? "</span>)
+        <span class="function">leia</span>(corFavorita)
+        
+        <span class="comment">// Mostrando o perfil completo</span>
+        <span class="function">escreva</span>(<span class="string">"\n=== SEU PERFIL ===\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Nome: "</span>, nome, <span class="string">"\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Idade: "</span>, idade, <span class="string">" anos\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Altura: "</span>, altura, <span class="string">" m\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Cor favorita: "</span>, corFavorita, <span class="string">"\n"</span>)
+        
+        <span class="function">escreva</span>(<span class="string">"\nPrazer em conhecer você, "</span>, nome, <span class="string">"! 🎉"</span>)
+    }
+}
+            </div>
+
+            <h3>Dicas Importantes</h3>
+            <ul class="lista-exemplos">
+                <li>Sempre avise o usuário o que ele deve digitar</li>
+                <li>Use mensagens claras e amigáveis</li>
+                <li>Guarde a entrada em uma variável do tipo correto</li>
+                <li>Você pode usar vírgulas para juntar textos e variáveis</li>
+                <li>Use \n para organizar melhor a saída na tela</li>
+            </ul>
+
+            <div class="exemplo-box">
+                <h4>💡 Truque Legal:</h4>
+                <p>Você pode fazer contas diretamente no escreva!</p>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> idade = 10
+<span class="function">escreva</span>(<span class="string">"Daqui a 5 anos terei: "</span>, idade + 5, <span class="string">" anos"</span>)
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-jogo" onclick="window.location.href='../jogos/calculadora-magica.html'">
+                    🎮 Jogar: Calculadora Mágica
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-comecar" onclick="window.location.href='operadores.html'">
+                    Próximo Tópico: Operadores →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

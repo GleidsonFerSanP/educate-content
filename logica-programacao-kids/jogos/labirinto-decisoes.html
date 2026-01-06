@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤔 Labirinto das Decisões</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .historia {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-size: 1.3em;
+            line-height: 1.8;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .decisao-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .decisao-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .decisao-btn.opcao-a {
+            background: linear-gradient(135deg, #FF6B9D, #E84A5F);
+        }
+        
+        .decisao-btn.opcao-b {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+        }
+        
+        .personagem {
+            font-size: 4em;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="jogo-container">
+            <h1 class="jogo-titulo">🤔 Labirinto das Decisões</h1>
+            <p style="font-size: 1.3em; text-align: center;">
+                Ajude o explorador a encontrar o tesouro tomando as decisões certas!
+            </p>
+            
+            <div class="pontuacao">
+                ⭐ Pontos: <span id="pontos">0</span> | 
+                Decisões Tomadas: <span id="decisoes">0</span>
+            </div>
+
+            <div class="jogo-area">
+                <div class="personagem">🧭</div>
+                <div id="historia" class="historia"></div>
+                <div id="opcoes"></div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="reiniciarAventura()" id="btn-reiniciar" style="display: none;">
+                        🔄 Nova Aventura
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../topicos/decisoes.html" class="btn">📚 Rever o Tópico</a>
+                <a href="../index.html" class="btn">🏠 Menu Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let pontos = 0;
+        let decisoesTomadas = 0;
+        let cenaAtual = 'inicio';
+
+        const aventura = {
+            inicio: {
+                texto: "🗺️ Você é um explorador corajoso que encontrou um mapa do tesouro! O mapa mostra uma floresta misteriosa com duas entradas. Uma tem flores coloridas 🌸 e outra tem plantas espinhosas 🌵. O que você faz?",
+                opcoes: [
+                    { texto: "🌸 Entro pelo caminho com flores", proximo: 'flores', correto: true },
+                    { texto: "🌵 Entro pelo caminho com espinhos", proximo: 'espinhos', correto: false }
+                ]
+            },
+            flores: {
+                texto: "✨ Boa escolha! O caminho das flores é seguro e bonito! Você caminha e encontra um rio. Há uma ponte de madeira 🌉 e pedras para atravessar pulando 🪨. O que você faz?",
+                opcoes: [
+                    { texto: "🌉 Uso a ponte de madeira", proximo: 'ponte', correto: true },
+                    { texto: "🪨 Pulo nas pedras", proximo: 'pedras', correto: false }
+                ]
+            },
+            espinhos: {
+                texto: "😣 Ai! Os espinhos arranharam você! Você volta ao início e perde 5 pontos. Tente novamente!",
+                opcoes: [
+                    { texto: "🔄 Voltar ao início", proximo: 'inicio', correto: false }
+                ]
+            },
+            ponte: {
+                texto: "👍 Muito bem! Você atravessou com segurança! Do outro lado, você vê uma caverna escura 🕳️ e uma trilha iluminada pelo sol ☀️. O que você escolhe?",
+                opcoes: [
+                    { texto: "☀️ Sigo pela trilha iluminada", proximo: 'trilha', correto: true },
+                    { texto: "🕳️ Entro na caverna escura", proximo: 'caverna', correto: false }
+                ]
+            },
+            pedras: {
+                texto: "💦 Ops! Você escorregou e caiu na água! Volta para o rio molhado e perde 3 pontos.",
+                opcoes: [
+                    { texto: "🔄 Tentar novamente", proximo: 'flores', correto: false }
+                ]
+            },
+            trilha: {
+                texto: "🌞 Excelente! A trilha te leva a uma clareira. Você vê uma árvore com frutas 🍎 e um baú velho 📦. O que você faz?",
+                opcoes: [
+                    { texto: "📦 Abro o baú", proximo: 'bau', correto: true },
+                    { texto: "🍎 Como as frutas primeiro", proximo: 'frutas', correto: false }
+                ]
+            },
+            caverna: {
+                texto: "🦇 A caverna é muito escura e você não vê nada! Melhor voltar!",
+                opcoes: [
+                    { texto: "🔄 Voltar", proximo: 'ponte', correto: false }
+                ]
+            },
+            bau: {
+                texto: "🎊 PARABÉNS! Você encontrou o TESOURO! 💎 Dentro do baú tem moedas de ouro, joias e um mapa para novas aventuras! Você usou a lógica e tomou decisões inteligentes!",
+                opcoes: [
+                    { texto: "🏆 Finalizar Aventura", proximo: 'fim', correto: true }
+                ]
+            },
+            frutas: {
+                texto: "🤢 As frutas estavam estragadas! Você passou mal e perdeu 5 pontos. Tente novamente!",
+                opcoes: [
+                    { texto: "🔄 Tentar novamente", proximo: 'trilha', correto: false }
+                ]
+            }
+        };
+
+        function mostrarCena(nomeCena) {
+            const cena = aventura[nomeCena];
+            if (!cena) return;
+
+            cenaAtual = nomeCena;
+            const historiaDiv = document.getElementById('historia');
+            const opcoesDiv = document.getElementById('opcoes');
+
+            historiaDiv.textContent = cena.texto;
+            opcoesDiv.innerHTML = '';
+
+            if (nomeCena === 'fim') {
+                finalizarJogo();
+                return;
+            }
+
+            cena.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'decisao-btn ' + (index === 0 ? 'opcao-a' : 'opcao-b');
+                btn.textContent = opcao.texto;
+                btn.onclick = () => fazerEscolha(opcao);
+                opcoesDiv.appendChild(btn);
+            });
+        }
+
+        function fazerEscolha(opcao) {
+            decisoesTomadas++;
+            document.getElementById('decisoes').textContent = decisoesTomadas;
+
+            if (opcao.correto) {
+                pontos += 10;
+                tocarSomAcerto();
+            } else {
+                pontos = Math.max(0, pontos - 5);
+                tocarSomErro();
+            }
+
+            document.getElementById('pontos').textContent = pontos;
+            
+            setTimeout(() => {
+                mostrarCena(opcao.proximo);
+            }, 300);
+        }
+
+        function finalizarJogo() {
+            const historiaDiv = document.getElementById('historia');
+            const opcoesDiv = document.getElementById('opcoes');
+
+            let mensagem = '';
+            if (pontos >= 40) {
+                mensagem = "🏆 EXPLORADOR PERFEITO! Você tomou todas as decisões certas!";
+                criarConfetes();
+            } else if (pontos >= 20) {
+                mensagem = "⭐ EXPLORADOR EXPERIENTE! Bom trabalho!";
+            } else {
+                mensagem = "💪 EXPLORADOR INICIANTE! Pratique mais!";
+            }
+
+            historiaDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: #A960EE; margin: 20px 0;">${mensagem}</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Pontos Finais: <strong style="color: #6BCF7F;">${pontos}</strong>
+                    </p>
+                    <p style="font-size: 1.3em;">
+                        Decisões Tomadas: <strong>${decisoesTomadas}</strong>
+                    </p>
+                </div>
+            `;
+
+            opcoesDiv.innerHTML = '';
+            document.getElementById('btn-reiniciar').style.display = 'inline-block';
+            salvarProgresso('labirinto-decisoes', true);
+        }
+
+        function reiniciarAventura() {
+            pontos = 0;
+            decisoesTomadas = 0;
+            cenaAtual = 'inicio';
+            document.getElementById('pontos').textContent = '0';
+            document.getElementById('decisoes').textContent = '0';
+            document.getElementById('btn-reiniciar').style.display = 'none';
+            mostrarCena('inicio');
+        }
+
+        window.addEventListener('load', () => {
+            mostrarCena('inicio');
+        });
+    </script>
+</body>
+</html>

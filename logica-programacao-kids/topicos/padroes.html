@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Padrões e Repetições - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>🔄 Padrões e Repetições</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="400" height="150" viewBox="0 0 400 150">
+                    <!-- Padrão de formas coloridas -->
+                    <circle cx="50" cy="75" r="30" fill="#FF6B9D"/>
+                    <rect x="110" y="45" width="60" height="60" fill="#4ECDC4" rx="5"/>
+                    <polygon points="230,45 200,105 260,105" fill="#FFD93D"/>
+                    
+                    <circle cx="310" cy="75" r="30" fill="#FF6B9D"/>
+                    <rect x="370" y="45" width="60" height="60" fill="#4ECDC4" rx="5"/>
+                    
+                    <!-- Pontinhos indicando continuação -->
+                    <text x="450" y="80" font-size="40" fill="#A960EE">...</text>
+                </svg>
+            </div>
+
+            <h3>🤔 O que são Padrões?</h3>
+            <p>
+                Um <strong>padrão</strong> é algo que se repete de forma previsível! 
+                É como uma música que tem um refrão que volta sempre, ou as listras da zebra 
+                que são sempre branca, preta, branca, preta... 🦓
+            </p>
+            <p>
+                Quando você consegue descobrir o padrão, pode prever o que vem depois! 
+                Isso é muito útil na programação! 🎯
+            </p>
+
+            <div class="exemplo-box">
+                <strong>💡 Exemplo: Padrão de Cores</strong>
+                <div style="display: flex; gap: 10px; margin: 20px 0; justify-content: center;">
+                    <div style="width: 50px; height: 50px; background: #FF6B9D; border-radius: 10px;"></div>
+                    <div style="width: 50px; height: 50px; background: #4ECDC4; border-radius: 10px;"></div>
+                    <div style="width: 50px; height: 50px; background: #FF6B9D; border-radius: 10px;"></div>
+                    <div style="width: 50px; height: 50px; background: #4ECDC4; border-radius: 10px;"></div>
+                    <div style="width: 50px; height: 50px; background: #FF6B9D; border-radius: 10px;"></div>
+                    <div style="width: 50px; height: 50px; border: 3px dashed #A960EE; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px;">?</div>
+                </div>
+                <p style="text-align: center;">
+                    Qual cor vem depois? <strong>Azul!</strong> ✨
+                </p>
+            </div>
+
+            <h3>🌍 Padrões na Natureza</h3>
+            <p>
+                A natureza está cheia de padrões incríveis! Veja alguns exemplos:
+            </p>
+
+            <ul class="lista-exemplos">
+                <li>🦓 <strong>Listras da Zebra:</strong> Preto, branco, preto, branco...</li>
+                <li>🌸 <strong>Pétalas de Flores:</strong> Muitas flores têm 5 ou 6 pétalas</li>
+                <li>🐝 <strong>Favo de Mel:</strong> Formas de hexágono (6 lados) que se repetem</li>
+                <li>🌊 <strong>Ondas do Mar:</strong> Sobem e descem, sobem e descem...</li>
+                <li>🌙 <strong>Fases da Lua:</strong> Nova, crescente, cheia, minguante (repete todo mês)</li>
+            </ul>
+
+            <h3>📅 Padrões no Nosso Dia a Dia</h3>
+            
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9);">
+                <strong>📆 Dias da Semana:</strong>
+                <p style="margin-top: 10px;">
+                    Segunda → Terça → Quarta → Quinta → Sexta → Sábado → Domingo
+                </p>
+                <p>
+                    E depois volta para... <strong>Segunda!</strong> É um padrão que se repete! 🔄
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFF59D);">
+                <strong>🔢 Números Pares:</strong>
+                <p style="margin-top: 10px;">
+                    2, 4, 6, 8, 10, 12, 14...
+                </p>
+                <p>
+                    Qual é o padrão? Sempre <strong>soma 2</strong> ao número anterior! ➕
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E1F5FE, #B3E5FC);">
+                <strong>✖️ Tabuada do 5:</strong>
+                <p style="margin-top: 10px;">
+                    5, 10, 15, 20, 25, 30...
+                </p>
+                <p>
+                    Sempre termina em <strong>5 ou 0</strong>! Esse é o padrão! 🎯
+                </p>
+            </div>
+
+            <h3>🎵 Padrões na Música</h3>
+            <p>
+                As músicas que você gosta estão cheias de padrões! 🎶
+            </p>
+            <ul class="lista-exemplos">
+                <li>🎤 <strong>Refrão:</strong> A parte que repete várias vezes na música</li>
+                <li>🥁 <strong>Batida:</strong> Tum-tá-tum-tá-tum-tá (ritmo que repete)</li>
+                <li>🎹 <strong>Melodia:</strong> Sequência de notas que se repete</li>
+            </ul>
+
+            <h3>💻 Padrões na Programação</h3>
+            <p>
+                Na programação, padrões são super importantes! Quando encontramos um padrão, 
+                podemos usar isso para deixar nosso código mais inteligente! 
+            </p>
+
+            <div class="exemplo-box">
+                <strong>🤖 Exemplo: Robô Pintando Cerca</strong>
+                <p style="margin-top: 10px;">
+                    Imagine que você precisa programar um robô para pintar uma cerca. 
+                    A cerca tem 20 tábuas. Em vez de escrever:
+                </p>
+                <p style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace;">
+                    "Pinte tábua 1"<br>
+                    "Pinte tábua 2"<br>
+                    "Pinte tábua 3"<br>
+                    ... (mais 17 vezes!)
+                </p>
+                <p>
+                    Você pode usar um <strong>padrão</strong> e dizer:
+                </p>
+                <p style="background: #E8F5E9; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace;">
+                    "Repita 20 vezes: Pinte uma tábua"
+                </p>
+                <p>
+                    Muito mais fácil, não é? 😄
+                </p>
+            </div>
+
+            <h3>🎨 Atividade Prática!</h3>
+            <p>
+                Agora é sua vez de brincar com padrões! Clique no botão abaixo para 
+                jogar o <strong>Jogo dos Padrões</strong> e completar sequências divertidas! 🎮
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../jogos/jogo-padroes.html" class="btn">
+                    🎮 Jogar Jogo dos Padrões!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Padrões são coisas que se repetem de forma previsível</li>
+                    <li>Existem padrões na natureza, música, números e muito mais!</li>
+                    <li>Quando você descobre um padrão, pode prever o que vem depois</li>
+                    <li>Na programação, padrões ajudam a economizar tempo e esforço</li>
+                    <li>Reconhecer padrões é uma habilidade de programador!</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="sequencias.html" class="btn">
+                    ← Tópico Anterior
+                </a>
+                <a href="decisoes.html" class="btn">
+                    Próximo Tópico: Decisões (Se... Então...) 🤔
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            salvarProgresso('padroes', true);
+        });
+    </script>
+</body>
+</html>

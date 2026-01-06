@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐛 Debug do Detetive</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .codigo-box {
+            background: #2C3E50;
+            color: #ECF0F1;
+            padding: 30px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 2;
+        }
+        
+        .linha-codigo {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .linha-codigo:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .linha-codigo.selecionada {
+            background: #FF6B9D;
+            border-color: #FFD93D;
+        }
+        
+        .erro-icone {
+            color: #FF6B9D;
+            margin-right: 10px;
+        }
+        
+        .dica-box {
+            background: #FFF9C4;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #FFD93D;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="jogo-container">
+            <h1 class="jogo-titulo">🐛 Debug do Detetive</h1>
+            <p style="font-size: 1.3em; text-align: center;">
+                Encontre o erro (bug) em cada código e conserte!
+            </p>
+            
+            <div class="pontuacao">
+                ⭐ Pontos: <span id="pontos">0</span> | 
+                ✅ Acertos: <span id="acertos">0</span> | 
+                Desafio: <span id="nivel">1</span>/5
+            </div>
+
+            <div id="feedback" class="feedback" style="display: none;"></div>
+
+            <div class="jogo-area">
+                <h3 style="color: #A960EE; margin-bottom: 20px;">
+                    🕵️ Missão: <span id="missao"></span>
+                </h3>
+                
+                <div class="dica-box">
+                    <strong>💡 Dica:</strong> <span id="dica"></span>
+                </div>
+                
+                <div id="codigo" class="codigo-box"></div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="verificarResposta()" id="btn-verificar">
+                        ✅ Verificar Resposta
+                    </button>
+                    <button class="btn" onclick="proximoDesafio()" id="btn-proximo" style="display: none;">
+                        ➡️ Próximo Desafio
+                    </button>
+                    <button class="btn" onclick="mostrarDica()" id="btn-dica">
+                        💡 Ver Dica Extra
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="../topicos/debug.html" class="btn">📚 Rever o Tópico</a>
+                <a href="../index.html" class="btn">🏠 Menu Principal</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        const desafios = [
+            {
+                missao: "Fazer um sanduíche",
+                dica: "A ordem dos passos está correta?",
+                dicaExtra: "O que você faz PRIMEIRO quando vai fazer um sanduíche?",
+                codigo: [
+                    "1. Passar manteiga no pão",
+                    "2. Colocar o recheio",
+                    "3. Pegar duas fatias de pão",
+                    "4. Fechar o sanduíche"
+                ],
+                linhaErro: 0,
+                explicacao: "Você precisa PEGAR o pão ANTES de passar manteiga! A linha 3 deveria ser a primeira.",
+                pontos: 10
+            },
+            {
+                missao: "Plantar uma árvore",
+                dica: "Você pode cobrir com terra antes de colocar a planta?",
+                dicaExtra: "Pense na ordem: o que vai dentro do buraco primeiro?",
+                codigo: [
+                    "1. Cavar um buraco",
+                    "2. Cobrir com terra",
+                    "3. Colocar a muda no buraco",
+                    "4. Regar com água"
+                ],
+                linhaErro: 1,
+                explicacao: "Você precisa COLOCAR A MUDA primeiro, DEPOIS cobrir com terra! As linhas 2 e 3 estão trocadas.",
+                pontos: 15
+            },
+            {
+                missao: "Fazer um bolo",
+                dica: "Você pode assar antes de misturar os ingredientes?",
+                dicaExtra: "Qual é a sequência correta: misturar ou assar primeiro?",
+                codigo: [
+                    "1. Pegar os ingredientes",
+                    "2. Colocar no forno para assar",
+                    "3. Misturar tudo",
+                    "4. Retirar do forno"
+                ],
+                linhaErro: 1,
+                explicacao: "Você precisa MISTURAR os ingredientes ANTES de colocar no forno! As linhas 2 e 3 estão trocadas.",
+                pontos: 15
+            },
+            {
+                missao: "Atravessar a rua com segurança",
+                dica: "Qual passo está faltando ou errado?",
+                dicaExtra: "O que você deve fazer ANTES de atravessar?",
+                codigo: [
+                    "1. Chegar na faixa de pedestres",
+                    "2. Atravessar correndo",
+                    "3. Olhar para os dois lados",
+                    "4. Chegar do outro lado"
+                ],
+                linhaErro: 1,
+                explicacao: "Você precisa OLHAR para os dois lados ANTES de atravessar! As linhas 2 e 3 estão trocadas. Segurança primeiro!",
+                pontos: 20
+            },
+            {
+                missao: "Jogar videogame",
+                dica: "Está faltando um passo importante no início!",
+                dicaExtra: "O que você precisa fazer ANTES de começar a jogar?",
+                codigo: [
+                    "1. Pegar o controle",
+                    "2. Começar a jogar",
+                    "3. Se divertir",
+                    "4. Desligar o console"
+                ],
+                linhaErro: 1,
+                explicacao: "Você precisa LIGAR o console/videogame ANTES de começar a jogar! Está faltando esse passo entre as linhas 1 e 2.",
+                pontos: 20
+            }
+        ];
+
+        let nivelAtual = 0;
+        let pontos = 0;
+        let acertos = 0;
+        let linhaSelecionada = null;
+
+        function carregarDesafio() {
+            if (nivelAtual >= desafios.length) {
+                finalizarJogo();
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            document.getElementById('missao').textContent = desafio.missao;
+            document.getElementById('dica').textContent = desafio.dica;
+            document.getElementById('nivel').textContent = nivelAtual + 1;
+            linhaSelecionada = null;
+
+            const codigoDiv = document.getElementById('codigo');
+            codigoDiv.innerHTML = '';
+
+            desafio.codigo.forEach((linha, index) => {
+                const linhaDiv = document.createElement('div');
+                linhaDiv.className = 'linha-codigo';
+                linhaDiv.textContent = linha;
+                linhaDiv.dataset.index = index;
+                linhaDiv.onclick = () => selecionarLinha(linhaDiv, index);
+                codigoDiv.appendChild(linhaDiv);
+            });
+
+            document.getElementById('btn-proximo').style.display = 'none';
+            document.getElementById('btn-verificar').style.display = 'inline-block';
+            document.getElementById('btn-dica').style.display = 'inline-block';
+            document.getElementById('feedback').style.display = 'none';
+        }
+
+        function selecionarLinha(elemento, index) {
+            document.querySelectorAll('.linha-codigo').forEach(l => l.classList.remove('selecionada'));
+            elemento.classList.add('selecionada');
+            linhaSelecionada = index;
+        }
+
+        function verificarResposta() {
+            if (linhaSelecionada === null) {
+                alert('❌ Selecione a linha que tem o erro primeiro!');
+                return;
+            }
+
+            const desafio = desafios[nivelAtual];
+            const feedback = document.getElementById('feedback');
+
+            if (linhaSelecionada === desafio.linhaErro) {
+                pontos += desafio.pontos;
+                acertos++;
+                mostrarFeedback(feedback, 
+                    `🎉 Parabéns, detetive! Você encontrou o bug! 
+                    <br><br><strong>Explicação:</strong> ${desafio.explicacao}`, 
+                    'correto'
+                );
+                document.getElementById('btn-proximo').style.display = 'inline-block';
+                document.getElementById('btn-verificar').style.display = 'none';
+            } else {
+                mostrarFeedback(feedback, 
+                    '❌ Não é essa linha! Leia com mais atenção e tente novamente.', 
+                    'incorreto'
+                );
+            }
+
+            document.getElementById('pontos').textContent = pontos;
+            document.getElementById('acertos').textContent = acertos;
+        }
+
+        function mostrarDica() {
+            const desafio = desafios[nivelAtual];
+            alert(`💡 Dica Extra:\n\n${desafio.dicaExtra}`);
+        }
+
+        function proximoDesafio() {
+            nivelAtual++;
+            carregarDesafio();
+        }
+
+        function finalizarJogo() {
+            const jogo = document.querySelector('.jogo-area');
+            const taxa = ((acertos / desafios.length) * 100).toFixed(0);
+
+            let mensagem = '';
+            let emoji = '';
+
+            if (taxa === '100') {
+                mensagem = 'DETETIVE MESTRE! Você encontrou todos os bugs!';
+                emoji = '🏆';
+                criarConfetes();
+            } else if (taxa >= '80') {
+                mensagem = 'DETETIVE EXPERIENTE! Excelente trabalho!';
+                emoji = '🕵️';
+            } else if (taxa >= '60') {
+                mensagem = 'DETETIVE INICIANTE! Continue praticando!';
+                emoji = '🔍';
+            } else {
+                mensagem = 'APRENDIZ DE DETETIVE! Não desista!';
+                emoji = '💪';
+            }
+
+            jogo.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <h2 style="font-size: 3em;">${emoji}</h2>
+                    <h2 style="color: #A960EE; margin: 20px 0;">${mensagem}</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Total de Pontos: <strong style="color: #6BCF7F;">${pontos}</strong>
+                    </p>
+                    <p style="font-size: 1.3em;">
+                        Bugs Encontrados: <strong>${acertos}</strong> de <strong>${desafios.length}</strong>
+                    </p>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        Taxa de Acerto: <strong style="color: #FF6B9D;">${taxa}%</strong>
+                    </p>
+                    <p style="font-size: 1.2em; margin-top: 30px;">
+                        🎊 Agora você é um verdadeiro detetive de bugs! Continue praticando
+                        e você vai ficar ainda melhor! 🐛🔍
+                    </p>
+                    <button class="btn" onclick="location.reload()">🔄 Jogar Novamente</button>
+                    <a href="../index.html" class="btn">🏠 Menu Principal</a>
+                </div>
+            `;
+
+            salvarProgresso('debug-detetive', true);
+        }
+
+        window.addEventListener('load', carregarDesafio);
+    </script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caça aos Erros - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .jogo-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .editor-codigo {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .editor-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .editor-botao {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .btn-fechar { background: #EF4444; }
+        .btn-minimizar { background: #F59E0B; }
+        .btn-maximizar { background: #10B981; }
+
+        .codigo-linha {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05rem;
+            color: #E2E8F0;
+            transition: all 0.3s ease;
+            line-height: 1.5;
+        }
+
+        .numero-linha {
+            min-width: 40px;
+            text-align: right;
+            color: #64748B;
+            user-select: none;
+            margin-right: 20px;
+        }
+
+        .texto-codigo {
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .texto-codigo:hover {
+            background: rgba(99, 102, 241, 0.3);
+            transform: translateX(5px);
+        }
+
+        .texto-codigo.erro {
+            background: rgba(239, 68, 68, 0.3);
+            animation: pulse-erro 1s infinite;
+        }
+
+        .texto-codigo.encontrado {
+            background: rgba(16, 185, 129, 0.4);
+            border-left: 4px solid #10B981;
+        }
+
+        @keyframes pulse-erro {
+            0%, 100% { background: rgba(239, 68, 68, 0.3); }
+            50% { background: rgba(239, 68, 68, 0.5); }
+        }
+
+        .keyword { color: #C792EA; font-weight: bold; }
+        .function { color: #82AAFF; font-weight: bold; }
+        .string { color: #C3E88D; }
+        .number { color: #F78C6C; }
+        .comment { color: #546E7A; font-style: italic; }
+
+        .painel-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-card h3 {
+            color: #6B46C1;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .info-valor {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #9333EA;
+        }
+
+        .dica {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-left: 6px solid #F59E0B;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            color: #78350F;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .dica strong {
+            color: #D97706;
+            font-size: 1.1rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .dica span {
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px 50px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+            animation: aparecer 0.3s ease;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .feedback.correto {
+            background: #10B981;
+            color: white;
+        }
+
+        .feedback.incorreto {
+            background: #EF4444;
+            color: white;
+        }
+
+        .botoes-acao {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-acao {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        .btn-acao:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-dica {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .btn-proximo {
+            background: linear-gradient(135deg, #10B981, #059669);
+            display: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🔍 Caça aos Erros</h1>
+                <p style="font-size: 1.2rem;">Encontre os erros no código Portugol e clique neles!</p>
+            </div>
+
+            <!-- Painel de Info -->
+            <div class="painel-info">
+                <div class="info-card">
+                    <h3>NÍVEL</h3>
+                    <div class="info-valor" id="nivel">1</div>
+                </div>
+                <div class="info-card">
+                    <h3>ERROS ENCONTRADOS</h3>
+                    <div class="info-valor">
+                        <span id="erros-encontrados">0</span> / <span id="total-erros">0</span>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3>PONTOS</h3>
+                    <div class="info-valor" id="pontos">0</div>
+                </div>
+                <div class="info-card">
+                    <h3>DICAS USADAS</h3>
+                    <div class="info-valor" id="dicas-usadas">0</div>
+                </div>
+            </div>
+
+            <!-- Dica -->
+            <div class="dica" id="dica-container">
+                <strong>💡 Dica:</strong> <span id="texto-dica">Procure por palavras escritas erradas, pontos e vírgulas faltando, ou parênteses mal fechados!</span>
+            </div>
+
+            <!-- Editor de Código -->
+            <div class="editor-codigo">
+                <div class="editor-header">
+                    <div class="editor-botao btn-fechar"></div>
+                    <div class="editor-botao btn-minimizar"></div>
+                    <div class="editor-botao btn-maximizar"></div>
+                </div>
+                <div id="codigo-container"></div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="botoes-acao">
+                <button class="btn-acao btn-dica" onclick="usarDica()">💡 Ver Dica</button>
+                <button class="btn-acao btn-proximo" id="btn-proximo" onclick="proximoNivel()">⏭️ Próximo Nível</button>
+                <button class="btn-acao" style="background: linear-gradient(135deg, #6366F1, #4F46E5);" onclick="reiniciarNivel()">🔄 Reiniciar</button>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div style="text-align: center; margin-top: 40px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 15px 40px; font-size: 1.1rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                    ← Voltar ao Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        let nivelAtual = 1;
+        let pontos = 0;
+        let dicasUsadas = 0;
+        let errosEncontrados = 0;
+
+        const niveis = [
+            {
+                codigo: [
+                    'programa {',
+                    '    funcao inicio() {',
+                    '        escreva("Olá, Mundo")',  // Falta ponto e vírgula
+                    '    }',
+                    '}'
+                ],
+                erros: [2],
+                dicas: ['Está faltando algo no final da linha 3...', 'Toda instrução em Portugol deve terminar com ponto e vírgula!'],
+                mensagemErro: 'Falta o ponto e vírgula (;) no final!'
+            },
+            {
+                codigo: [
+                    'programa {',
+                    '    funcao inicio() {',
+                    '        inteiro idade = 10',
+                    '        escreva(idde)',  // Nome da variável errado
+                    '    }',
+                    '}'
+                ],
+                erros: [3],
+                dicas: ['Olhe com atenção o nome da variável na linha 4...', 'O nome está escrito diferente da declaração!'],
+                mensagemErro: 'O nome da variável está escrito errado! Deveria ser "idade"'
+            },
+            {
+                codigo: [
+                    'programa {',
+                    '    funcao inicio() {',
+                    '        inteiro x = 5',
+                    '        inteiro y = 10',
+                    '        inteiro soma = x + y',
+                    '        escrva("Soma:", soma)',  // escreva escrito errado
+                    '    }',
+                    '}'
+                ],
+                erros: [5],
+                dicas: ['Procure por uma palavra-chave escrita incorretamente...', 'A função na linha 6 está com letras faltando!'],
+                mensagemErro: 'A palavra "escreva" está escrita errada!'
+            },
+            {
+                codigo: [
+                    'programa {',
+                    '    funcao inicio() {',
+                    '        inteiro numero = 15',
+                    '        se (numero > 10 {',  // Falta parêntese de fechamento
+                    '            escreva("Número grande!")',
+                    '        }',
+                    '    }',
+                    '}'
+                ],
+                erros: [3],
+                dicas: ['Verifique os parênteses na condição do SE...', 'Está faltando fechar um parêntese na linha 4!'],
+                mensagemErro: 'Falta o parêntese de fechamento ) antes da chave {'
+            },
+            {
+                codigo: [
+                    'programa {',
+                    '    funcao inicio() {',
+                    '        para (inteiro i = 1 i <= 5; i++) {',  // Falta ponto e vírgula
+                    '            escreva(i)',
+                    '        }',
+                    '    }',
+                    '}'
+                ],
+                erros: [2],
+                dicas: ['O loop PARA tem 3 partes separadas...', 'Falta um ponto e vírgula entre as condições do loop!'],
+                mensagemErro: 'Falta ponto e vírgula (;) entre "i = 1" e "i <= 5"'
+            }
+        ];
+
+        function carregarNivel() {
+            const nivel = niveis[nivelAtual - 1];
+            const container = document.getElementById('codigo-container');
+            container.innerHTML = '';
+            
+            document.getElementById('nivel').textContent = nivelAtual;
+            document.getElementById('total-erros').textContent = nivel.erros.length;
+            document.getElementById('erros-encontrados').textContent = '0';
+            errosEncontrados = 0;
+            dicasUsadas = 0;
+            document.getElementById('dicas-usadas').textContent = '0';
+            document.getElementById('texto-dica').textContent = 'Procure por palavras escritas erradas, pontos e vírgulas faltando, ou parênteses mal fechados!';
+            document.getElementById('btn-proximo').style.display = 'none';
+
+            nivel.codigo.forEach((linha, index) => {
+                const linhaDiv = document.createElement('div');
+                linhaDiv.className = 'codigo-linha';
+                
+                const numeroDiv = document.createElement('div');
+                numeroDiv.className = 'numero-linha';
+                numeroDiv.textContent = index + 1;
+                
+                const textoDiv = document.createElement('div');
+                textoDiv.className = 'texto-codigo';
+                textoDiv.innerHTML = formatarCodigo(linha);
+                textoDiv.dataset.linha = index;
+                
+                if (nivel.erros.includes(index)) {
+                    textoDiv.classList.add('erro');
+                    textoDiv.onclick = () => clicarErro(index, textoDiv);
+                }
+                
+                linhaDiv.appendChild(numeroDiv);
+                linhaDiv.appendChild(textoDiv);
+                container.appendChild(linhaDiv);
+            });
+        }
+
+        function formatarCodigo(texto) {
+            // Palavras-chave
+            texto = texto.replace(/\b(programa|funcao|inicio|inteiro|real|cadeia|logico|se|senao|para|enquanto|faca|escreva|leia)\b/g, '<span class="keyword">$1</span>');
+            
+            // Strings
+            texto = texto.replace(/"([^"]*)"/g, '<span class="string">"$1"</span>');
+            
+            // Números
+            texto = texto.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
+            
+            // Funções
+            texto = texto.replace(/\b(\w+)\s*\(/g, '<span class="function">$1</span>(');
+            
+            return texto;
+        }
+
+        function clicarErro(linha, elemento) {
+            const nivel = niveis[nivelAtual - 1];
+            
+            if (nivel.erros.includes(linha)) {
+                errosEncontrados++;
+                pontos += 50 - (dicasUsadas * 10);
+                
+                elemento.classList.remove('erro');
+                elemento.classList.add('encontrado');
+                elemento.onclick = null;
+                
+                document.getElementById('erros-encontrados').textContent = errosEncontrados;
+                document.getElementById('pontos').textContent = pontos;
+                
+                mostrarFeedback('✅ Correto! ' + nivel.mensagemErro, 'correto');
+                tocarSomSucesso();
+                
+                if (errosEncontrados === nivel.erros.length) {
+                    setTimeout(() => {
+                        mostrarFeedback('🎉 Nível Completo! +' + (100 - dicasUsadas * 20) + ' pontos bônus!', 'correto');
+                        pontos += 100 - (dicasUsadas * 20);
+                        document.getElementById('pontos').textContent = pontos;
+                        document.getElementById('btn-proximo').style.display = 'inline-block';
+                        criarConfetes();
+                    }, 1000);
+                }
+            } else {
+                mostrarFeedback('❌ Essa linha não tem erro!', 'incorreto');
+                tocarSomErro();
+            }
+        }
+
+        function usarDica() {
+            const nivel = niveis[nivelAtual - 1];
+            
+            if (dicasUsadas < nivel.dicas.length) {
+                document.getElementById('texto-dica').textContent = nivel.dicas[dicasUsadas];
+                dicasUsadas++;
+                document.getElementById('dicas-usadas').textContent = dicasUsadas;
+                tocarSom(440, 0.2);
+            } else {
+                mostrarFeedback('⚠️ Você já usou todas as dicas!', 'incorreto');
+            }
+        }
+
+        function mostrarFeedback(mensagem, tipo) {
+            const feedback = document.getElementById('feedback');
+            const overlay = document.getElementById('overlay');
+            
+            feedback.textContent = mensagem;
+            feedback.className = 'feedback ' + tipo;
+            feedback.style.display = 'block';
+            overlay.style.display = 'block';
+            
+            setTimeout(() => {
+                feedback.style.display = 'none';
+                overlay.style.display = 'none';
+            }, 2000);
+        }
+
+        function proximoNivel() {
+            if (nivelAtual < niveis.length) {
+                nivelAtual++;
+                carregarNivel();
+            } else {
+                mostrarFeedback('🏆 Você completou todos os níveis! Pontuação Final: ' + pontos, 'correto');
+                criarConfetes();
+            }
+        }
+
+        function reiniciarNivel() {
+            carregarNivel();
+        }
+
+        function tocarSom(frequencia, duracao) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequencia;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duracao);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + duracao);
+            } catch (e) {}
+        }
+
+        function tocarSomSucesso() {
+            tocarSom(523.25, 0.1);
+            setTimeout(() => tocarSom(659.25, 0.1), 100);
+            setTimeout(() => tocarSom(783.99, 0.2), 200);
+        }
+
+        function tocarSomErro() {
+            tocarSom(200, 0.2);
+            setTimeout(() => tocarSom(150, 0.2), 200);
+        }
+
+        // Iniciar jogo
+        carregarNivel();
+    </script>
+</body>
+</html>

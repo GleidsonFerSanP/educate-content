@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Sequências e Ordem - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>🎯 Sequências e Ordem</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="300" height="200" viewBox="0 0 300 200">
+                    <!-- Robô seguindo instruções -->
+                    <rect x="50" y="80" width="60" height="80" fill="#4ECDC4" rx="10"/>
+                    <circle cx="80" cy="60" r="25" fill="#4ECDC4"/>
+                    <circle cx="65" cy="55" r="5" fill="#2C3E50"/>
+                    <circle cx="95" cy="55" r="5" fill="#2C3E50"/>
+                    <path d="M 65 70 Q 80 75 95 70" stroke="#2C3E50" stroke-width="2" fill="none"/>
+                    
+                    <!-- Setas de sequência -->
+                    <path d="M 120 120 L 160 120" stroke="#FF6B9D" stroke-width="4" marker-end="url(#arrowhead)"/>
+                    <circle cx="180" cy="120" r="15" fill="#FFD93D"/>
+                    <text x="180" y="125" font-size="20" text-anchor="middle">1</text>
+                    
+                    <path d="M 200 120 L 240 120" stroke="#FF6B9D" stroke-width="4" marker-end="url(#arrowhead)"/>
+                    <circle cx="260" cy="120" r="15" fill="#FFD93D"/>
+                    <text x="260" y="125" font-size="20" text-anchor="middle">2</text>
+                    
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#FF6B9D"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <h3>🤔 O que é uma Sequência?</h3>
+            <p>
+                Uma <strong>sequência</strong> é como uma fila de pessoas esperando sua vez! 
+                Cada pessoa (ou instrução) tem um lugar específico, e a ordem é super importante! 
+            </p>
+            <p>
+                Imagine que você está dando instruções para um robô. O robô vai fazer 
+                <strong>exatamente</strong> o que você mandar, <strong>na ordem</strong> que você mandar! 🤖
+            </p>
+
+            <div class="exemplo-box">
+                <strong>💡 Exemplo do Dia a Dia: Fazer um Sanduíche 🥪</strong>
+                <ul class="lista-exemplos">
+                    <li><strong>Passo 1:</strong> Pegar duas fatias de pão</li>
+                    <li><strong>Passo 2:</strong> Passar manteiga no pão</li>
+                    <li><strong>Passo 3:</strong> Colocar o recheio (queijo, presunto)</li>
+                    <li><strong>Passo 4:</strong> Fechar o sanduíche com a outra fatia</li>
+                </ul>
+                <p style="margin-top: 15px;">
+                    ⚠️ <strong>E se você fizer fora de ordem?</strong> 
+                    Se você tentar colocar o recheio antes de pegar o pão, não vai funcionar! 
+                    A ordem importa muito! 😅
+                </p>
+            </div>
+
+            <h3>🎮 Mais Exemplos de Sequências</h3>
+            
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E3F2FD, #F3E5F5);">
+                <strong>🦷 Escovar os Dentes:</strong>
+                <ul class="lista-exemplos">
+                    <li>Pegar a escova de dentes</li>
+                    <li>Colocar pasta de dente na escova</li>
+                    <li>Escovar os dentes (movimentos de vai e vem)</li>
+                    <li>Enxaguar a boca com água</li>
+                    <li>Guardar a escova</li>
+                </ul>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFECB3);">
+                <strong>🎒 Arrumar a Mochila para Escola:</strong>
+                <ul class="lista-exemplos">
+                    <li>Pegar a mochila vazia</li>
+                    <li>Colocar os cadernos</li>
+                    <li>Colocar os livros</li>
+                    <li>Colocar o estojo com lápis e canetas</li>
+                    <li>Colocar o lanche</li>
+                    <li>Fechar a mochila</li>
+                </ul>
+            </div>
+
+            <h3>👕 Por que a Ordem é Importante?</h3>
+            <p>
+                Pensa em vestir roupa! Você precisa colocar a <strong>roupa de baixo primeiro</strong>, 
+                depois a calça ou saia, e só então os sapatos. Se você tentar colocar os sapatos antes 
+                da calça, vai ficar difícil! 😄
+            </p>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FCE4EC, #F8BBD0);">
+                <strong>🍰 Na Programação é Igual!</strong>
+                <p style="margin-top: 10px;">
+                    Quando programamos um computador ou um robô, precisamos dar as instruções 
+                    <strong>na ordem certa</strong>! O computador vai seguir exatamente o que você 
+                    mandou, passo por passo! 
+                </p>
+                <p style="margin-top: 10px;">
+                    Por exemplo, para fazer um bolo:
+                </p>
+                <ul class="lista-exemplos">
+                    <li>❌ <strong>ERRADO:</strong> Assar → Misturar → Colocar na forma</li>
+                    <li>✅ <strong>CERTO:</strong> Misturar → Colocar na forma → Assar</li>
+                </ul>
+            </div>
+
+            <h3>🎯 Atividade Prática!</h3>
+            <p>Agora que você aprendeu sobre sequências, vamos praticar! Clique no botão abaixo 
+            para jogar o <strong>Quiz das Sequências</strong> e testar o que você aprendeu! 🎮</p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../jogos/quiz-sequencias.html" class="btn">
+                    🎮 Jogar Quiz das Sequências!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Sequência é uma lista de passos em ordem</li>
+                    <li>A ordem dos passos é muito importante!</li>
+                    <li>Se mudar a ordem, o resultado pode ficar errado</li>
+                    <li>Computadores e robôs seguem instruções em sequência</li>
+                    <li>Muitas coisas do dia a dia são sequências!</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="padroes.html" class="btn">
+                    Próximo Tópico: Padrões e Repetições 🔄
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Animar a entrada dos exemplos
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            
+            // Salvar que o usuário visitou este tópico
+            salvarProgresso('sequencias', true);
+        });
+    </script>
+</body>
+</html>

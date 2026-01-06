@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operadores e Expressões - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <a href="../index.html" class="nav-voltar">← Voltar ao Início</a>
+
+        <div class="conteudo-topico animacao-aparecer">
+            <h2>🔢 Operadores e Expressões</h2>
+            
+            <p>Operadores são símbolos especiais que fazem o computador realizar ações como contas matemáticas, comparações e decisões lógicas!</p>
+
+            <h3>Operadores Matemáticos</h3>
+            <p>Use estes operadores para fazer cálculos:</p>
+
+            <div class="exemplo-box">
+                <h4>➕ Adição (+)</h4>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> resultado = 5 + 3  <span class="comment">// resultado = 8</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>➖ Subtração (-)</h4>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> resultado = 10 - 4  <span class="comment">// resultado = 6</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>✖️ Multiplicação (*)</h4>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> resultado = 7 * 3  <span class="comment">// resultado = 21</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>➗ Divisão (/)</h4>
+                <div class="codigo-portugol">
+<span class="keyword">real</span> resultado = 15.0 / 2.0  <span class="comment">// resultado = 7.5</span>
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>📦 Resto da Divisão (%)</h4>
+                <p>Retorna o que sobra de uma divisão!</p>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> resto = 10 % 3  <span class="comment">// resto = 1 (10 ÷ 3 = 3, sobra 1)</span>
+<span class="keyword">inteiro</span> resto2 = 15 % 4  <span class="comment">// resto2 = 3 (15 ÷ 4 = 3, sobra 3)</span>
+                </div>
+            </div>
+
+            <h3>Operadores de Comparação</h3>
+            <p>Use para comparar valores. O resultado é sempre verdadeiro ou falso!</p>
+
+            <div class="codigo-portugol">
+<span class="keyword">logico</span> resultado
+
+resultado = (5 == 5)    <span class="comment">// verdadeiro (igual a)</span>
+resultado = (5 != 3)    <span class="comment">// verdadeiro (diferente de)</span>
+resultado = (10 > 5)    <span class="comment">// verdadeiro (maior que)</span>
+resultado = (3 < 7)     <span class="comment">// verdadeiro (menor que)</span>
+resultado = (5 >= 5)    <span class="comment">// verdadeiro (maior ou igual)</span>
+resultado = (4 <= 4)    <span class="comment">// verdadeiro (menor ou igual)</span>
+            </div>
+
+            <h3>Operadores Lógicos</h3>
+            <p>Usados para combinar condições!</p>
+
+            <div class="exemplo-box">
+                <h4>🤝 E (e)</h4>
+                <p>Verdadeiro apenas se AMBAS as condições forem verdadeiras</p>
+                <div class="codigo-portugol">
+<span class="keyword">inteiro</span> idade = 10
+<span class="keyword">logico</span> temIngresso = <span class="keyword">verdadeiro</span>
+
+<span class="comment">// Pode entrar se tiver idade E ingresso</span>
+<span class="keyword">logico</span> podeEntrar = (idade >= 8 <span class="keyword">e</span> temIngresso)
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>🔀 OU (ou)</h4>
+                <p>Verdadeiro se PELO MENOS UMA condição for verdadeira</p>
+                <div class="codigo-portugol">
+<span class="keyword">logico</span> fimDeSemana = <span class="keyword">verdadeiro</span>
+<span class="keyword">logico</span> feriado = <span class="keyword">falso</span>
+
+<span class="comment">// Pode descansar se for fim de semana OU feriado</span>
+<span class="keyword">logico</span> podeDescansar = (fimDeSemana <span class="keyword">ou</span> feriado)
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>🚫 NÃO (nao)</h4>
+                <p>Inverte o valor: verdadeiro vira falso e falso vira verdadeiro</p>
+                <div class="codigo-portugol">
+<span class="keyword">logico</span> estaChovendo = <span class="keyword">falso</span>
+
+<span class="comment">// Se NÃO está chovendo, pode sair</span>
+<span class="keyword">logico</span> podeSair = <span class="keyword">nao</span> estaChovendo  <span class="comment">// verdadeiro</span>
+                </div>
+            </div>
+
+            <h3>Ordem das Operações (Precedência)</h3>
+            <p>O computador resolve as contas seguindo uma ordem, assim como na matemática!</p>
+
+            <div class="exemplo-box">
+                <h4>Ordem de Prioridade:</h4>
+                <ol style="padding-left: 30px; margin-top: 10px;">
+                    <li>Parênteses <code>()</code></li>
+                    <li>Multiplicação <code>*</code>, Divisão <code>/</code>, Resto <code>%</code></li>
+                    <li>Adição <code>+</code>, Subtração <code>-</code></li>
+                    <li>Comparações <code>&gt;</code>, <code>&lt;</code>, <code>==</code>, etc</li>
+                    <li>Operadores lógicos <code>e</code>, <code>ou</code>, <code>nao</code></li>
+                </ol>
+            </div>
+
+            <div class="codigo-portugol">
+<span class="comment">// Exemplo sem parênteses</span>
+<span class="keyword">inteiro</span> resultado1 = 5 + 3 * 2  <span class="comment">// = 11 (primeiro 3*2=6, depois 5+6=11)</span>
+
+<span class="comment">// Exemplo com parênteses</span>
+<span class="keyword">inteiro</span> resultado2 = (5 + 3) * 2  <span class="comment">// = 16 (primeiro 5+3=8, depois 8*2=16)</span>
+            </div>
+
+            <h3>Exemplos Práticos</h3>
+
+            <div class="exemplo-box">
+                <h4>Calculadora Simples</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">real</span> num1, num2, soma, subtracao, multiplicacao, divisao
+        
+        <span class="function">escreva</span>(<span class="string">"Digite o primeiro número: "</span>)
+        <span class="function">leia</span>(num1)
+        
+        <span class="function">escreva</span>(<span class="string">"Digite o segundo número: "</span>)
+        <span class="function">leia</span>(num2)
+        
+        soma = num1 + num2
+        subtracao = num1 - num2
+        multiplicacao = num1 * num2
+        divisao = num1 / num2
+        
+        <span class="function">escreva</span>(<span class="string">"Soma: "</span>, soma, <span class="string">"\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Subtração: "</span>, subtracao, <span class="string">"\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Multiplicação: "</span>, multiplicacao, <span class="string">"\n"</span>)
+        <span class="function">escreva</span>(<span class="string">"Divisão: "</span>, divisao, <span class="string">"\n"</span>)
+    }
+}
+                </div>
+            </div>
+
+            <div class="exemplo-box">
+                <h4>Verificando Número Par ou Ímpar</h4>
+                <div class="codigo-portugol">
+<span class="keyword">programa</span> {
+    <span class="keyword">funcao</span> <span class="function">inicio</span>() {
+        <span class="keyword">inteiro</span> numero
+        
+        <span class="function">escreva</span>(<span class="string">"Digite um número: "</span>)
+        <span class="function">leia</span>(numero)
+        
+        <span class="comment">// Se o resto da divisão por 2 for 0, é par</span>
+        <span class="keyword">se</span> (numero % 2 == 0) {
+            <span class="function">escreva</span>(<span class="string">"O número é PAR!"</span>)
+        } <span class="keyword">senao</span> {
+            <span class="function">escreva</span>(<span class="string">"O número é ÍMPAR!"</span>)
+        }
+    }
+}
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn-jogo" onclick="window.location.href='../jogos/calculadora-magica.html'">
+                    🎮 Jogar: Calculadora Mágica
+                </button>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-comecar" onclick="window.location.href='decisoes.html'">
+                    Próximo Tópico: Decisões →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>

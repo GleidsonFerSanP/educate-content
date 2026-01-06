@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤔 Decisões (Se... Então...) - Lógica de Programação</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <a href="../index.html" class="btn-voltar">← Voltar ao Menu</a>
+
+    <div class="container">
+        <div class="conteudo-topico">
+            <h2>🤔 Decisões (Se... Então...)</h2>
+            
+            <div class="ilustracao-container">
+                <svg width="400" height="200" viewBox="0 0 400 200">
+                    <!-- Diagrama de decisão -->
+                    <rect x="150" y="20" width="100" height="50" fill="#FFD93D" rx="10"/>
+                    <text x="200" y="50" font-size="16" text-anchor="middle" fill="#2C3E50">Está chovendo?</text>
+                    
+                    <!-- Seta Sim -->
+                    <path d="M 200 70 L 100 120" stroke="#4ECDC4" stroke-width="3" marker-end="url(#arrow)"/>
+                    <text x="140" y="90" font-size="14" fill="#4ECDC4" font-weight="bold">SIM</text>
+                    
+                    <!-- Seta Não -->
+                    <path d="M 200 70 L 300 120" stroke="#FF6B9D" stroke-width="3" marker-end="url(#arrow)"/>
+                    <text x="260" y="90" font-size="14" fill="#FF6B9D" font-weight="bold">NÃO</text>
+                    
+                    <!-- Resultado Sim -->
+                    <rect x="50" y="120" width="100" height="50" fill="#4ECDC4" rx="10"/>
+                    <text x="100" y="150" font-size="14" text-anchor="middle" fill="white">Levo guarda-</text>
+                    <text x="100" y="165" font-size="14" text-anchor="middle" fill="white">chuva! ☂️</text>
+                    
+                    <!-- Resultado Não -->
+                    <rect x="250" y="120" width="100" height="50" fill="#FF6B9D" rx="10"/>
+                    <text x="300" y="150" font-size="14" text-anchor="middle" fill="white">Não preciso</text>
+                    <text x="300" y="165" font-size="14" text-anchor="middle" fill="white">de guarda-chuva! 😊</text>
+                    
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#2C3E50"/>
+                        </marker>
+                    </defs>
+                </svg>
+            </div>
+
+            <h3>🤔 O que são Decisões?</h3>
+            <p>
+                Todos os dias, tomamos centenas de decisões! Algumas são simples, outras mais complicadas. 
+                Na programação, ensinamos o computador a tomar decisões usando <strong>"SE... ENTÃO..."</strong> 
+                (em inglês, chamamos de "IF... THEN...").
+            </p>
+            <p>
+                É como perguntar: <strong>"SE</strong> isso acontecer, <strong>ENTÃO</strong> faça aquilo!" 🎯
+            </p>
+
+            <div class="exemplo-box">
+                <strong>💡 Exemplo Simples:</strong>
+                <p style="margin-top: 15px; font-size: 1.3em;">
+                    <strong style="color: #FF6B9D;">SE</strong> estou com fome, 
+                    <strong style="color: #4ECDC4;">ENTÃO</strong> vou comer alguma coisa. 🍎
+                </p>
+            </div>
+
+            <h3>🌤️ Decisões do Dia a Dia</h3>
+            
+            <ul class="lista-exemplos">
+                <li><strong>SE</strong> está de noite, <strong>ENTÃO</strong> acendo a luz 💡</li>
+                <li><strong>SE</strong> está frio, <strong>ENTÃO</strong> coloco um casaco 🧥</li>
+                <li><strong>SE</strong> terminei a tarefa, <strong>ENTÃO</strong> posso brincar 🎮</li>
+                <li><strong>SE</strong> a porta está trancada, <strong>ENTÃO</strong> uso a chave 🔑</li>
+                <li><strong>SE</strong> meu amigo está triste, <strong>ENTÃO</strong> dou um abraço 🤗</li>
+            </ul>
+
+            <h3>🔀 Decisões com "SENÃO"</h3>
+            <p>
+                Às vezes, temos duas opções: uma coisa acontece, OU outra coisa diferente! 
+                Para isso, usamos <strong>"SE... ENTÃO... SENÃO..."</strong>
+            </p>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9);">
+                <strong>🌦️ Exemplo: Decidir o que Vestir</strong>
+                <p style="margin-top: 15px; font-size: 1.2em;">
+                    <strong style="color: #FF6B9D;">SE</strong> está chovendo,<br>
+                    <strong style="color: #4ECDC4;">ENTÃO</strong> visto roupa de frio e levo guarda-chuva,<br>
+                    <strong style="color: #A960EE;">SENÃO</strong> visto roupa leve e vou brincar lá fora! ☀️
+                </p>
+            </div>
+
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #FFF9C4, #FFF59D);">
+                <strong>🎂 Exemplo: Comprar Sorvete</strong>
+                <p style="margin-top: 15px; font-size: 1.2em;">
+                    <strong style="color: #FF6B9D;">SE</strong> tenho dinheiro,<br>
+                    <strong style="color: #4ECDC4;">ENTÃO</strong> compro sorvete! 🍦<br>
+                    <strong style="color: #A960EE;">SENÃO</strong> espero até ganhar mesada. 😊
+                </p>
+            </div>
+
+            <h3>🤖 Computadores Tomam Decisões!</h3>
+            <p>
+                Os computadores tomam decisões o tempo todo! Veja alguns exemplos:
+            </p>
+
+            <ul class="lista-exemplos">
+                <li>🎮 <strong>Jogos:</strong> SE o jogador perdeu todas as vidas, ENTÃO game over</li>
+                <li>📱 <strong>Alarme do celular:</strong> SE chegou a hora, ENTÃO toca a música</li>
+                <li>🚦 <strong>Semáforo:</strong> SE muitos carros estão esperando, ENTÃO fica verde</li>
+                <li>🌡️ <strong>Ar condicionado:</strong> SE está quente, ENTÃO liga; SENÃO desliga</li>
+            </ul>
+
+            <h3>🎯 Múltiplas Decisões</h3>
+            <p>
+                Às vezes, precisamos tomar várias decisões seguidas! Veja este exemplo:
+            </p>
+
+            <div class="exemplo-box">
+                <strong>🎮 Exemplo: Jogo de Aventura</strong>
+                <p style="margin-top: 15px;">
+                    <strong>SE</strong> você encontrou uma porta,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>ENTÃO SE</strong> a porta está aberta,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ENTÃO</strong> entre na sala,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>SENÃO SE</strong> você tem a chave,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>ENTÃO</strong> abra a porta e entre,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<strong>SENÃO</strong> procure a chave!
+                </p>
+            </div>
+
+            <h3>🧠 Pratique Pensar em Decisões!</h3>
+            <div class="exemplo-box" style="background: linear-gradient(135deg, #F3E5F5, #E1BEE7);">
+                <strong>💭 Tente completar estas frases:</strong>
+                <ul class="lista-exemplos" style="margin-top: 15px;">
+                    <li><strong>SE</strong> eu acordar cedo, <strong>ENTÃO</strong> _____________</li>
+                    <li><strong>SE</strong> está muito sol, <strong>ENTÃO</strong> _____________</li>
+                    <li><strong>SE</strong> meu brinquedo quebrou, <strong>ENTÃO</strong> _____________</li>
+                </ul>
+            </div>
+
+            <h3>🎮 Atividade Prática!</h3>
+            <p>
+                Agora vamos praticar tomando decisões! Clique no botão abaixo para 
+                jogar o <strong>Labirinto das Decisões</strong> e ajudar o personagem 
+                a tomar as decisões certas! 🎮
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="../jogos/labirinto-decisoes.html" class="btn">
+                    🎮 Jogar Labirinto das Decisões!
+                </a>
+            </div>
+
+            <h3>📚 Resumo</h3>
+            <div class="exemplo-box">
+                <p><strong>🌟 O que você aprendeu:</strong></p>
+                <ul class="lista-exemplos">
+                    <li>Decisões são escolhas que fazemos baseadas em situações</li>
+                    <li>Usamos "SE... ENTÃO..." para tomar decisões</li>
+                    <li>Podemos usar "SENÃO" para ter uma segunda opção</li>
+                    <li>Computadores tomam decisões o tempo todo!</li>
+                    <li>Podemos ter várias decisões encadeadas</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="padroes.html" class="btn">
+                    ← Tópico Anterior
+                </a>
+                <a href="loops.html" class="btn">
+                    Próximo Tópico: Loops 🔁
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        window.addEventListener('load', () => {
+            const exemplos = document.querySelectorAll('.exemplo-box');
+            animarEntrada(Array.from(exemplos), 200);
+            salvarProgresso('decisoes', true);
+        });
+    </script>
+</body>
+</html>

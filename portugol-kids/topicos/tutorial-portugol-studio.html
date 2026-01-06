@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Usar o Portugol Studio - Portugol Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .tutorial-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .passo-tutorial {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .passo-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #9333EA;
+        }
+
+        .numero-passo {
+            background: linear-gradient(135deg, #9333EA, #7C3AED);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 6px 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .passo-titulo {
+            font-size: 2rem;
+            color: #6B46C1;
+            font-weight: bold;
+        }
+
+        .passo-conteudo {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #1F2937;
+        }
+
+        .passo-conteudo p {
+            margin-bottom: 15px;
+        }
+
+        .passo-conteudo ul, .passo-conteudo ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .passo-conteudo li {
+            margin-bottom: 10px;
+        }
+
+        .screenshot {
+            background: #F3F4F6;
+            border: 3px solid #9333EA;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .screenshot svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .screenshot p {
+            color: #6B7280;
+            font-style: italic;
+            margin-top: 15px;
+        }
+
+        .btn-download {
+            display: inline-block;
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6);
+        }
+
+        .dica-importante {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-left: 6px solid #F59E0B;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .dica-importante strong {
+            color: #D97706;
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .codigo-exemplo {
+            background: #1E293B;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .codigo-linha {
+            color: #E2E8F0;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .keyword { color: #C792EA; font-weight: bold; }
+        .function { color: #82AAFF; }
+        .string { color: #C3E88D; }
+        .number { color: #F78C6C; }
+        .comment { color: #546E7A; font-style: italic; }
+
+        .destaque-box {
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            border: 3px solid #3B82F6;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .destaque-box h3 {
+            color: #1E40AF;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .grid-recursos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .card-recurso {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card-recurso:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-recurso .icone {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .card-recurso h4 {
+            color: #6B46C1;
+            margin-bottom: 10px;
+        }
+
+        .lista-checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .lista-checklist li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .lista-checklist li:before {
+            content: '✓';
+            position: absolute;
+            left: 15px;
+            color: #10B981;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+
+    <div class="container">
+        <div class="tutorial-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 40px;">
+                <h1 style="font-size: 3rem; margin-bottom: 15px;">💻 Como Usar o Portugol Studio</h1>
+                <p style="font-size: 1.3rem;">Aprenda a programar de verdade com o Portugol Studio!</p>
+            </div>
+
+            <!-- Passo 1: Download -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">1</div>
+                    <h2 class="passo-titulo">Baixar o Portugol Studio</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <p>O <strong>Portugol Studio</strong> é um programa grátis que você pode usar no seu computador para programar em Portugol de verdade! Ele foi feito especialmente para brasileiros aprenderem programação.</p>
+
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="https://github.com/UNIVALI-LITE/Portugol-Studio/releases/latest" target="_blank" class="btn-download">
+                            ⬇️ Baixar Portugol Studio GRÁTIS
+                        </a>
+                    </div>
+
+                    <div class="dica-importante">
+                        <strong>💡 Dica Importante:</strong>
+                        Peça ajuda a um adulto para fazer o download e instalação! O programa funciona no Windows, Mac e Linux.
+                    </div>
+
+                    <div class="screenshot">
+                        <svg width="400" height="200" viewBox="0 0 400 200">
+                            <rect x="50" y="30" width="300" height="140" rx="10" fill="#E8F5E9" stroke="#10B981" stroke-width="3"/>
+                            <circle cx="200" cy="100" r="40" fill="#10B981"/>
+                            <path d="M 185 100 L 195 110 L 215 85" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+                            <text x="200" y="170" text-anchor="middle" font-size="16" fill="#1F2937" font-weight="bold">Download Completo!</text>
+                        </svg>
+                        <p>O arquivo vai ser salvo na sua pasta de Downloads</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 2: Instalação -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">2</div>
+                    <h2 class="passo-titulo">Instalar o Programa</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <p>Depois de baixar, você precisa instalar o Portugol Studio:</p>
+
+                    <ol>
+                        <li>Vá até a pasta <strong>Downloads</strong> no seu computador</li>
+                        <li>Procure o arquivo <strong>portugol-studio-x.x.x.exe</strong> (no Windows) ou equivalente</li>
+                        <li>Clique duas vezes no arquivo para começar a instalação</li>
+                        <li>Siga as instruções na tela (é só clicar em "Próximo" → "Próximo" → "Instalar")</li>
+                        <li>Espere alguns segundos até terminar</li>
+                    </ol>
+
+                    <div class="dica-importante">
+                        <strong>⚠️ Atenção:</strong>
+                        Se aparecer uma mensagem de segurança do Windows, peça a um adulto para autorizar a instalação clicando em "Sim" ou "Permitir".
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 3: Conhecendo a Interface -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">3</div>
+                    <h2 class="passo-titulo">Conhecendo a Tela do Portugol Studio</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <p>Quando você abrir o Portugol Studio pela primeira vez, vai ver uma tela dividida em partes:</p>
+
+                    <div class="grid-recursos">
+                        <div class="card-recurso">
+                            <div class="icone">📝</div>
+                            <h4>Editor de Código</h4>
+                            <p>Onde você escreve seu programa</p>
+                        </div>
+                        <div class="card-recurso">
+                            <div class="icone">▶️</div>
+                            <h4>Botão Executar</h4>
+                            <p>Clique para rodar seu programa</p>
+                        </div>
+                        <div class="card-recurso">
+                            <div class="icone">🖥️</div>
+                            <h4>Console</h4>
+                            <p>Mostra o resultado do programa</p>
+                        </div>
+                        <div class="card-recurso">
+                            <div class="icone">❌</div>
+                            <h4>Erros</h4>
+                            <p>Avisos se algo estiver errado</p>
+                        </div>
+                    </div>
+
+                    <div class="screenshot">
+                        <svg width="500" height="300" viewBox="0 0 500 300">
+                            <!-- Janela principal -->
+                            <rect x="20" y="20" width="460" height="260" rx="10" fill="white" stroke="#9333EA" stroke-width="3"/>
+                            
+                            <!-- Barra superior -->
+                            <rect x="20" y="20" width="460" height="40" rx="10" fill="#9333EA"/>
+                            <text x="250" y="45" text-anchor="middle" font-size="18" fill="white" font-weight="bold">Portugol Studio</text>
+                            
+                            <!-- Botões -->
+                            <rect x="40" y="70" width="80" height="30" rx="5" fill="#10B981"/>
+                            <text x="80" y="90" text-anchor="middle" font-size="14" fill="white" font-weight="bold">▶ Executar</text>
+                            
+                            <!-- Editor -->
+                            <rect x="40" y="110" width="420" height="90" rx="5" fill="#1E293B"/>
+                            <text x="250" y="150" text-anchor="middle" font-size="12" fill="#10B981">programa {</text>
+                            <text x="250" y="170" text-anchor="middle" font-size="12" fill="#82AAFF">    funcao inicio() {</text>
+                            <text x="250" y="190" text-anchor="middle" font-size="12" fill="#C3E88D">        escreva("Olá!")</text>
+                            
+                            <!-- Console -->
+                            <rect x="40" y="210" width="420" height="60" rx="5" fill="#F3F4F6" stroke="#9333EA" stroke-width="2"/>
+                            <text x="250" y="240" text-anchor="middle" font-size="14" fill="#1F2937">Console: Olá!</text>
+                        </svg>
+                        <p>Assim é a tela do Portugol Studio</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 4: Primeiro Programa -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">4</div>
+                    <h2 class="passo-titulo">Criar seu Primeiro Programa</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <p>Agora vamos criar seu primeiro programa! Siga estes passos:</p>
+
+                    <ol>
+                        <li>Abra o Portugol Studio</li>
+                        <li>Clique em <strong>"Arquivo"</strong> → <strong>"Novo"</strong></li>
+                        <li>Digite o código abaixo no editor:</li>
+                    </ol>
+
+                    <div class="codigo-exemplo">
+                        <div class="codigo-linha"><span class="keyword">programa</span> {</div>
+                        <div class="codigo-linha">    <span class="keyword">funcao</span> <span class="function">inicio</span>() {</div>
+                        <div class="codigo-linha">        <span class="function">escreva</span>(<span class="string">"🎉 Meu primeiro programa!"</span>)</div>
+                        <div class="codigo-linha">    }</div>
+                        <div class="codigo-linha">}</div>
+                    </div>
+
+                    <ol start="4">
+                        <li>Clique no botão verde <strong>"▶ Executar"</strong> (ou pressione F6)</li>
+                        <li>Veja a mensagem aparecer no console! 🎊</li>
+                    </ol>
+
+                    <div class="destaque-box">
+                        <h3>🎯 Desafio Extra:</h3>
+                        <p>Tente mudar a mensagem dentro das aspas e executar de novo! Escreva seu nome ou uma mensagem diferente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 5: Exemplos Práticos -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">5</div>
+                    <h2 class="passo-titulo">Exemplos para Praticar</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <h3 style="color: #6B46C1; margin-bottom: 20px;">📚 Programa 1: Calculadora Simples</h3>
+                    
+                    <div class="codigo-exemplo">
+                        <div class="codigo-linha"><span class="keyword">programa</span> {</div>
+                        <div class="codigo-linha">    <span class="keyword">funcao</span> <span class="function">inicio</span>() {</div>
+                        <div class="codigo-linha">        <span class="keyword">inteiro</span> <span class="variable">numero1</span> = <span class="number">10</span></div>
+                        <div class="codigo-linha">        <span class="keyword">inteiro</span> <span class="variable">numero2</span> = <span class="number">5</span></div>
+                        <div class="codigo-linha">        <span class="keyword">inteiro</span> <span class="variable">soma</span> = <span class="variable">numero1</span> + <span class="variable">numero2</span></div>
+                        <div class="codigo-linha">        </div>
+                        <div class="codigo-linha">        <span class="function">escreva</span>(<span class="string">"A soma é: "</span>, <span class="variable">soma</span>)</div>
+                        <div class="codigo-linha">    }</div>
+                        <div class="codigo-linha">}</div>
+                    </div>
+
+                    <h3 style="color: #6B46C1; margin: 30px 0 20px 0;">🎲 Programa 2: Decisão com SE</h3>
+                    
+                    <div class="codigo-exemplo">
+                        <div class="codigo-linha"><span class="keyword">programa</span> {</div>
+                        <div class="codigo-linha">    <span class="keyword">funcao</span> <span class="function">inicio</span>() {</div>
+                        <div class="codigo-linha">        <span class="keyword">inteiro</span> <span class="variable">idade</span> = <span class="number">10</span></div>
+                        <div class="codigo-linha">        </div>
+                        <div class="codigo-linha">        <span class="keyword">se</span> (<span class="variable">idade</span> >= <span class="number">10</span>) {</div>
+                        <div class="codigo-linha">            <span class="function">escreva</span>(<span class="string">"Você pode jogar este jogo!"</span>)</div>
+                        <div class="codigo-linha">        } <span class="keyword">senao</span> {</div>
+                        <div class="codigo-linha">            <span class="function">escreva</span>(<span class="string">"Você ainda é muito jovem."</span>)</div>
+                        <div class="codigo-linha">        }</div>
+                        <div class="codigo-linha">    }</div>
+                        <div class="codigo-linha">}</div>
+                    </div>
+
+                    <h3 style="color: #6B46C1; margin: 30px 0 20px 0;">🔄 Programa 3: Loop com PARA</h3>
+                    
+                    <div class="codigo-exemplo">
+                        <div class="codigo-linha"><span class="keyword">programa</span> {</div>
+                        <div class="codigo-linha">    <span class="keyword">funcao</span> <span class="function">inicio</span>() {</div>
+                        <div class="codigo-linha">        <span class="keyword">para</span> (<span class="keyword">inteiro</span> <span class="variable">i</span> = <span class="number">1</span>; <span class="variable">i</span> <= <span class="number">5</span>; <span class="variable">i</span>++) {</div>
+                        <div class="codigo-linha">            <span class="function">escreva</span>(<span class="string">"Contando: "</span>, <span class="variable">i</span>, <span class="string">"\n"</span>)</div>
+                        <div class="codigo-linha">        }</div>
+                        <div class="codigo-linha">    }</div>
+                        <div class="codigo-linha">}</div>
+                    </div>
+
+                    <div class="dica-importante">
+                        <strong>💡 Dica de Ouro:</strong>
+                        Copie esses exemplos no Portugol Studio e teste! Depois, tente mudar os números e textos para ver o que acontece.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passo 6: Dicas Importantes -->
+            <div class="passo-tutorial">
+                <div class="passo-header">
+                    <div class="numero-passo">6</div>
+                    <h2 class="passo-titulo">Dicas para Não Errar</h2>
+                </div>
+                <div class="passo-conteudo">
+                    <ul class="lista-checklist">
+                        <li>Sempre use <strong>letras minúsculas</strong> nas palavras-chave (programa, funcao, escreva)</li>
+                        <li>Não esqueça dos <strong>parênteses ( )</strong> e <strong>chaves { }</strong></li>
+                        <li>Textos devem estar entre <strong>aspas " "</strong></li>
+                        <li>Use <strong>\n</strong> para pular linha dentro de textos</li>
+                        <li>Se der erro vermelho, leia a mensagem embaixo para entender o problema</li>
+                        <li>Salve seu programa clicando em <strong>Arquivo → Salvar</strong></li>
+                    </ul>
+
+                    <div class="destaque-box">
+                        <h3>🎨 Recursos Legais do Portugol Studio:</h3>
+                        <ul>
+                            <li><strong>Biblioteca Gráfica:</strong> Você pode criar jogos e desenhos!</li>
+                            <li><strong>Exemplos Prontos:</strong> Menu "Ajuda" → "Exemplos"</li>
+                            <li><strong>Autocomplete:</strong> O programa ajuda a completar palavras enquanto você digita</li>
+                            <li><strong>Modo Escuro:</strong> Configure o tema nas preferências</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão de Voltar -->
+            <div style="text-align: center; margin-top: 50px;">
+                <button onclick="window.location.href='../index.html'" style="padding: 20px 60px; font-size: 1.3rem; background: linear-gradient(135deg, #6B46C1, #9333EA); color: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.3); font-weight: bold;">
+                    ← Voltar ao Menu Principal
+                </button>
+            </div>
+
+            <!-- Footer -->
+            <div style="text-align: center; color: white; padding: 40px 0; margin-top: 40px;">
+                <p style="font-size: 1.3rem; margin-bottom: 15px;">
+                    🎉 Agora você está pronto para programar de verdade!
+                </p>
+                <p style="font-size: 1.1rem; opacity: 0.9;">
+                    Continue praticando nos jogos e depois teste tudo no Portugol Studio!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
