@@ -389,34 +389,17 @@
                 
                 const textoDiv = document.createElement('div');
                 textoDiv.className = 'texto-codigo';
-                textoDiv.innerHTML = formatarCodigo(linha);
+                textoDiv.textContent = linha; // Texto simples sem formatação
                 textoDiv.dataset.linha = index;
+                textoDiv.style.color = '#E2E8F0';
                 
-                if (nivel.erros.includes(index)) {
-                    textoDiv.classList.add('erro');
-                    textoDiv.onclick = () => clicarErro(index, textoDiv);
-                }
+                // Todas as linhas são clicáveis
+                textoDiv.onclick = () => clicarErro(index, textoDiv);
                 
                 linhaDiv.appendChild(numeroDiv);
                 linhaDiv.appendChild(textoDiv);
                 container.appendChild(linhaDiv);
             });
-        }
-
-        function formatarCodigo(texto) {
-            // Palavras-chave
-            texto = texto.replace(/\b(programa|funcao|inicio|inteiro|real|cadeia|logico|se|senao|para|enquanto|faca|escreva|leia)\b/g, '<span class="keyword">$1</span>');
-            
-            // Strings
-            texto = texto.replace(/"([^"]*)"/g, '<span class="string">"$1"</span>');
-            
-            // Números
-            texto = texto.replace(/\b(\d+)\b/g, '<span class="number">$1</span>');
-            
-            // Funções
-            texto = texto.replace(/\b(\w+)\s*\(/g, '<span class="function">$1</span>(');
-            
-            return texto;
         }
 
         function clicarErro(linha, elemento) {

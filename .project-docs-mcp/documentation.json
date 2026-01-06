@@ -1,0 +1,230 @@
+{
+  "documentation": {
+    "github-copilot-instructions-isabella-website-conte-do-educacional-infantil": {
+      "title": "🤖 GitHub Copilot Instructions - Isabella Website - Conteúdo Educacional Infantil",
+      "filePath": ".copilot-instructions.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "📋 Workflow Obrigatório",
+        "🛠️ Stack do Projeto",
+        "🎯 Princípios",
+        "🔧 Como Usar o MCP",
+        "📚 Acesso Rápido ao Contexto"
+      ],
+      "keywords": [
+        "tool",
+        "para",
+        "contratos",
+        "contexto",
+        "decis",
+        "projeto",
+        "antes",
+        "website",
+        "project",
+        "docs"
+      ],
+      "summary": "> **Este projeto usa Project Docs MCP para gerenciar documentação e contratos**\n\n\n\n\n\n1. **Identifique o contexto**: Use MCP tool `identify_context` com file_path\n2. **Consulte contratos**: Use MCP too...",
+      "id": "github-copilot-instructions-isabella-website-conte-do-educacional-infantil",
+      "createdAt": "2026-01-06T20:51:50.359Z",
+      "lastUpdated": "2026-01-06T20:51:50.359Z",
+      "version": 1
+    },
+    "educate-content": {
+      "title": "educate-content",
+      "filePath": "README.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "documentation"
+      ],
+      "keywords": [
+        "educate",
+        "content"
+      ],
+      "summary": "...",
+      "id": "educate-content",
+      "createdAt": "2026-01-06T20:51:50.360Z",
+      "lastUpdated": "2026-01-06T20:51:50.360Z",
+      "version": 1
+    },
+    "conte-do-educacional-l-gica-de-programa-o-para-crian-as": {
+      "title": "Conteúdo Educacional - Lógica de Programação para Crianças",
+      "filePath": "conteudo-educacional.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "1. 🎯 Sequências e Ordem",
+        "2. 🔄 Padrões e Repetições",
+        "3. 🤔 Decisões (Se... Então...)",
+        "4. 🔁 Loops (Fazer Várias Vezes)",
+        "5. 📝 Algoritmos (Passo a Passo)"
+      ],
+      "keywords": [
+        "padr",
+        "para",
+        "chave",
+        "fazer",
+        "vezes",
+        "conceitos",
+        "exemplos",
+        "cotidiano",
+        "atividades",
+        "decis"
+      ],
+      "summary": "* Computadores seguem instruções na ordem exata que você dá\n* Como fazer um sanduíche: precisa ser em ordem (pão primeiro, depois recheio)\n* Escovar os dentes: pegar escova, colocar pasta, escovar, en...",
+      "id": "conte-do-educacional-l-gica-de-programa-o-para-crian-as",
+      "createdAt": "2026-01-06T20:51:50.360Z",
+      "lastUpdated": "2026-01-06T20:51:50.360Z",
+      "version": 1
+    },
+    "conte-do-educacional-portugol-para-crian-as-8-10-anos": {
+      "title": "Conteúdo Educacional - Portugol para Crianças (8-10 anos)",
+      "filePath": "conteudo-portugol.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "Tópicos a Abordar",
+        "Jogos Interativos Propostos",
+        "Conceitos Principais do Portugol",
+        "Abordagem Pedagógica"
+      ],
+      "keywords": [
+        "para",
+        "portugol",
+        "veis",
+        "escreva",
+        "vari",
+        "exemplos",
+        "operadores",
+        "programa",
+        "decis",
+        "jogos"
+      ],
+      "summary": "* O que é Portugol e para que serve\n* Como \"conversar\" com o computador em português\n* Primeiro programa: olá mundo\n\n\n\n* O que são variáveis (caixinhas para guardar coisas)\n* Tipos: inteiro, real, tex...",
+      "id": "conte-do-educacional-portugol-para-crian-as-8-10-anos",
+      "createdAt": "2026-01-06T20:51:50.361Z",
+      "lastUpdated": "2026-01-06T20:51:50.361Z",
+      "version": 1
+    },
+    "guia-r-pido-de-deploy-aws-s3": {
+      "title": "🚀 GUIA RÁPIDO DE DEPLOY - AWS S3",
+      "filePath": "logica-programacao-kids/DEPLOY.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "⚡ Deploy em 5 Passos",
+        "✅ Checklist Final",
+        "📁 Arquivos que Devem Ser Carregados",
+        "🔄 Atualizar Conteúdo Depois",
+        "💰 Custo Estimado"
+      ],
+      "keywords": [
+        "bucket",
+        "html",
+        "site",
+        "arquivos",
+        "logica",
+        "programacao",
+        "kids",
+        "tica",
+        "hospedagem",
+        "console"
+      ],
+      "summary": "```\n- Acesse: https://console.aws.amazon.com/s3/\n- Clique em \"Criar bucket\"\n- Nome: logica-programacao-kids (ou outro de sua escolha)\n- Região: sa-east-1 (São Paulo) ou us-east-1\n- ⚠️ IMPORTANTE: Desm...",
+      "id": "guia-r-pido-de-deploy-aws-s3",
+      "createdAt": "2026-01-06T20:51:50.361Z",
+      "lastUpdated": "2026-01-06T20:51:50.361Z",
+      "version": 1
+    },
+    "l-gica-de-programa-o-para-crian-as": {
+      "title": "🚀 Lógica de Programação para Crianças",
+      "filePath": "logica-programacao-kids/README.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "📋 Conteúdo",
+        "🎨 Características",
+        "📁 Estrutura do Projeto",
+        "🚀 Deploy no AWS S3",
+        "🔧 Manutenção e Atualizações"
+      ],
+      "keywords": [
+        "bucket",
+        "html",
+        "para",
+        "site",
+        "passo",
+        "clique",
+        "nome",
+        "cloudfront",
+        "pasta",
+        "jogos"
+      ],
+      "summary": "Site educacional interativo para ensinar lógica de programação para crianças de 8 a 10 anos.\n\n\n\n\n\n1. 🎯 **Sequências e Ordem** - Entenda que a ordem importa\n2. 🔄 **Padrões e Repetições** - Descubra p...",
+      "id": "l-gica-de-programa-o-para-crian-as",
+      "createdAt": "2026-01-06T20:51:50.362Z",
+      "lastUpdated": "2026-01-06T20:51:50.362Z",
+      "version": 1
+    },
+    "resumo-do-projeto-l-gica-de-programa-o-para-crian-as": {
+      "title": "📊 RESUMO DO PROJETO - Lógica de Programação para Crianças",
+      "filePath": "logica-programacao-kids/RESUMO-PROJETO.md",
+      "context": "general",
+      "type": "other",
+      "topics": [
+        "✅ PROJETO CONCLUÍDO COM SUCESSO!",
+        "📚 Conteúdo Desenvolvido",
+        "🎨 Recursos Técnicos Implementados",
+        "📁 Estrutura de Arquivos (17 arquivos)",
+        "🚀 Como Fazer Deploy"
+      ],
+      "keywords": [
+        "html",
+        "para",
+        "loops",
+        "debug",
+        "padr",
+        "exemplos",
+        "sistema",
+        "arquivos",
+        "crian",
+        "ncias"
+      ],
+      "summary": "**Localização:** `/Users/gleidsonfersanp/isabella/website/logica-programacao-kids/`\n\n---\n\n\n\n\n\n1. **Sequências e Ordem** (sequencias.html)\n   - Conceitos de ordem e sequência\n   - Exemplos do cotidiano...",
+      "id": "resumo-do-projeto-l-gica-de-programa-o-para-crian-as",
+      "createdAt": "2026-01-06T20:51:50.363Z",
+      "lastUpdated": "2026-01-06T20:51:50.363Z",
+      "version": 1
+    },
+    "arquitetura-modular-3-m-u00f3dulos-educacionais": {
+      "title": "Arquitetura Modular - 3 M\\u00f3dulos Educacionais",
+      "filePath": "docs/isabella-website/architecture/modular-structure.md",
+      "topics": [
+        "estrutura de diretórios",
+        "modularização",
+        "independência entre módulos",
+        "deploy S3",
+        "organização de assets"
+      ],
+      "keywords": [
+        "arquitetura",
+        "módulos",
+        "estrutura",
+        "diretórios",
+        "independentes"
+      ],
+      "summary": "Documenta a arquitetura modular do projeto com 3 módulos educacionais independentes: Lógica Programação Kids, Portugol Kids e Tutorial WhatsApp. Cada módulo tem estrutura própria (HTML, CSS, JS, jogos/tópicos) e deploy independente no S3.",
+      "context": "general",
+      "type": "architecture",
+      "relatedContracts": [],
+      "relatedFeatures": [],
+      "id": "arquitetura-modular-3-m-u00f3dulos-educacionais",
+      "createdAt": "2026-01-06T20:53:31.953Z",
+      "lastUpdated": "2026-01-06T20:53:31.953Z",
+      "version": 1
+    }
+  },
+  "lastUpdated": "2026-01-06T20:53:31.953Z",
+  "version": "1.0.0"
+}

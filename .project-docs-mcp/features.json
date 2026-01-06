@@ -1,0 +1,164 @@
+{
+  "features": [
+    {
+      "id": "feat-1767732724259-e447nup0e",
+      "name": "Quiz de Sequências - Jogo Educacional",
+      "context": "Jogos Educacionais - Lógica Programação Kids",
+      "description": "Jogo interativo de quiz para ensinar sequências de execução de código. Apresenta 5 perguntas de múltipla escolha sobre ordem de execução de comandos, estruturas de repetição e fluxo de programa.",
+      "businessRules": [
+        "Jogo de quiz com 5 perguntas sobre sequências de execução",
+        "Feedback visual imediato (correto/incorreto)",
+        "Sistema de pontos: +10 por resposta correta",
+        "Animação de confetes ao completar o jogo",
+        "Som de feedback para acertos",
+        "Progresso salvo em localStorage",
+        "Alternativas embaralhadas aleatoriamente"
+      ],
+      "useCases": [
+        {
+          "description": "Criança aprende sobre ordem de execução de comandos através de cenários práticos",
+          "name": "Aprendizado de Sequências",
+          "steps": [
+            "Criança lê a pergunta sobre uma sequência de ações",
+            "Analisa as 4 alternativas apresentadas",
+            "Seleciona a resposta que acredita estar correta",
+            "Recebe feedback imediato (visual + sonoro)",
+            "Vê explicação sobre a resposta correta",
+            "Avança para próxima pergunta ou vê resultado final"
+          ]
+        }
+      ],
+      "relatedContracts": [],
+      "relatedPatterns": [],
+      "dependencies": [
+        "Web Audio API",
+        "CSS Animations",
+        "LocalStorage API"
+      ],
+      "apiEndpoints": [],
+      "status": "completed",
+      "tags": [
+        "jogo",
+        "quiz",
+        "sequencias",
+        "logica",
+        "interativo"
+      ],
+      "notes": "Target: crianças 8-10 anos. Utiliza linguagem simples e exemplos do cotidiano (robô, receita, escada).",
+      "filePaths": [
+        "logica-programacao-kids/jogos/quiz-sequencias.html",
+        "logica-programacao-kids/css/styles.css",
+        "logica-programacao-kids/js/main.js"
+      ],
+      "createdAt": "2026-01-06T20:52:04.259Z",
+      "updatedAt": "2026-01-06T20:52:04.259Z"
+    },
+    {
+      "id": "feat-1767732737646-ojp63jwgf",
+      "name": "Desafio dos Loops - Geração Aleatória",
+      "context": "Jogos Educacionais - Lógica Programação Kids",
+      "description": "Jogo interativo que ensina estruturas de repetição (loops) através de um desafio de coletar estrelas em um grid. Jogador aprende a usar REPITA/PARA criando comandos otimizados para coletar múltiplas estrelas.",
+      "businessRules": [
+        "Grid 5x5 clicável para coletar estrelas",
+        "Estrelas geradas aleatoriamente (3-5 por nível)",
+        "Jogador deve criar comandos REPITA para coletar todas",
+        "Botão 'Novo Desafio Aleatório' gera novo layout",
+        "Feedback visual ao clicar nas células",
+        "Sistema de validação de comandos loop",
+        "Confetes e som ao completar o desafio",
+        "Console logging para debug (positions tracking)"
+      ],
+      "useCases": [
+        {
+          "description": "Criança aprende conceito de loops coletando estrelas de forma eficiente",
+          "name": "Aprendizado de Estruturas de Repetição",
+          "steps": [
+            "Visualiza grid 5x5 com estrelas posicionadas aleatoriamente",
+            "Clica nas células do grid para marcar o caminho",
+            "Cria comandos REPITA para automatizar movimentos",
+            "Valida se conseguiu coletar todas as estrelas",
+            "Recebe feedback com animações e sons",
+            "Pode gerar novo desafio com botão aleatório"
+          ]
+        }
+      ],
+      "relatedContracts": [],
+      "relatedPatterns": [],
+      "dependencies": [
+        "CSS Grid",
+        "Web Audio API",
+        "Math.random() para geração procedural",
+        "LocalStorage API"
+      ],
+      "apiEndpoints": [],
+      "status": "completed",
+      "tags": [
+        "jogo",
+        "loops",
+        "repita",
+        "grid",
+        "procedural",
+        "aleatorio"
+      ],
+      "notes": "Desafio fixed: coordinate system corrected, random star generation added. Funções principais: gerarNovoDesafio(), gerarEstrelasAleatorias(), gerarPosicaoAleatoria()",
+      "filePaths": [
+        "logica-programacao-kids/jogos/desafio-loops.html"
+      ],
+      "createdAt": "2026-01-06T20:52:17.646Z",
+      "updatedAt": "2026-01-06T20:52:17.646Z"
+    },
+    {
+      "id": "feat-1767732752416-86ei4iduf",
+      "name": "Caça aos Erros - Sintaxe Portugol",
+      "context": "Jogos Educacionais - Portugol Kids",
+      "description": "Jogo de caça aos erros de sintaxe em código Portugol. Jogador deve identificar e clicar em linhas com erros de sintaxe, recebendo feedback educativo sobre cada tipo de erro encontrado.",
+      "businessRules": [
+        "5 níveis de dificuldade crescente",
+        "Cada nível tem 1 erro de sintaxe Portugol",
+        "Jogador clica na linha com erro",
+        "Dicas progressivas: genérica -> específica",
+        "Sistema de penalidade: -5 pontos por dica usada",
+        "+20 pontos por erro encontrado sem dicas",
+        "Todas as linhas clicáveis (sem destaque visual de erro)",
+        "Erros variam: falta ponto-vírgula, typos, parênteses"
+      ],
+      "useCases": [
+        {
+          "description": "Criança desenvolve habilidade de debug identificando erros de sintaxe",
+          "name": "Identificação de Erros de Sintaxe",
+          "steps": [
+            "Visualiza código Portugol com erro escondido",
+            "Lê o código linha por linha",
+            "Identifica a linha com erro de sintaxe",
+            "Clica na linha suspeita",
+            "Recebe feedback: correto (próximo nível) ou incorreto (tenta novamente)",
+            "Pode usar dicas se precisar de ajuda",
+            "Completa 5 níveis com dificuldade crescente"
+          ]
+        }
+      ],
+      "relatedContracts": [],
+      "relatedPatterns": [],
+      "dependencies": [
+        "CSS Grid",
+        "Web Audio API",
+        "DOM Manipulation"
+      ],
+      "apiEndpoints": [],
+      "status": "completed",
+      "tags": [
+        "jogo",
+        "debug",
+        "sintaxe",
+        "portugol",
+        "erros"
+      ],
+      "notes": "Bug fix aplicado: removido syntax highlighting inline que exibia 'keyword' como texto. Removida classe .erro que destacava linha com erro (tornava muito fácil). Agora usa textContent puro sem formatação de cores.",
+      "filePaths": [
+        "portugol-kids/jogos/caca-erros.html"
+      ],
+      "createdAt": "2026-01-06T20:52:32.416Z",
+      "updatedAt": "2026-01-06T20:52:32.416Z"
+    }
+  ]
+}

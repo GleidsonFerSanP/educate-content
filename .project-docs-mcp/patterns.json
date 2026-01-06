@@ -1,0 +1,34 @@
+{
+  "patterns": {
+    "estrutura-padr-o-de-jogo-educacional": {
+      "name": "Estrutura Padrão de Jogo Educacional",
+      "context": "frontend",
+      "description": "Padrão de estrutura para jogos educacionais interativos. Define layout consistente com painel de informações, área de jogo, sistema de feedback e botões de ação.",
+      "pattern": "<div class=\"jogo-container\">\n  <!-- Header com título e descrição -->\n  <div class=\"jogo-header\">\n    <h1>🎮 Título do Jogo</h1>\n    <p>Descrição breve e motivadora</p>\n  </div>\n  \n  <!-- Painel de Informações (grid responsivo) -->\n  <div class=\"painel-info\">\n    <div class=\"info-card\">\n      <h3>MÉTRICA</h3>\n      <div class=\"info-valor\" id=\"valor\">0</div>\n    </div>\n  </div>\n  \n  <!-- Área Principal do Jogo -->\n  <div class=\"area-jogo\" id=\"area-jogo\">\n    <!-- Conteúdo interativo específico do jogo -->\n  </div>\n  \n  <!-- Botões de Ação -->\n  <div class=\"botoes-acao\">\n    <button class=\"btn-acao\" onclick=\"funcaoAcao()\">🎯 Ação</button>\n  </div>\n  \n  <!-- Feedback Overlay -->\n  <div class=\"feedback\" id=\"feedback\"></div>\n  <div class=\"overlay\" id=\"overlay\"></div>\n</div>",
+      "examples": [
+        "quiz-sequencias.html: painel 4 cards (nível/questão/pontos/tempo)",
+        "desafio-loops.html: grid 5x5 + painel comandos",
+        "caca-erros.html: editor código + painel stats (nível/erros/pontos/dicas)"
+      ],
+      "occurrences": 1,
+      "id": "estrutura-padr-o-de-jogo-educacional",
+      "createdAt": "2026-01-06T20:52:44.531Z"
+    },
+    "sistema-de-feedback-interativo": {
+      "name": "Sistema de Feedback Interativo",
+      "context": "frontend",
+      "description": "Sistema de feedback visual e sonoro para ações do jogador. Usa overlay escuro, mensagem centralizada com emoji, animações CSS e Web Audio API para sons.",
+      "pattern": "// HTML\n<div class=\"feedback\" id=\"feedback\"></div>\n<div class=\"overlay\" id=\"overlay\"></div>\n\n// JavaScript\nfunction mostrarFeedback(mensagem, tipo) {\n  const feedback = document.getElementById('feedback');\n  const overlay = document.getElementById('overlay');\n  \n  feedback.textContent = mensagem;\n  feedback.className = `feedback ${tipo}`; // 'sucesso' | 'erro'\n  feedback.style.display = 'block';\n  overlay.style.display = 'block';\n  \n  setTimeout(() => {\n    feedback.style.display = 'none';\n    overlay.style.display = 'none';\n  }, 2000);\n}\n\nfunction tocarSom(frequencia, duracao) {\n  const audioContext = new (window.AudioContext || window.webkitAudioContext)();\n  const oscillator = audioContext.createOscillator();\n  oscillator.frequency.value = frequencia;\n  oscillator.connect(audioContext.destination);\n  oscillator.start();\n  oscillator.stop(audioContext.currentTime + duracao);\n}\n\n// CSS\n.feedback {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  background: white;\n  padding: 30px 50px;\n  border-radius: 20px;\n  font-size: 1.5rem;\n  font-weight: bold;\n  box-shadow: 0 10px 40px rgba(0,0,0,0.3);\n  z-index: 1000;\n  display: none;\n}\n\n.feedback.sucesso { color: #10B981; }\n.feedback.erro { color: #EF4444; }",
+      "examples": [
+        "mostrarFeedback('Correto! 🎉', 'sucesso')",
+        "tocarSom(800, 0.1) // frequência 800Hz, duração 0.1s",
+        "criarConfetes() // animação de celebração"
+      ],
+      "occurrences": 1,
+      "id": "sistema-de-feedback-interativo",
+      "createdAt": "2026-01-06T20:52:55.452Z"
+    }
+  },
+  "lastUpdated": "2026-01-06T20:52:55.452Z",
+  "version": "1.0.0"
+}

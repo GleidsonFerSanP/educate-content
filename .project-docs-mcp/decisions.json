@@ -1,0 +1,63 @@
+{
+  "decisions": [
+    {
+      "title": "ADR-001: Vanilla JavaScript sem Frameworks",
+      "context": "O projeto é voltado para educação infantil (8-10 anos) e precisa ser simples, rápido e sem barreiras técnicas. Deploy direto para S3 sem build process. Código deve ser legível e modificável facilmente.",
+      "decision": "Utilizar apenas HTML5, CSS3 e Vanilla JavaScript puro, sem frameworks ou bundlers. Deploy direto via aws s3 sync.",
+      "consequences": {
+        "positive": [
+          "Zero dependências = zero vulnerabilidades",
+          "Carregamento instantâneo das páginas",
+          "Deploy simples: git push + aws s3 sync",
+          "Código 100% compreensível para iniciantes",
+          "Sem build process ou node_modules",
+          "Funciona offline após primeiro load"
+        ],
+        "negative": [
+          "Código mais verboso em alguns casos",
+          "Sem reatividade automática (manual DOM manipulation)",
+          "Sem sistema de componentes reutilizáveis",
+          "Repetição de estruturas HTML"
+        ]
+      },
+      "alternatives": [
+        "React/Vue.js - frameworks complexos demais para crianças manterem",
+        "jQuery - dependência desnecessária",
+        "TypeScript - adiciona complexidade de build"
+      ],
+      "status": "accepted",
+      "id": "ADR-001",
+      "createdAt": "2026-01-06T20:53:06.695Z"
+    },
+    {
+      "title": "ADR-002: Hospedagem em AWS S3 Static Website",
+      "context": "Projeto precisa de hospedagem barata, rápida e escalável para servir arquivos estáticos. Não há backend, API ou processamento server-side. Público-alvo são crianças acessando via link compartilhado.",
+      "decision": "Deploy em AWS S3 com static website hosting habilitado. Sincronização via AWS CLI (aws s3 sync). Bucket público com ACLs desabilitadas.",
+      "consequences": {
+        "positive": [
+          "Custo quase zero (fractions of cents)",
+          "Escalabilidade automática ilimitada",
+          "99.99% uptime SLA",
+          "Deploy em segundos: aws s3 sync . s3://bucket/",
+          "Integração com GitHub Actions possível",
+          "Sem servidores para manter"
+        ],
+        "negative": [
+          "CloudFront opcional (não configurado) para CDN global",
+          "URLs longas da AWS S3 (não human-friendly)",
+          "Sem HTTPS custom domain (usar CloudFront se necessário)"
+        ]
+      },
+      "alternatives": [
+        "GitHub Pages - não suporta custom domain facilmente",
+        "Netlify/Vercel - overkill para site estático simples",
+        "Hospedagem tradicional - custo mensal fix"
+      ],
+      "status": "accepted",
+      "id": "ADR-002",
+      "createdAt": "2026-01-06T20:53:16.813Z"
+    }
+  ],
+  "lastUpdated": "2026-01-06T20:53:16.813Z",
+  "version": "1.0.0"
+}
