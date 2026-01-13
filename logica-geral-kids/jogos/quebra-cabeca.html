@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <title>Quebra-Cabeça Lógico - Lógica Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .puzzle-grid {
+            display: grid;
+            gap: 10px;
+            margin: 30px auto;
+            max-width: 400px;
+            background: var(--cor-card);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .puzzle-grid.grid-3x3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .puzzle-grid.grid-4x4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .puzzle-piece {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-acento));
+            border: 3px solid white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.5);
+        }
+
+        .puzzle-piece.empty {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .puzzle-piece.selecionada {
+            background: linear-gradient(135deg, var(--cor-secundaria), var(--cor-alerta));
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.8);
+        }
+
+        .puzzle-piece.animando {
+            animation: trocar 0.4s ease-in-out;
+        }
+
+        @keyframes trocar {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.8) rotate(10deg); }
+        }
+
+        .instrucoes-puzzle {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px solid var(--cor-acento);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .instrucoes-puzzle h3 {
+            color: var(--cor-primaria);
+            margin-bottom: 10px;
+        }
+
+        .instrucoes-puzzle p {
+            color: #94A3B8;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .preview-objetivo {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--cor-primaria);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .preview-grid {
+            display: grid;
+            gap: 5px;
+            margin: 15px auto;
+            max-width: 200px;
+        }
+
+        .preview-grid.grid-3x3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .preview-grid.grid-4x4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .preview-piece {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--cor-primaria), var(--cor-acento));
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .preview-piece.empty {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .movimentos-info {
+            text-align: center;
+            font-size: 1.2rem;
+            color: var(--cor-secundaria);
+            font-weight: bold;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🧩 Quebra-Cabeça Lógico</h1>
+                <p style="font-size: 1.2rem;">Organize as peças na ordem certa!</p>
+            </div>
+
+            <!-- Painel de Progresso -->
+            <div class="painel-superior">
+                <div class="info-item">
+                    <span class="info-label">Nível:</span>
+                    <span class="info-valor" id="nivel">1</span>/5
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pontos:</span>
+                    <span class="info-valor" id="pontos">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Movimentos:</span>
+                    <span class="info-valor" id="movimentos">0</span>
+                </div>
+            </div>
+
+            <!-- Instruções -->
+            <div class="instrucoes-puzzle">
+                <h3>📋 Como Jogar</h3>
+                <p id="instrucao-texto"></p>
+            </div>
+
+            <!-- Preview do Objetivo -->
+            <div class="preview-objetivo">
+                <h3 style="color: white; margin-bottom: 15px;">🎯 Objetivo:</h3>
+                <div class="preview-grid" id="preview-grid"></div>
+            </div>
+
+            <!-- Grade do Puzzle -->
+            <div class="card-conteudo">
+                <div class="movimentos-info">
+                    💡 Clique em duas peças para trocá-las de lugar
+                </div>
+                <div class="puzzle-grid" id="puzzle-grid"></div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="acoes-jogo">
+                <button class="btn-secundario" id="btn-embaralhar">
+                    🔄 Embaralhar
+                </button>
+                <button class="btn-voltar" onclick="window.location.href='../index.html'">
+                    ← Voltar
+                </button>
+                <button class="btn-confirmar" id="btn-verificar">
+                    Verificar ✓
+                </button>
+            </div>
+
+            <!-- Tela de Vitória -->
+            <div class="tela-vitoria oculta" id="tela-vitoria">
+                <div class="confetes" id="confetes"></div>
+                <div class="vitoria-conteudo">
+                    <div class="vitoria-emoji">🏆</div>
+                    <h2>Parabéns, Mestre dos Puzzles!</h2>
+                    <p>Você completou todos os quebra-cabeças!</p>
+                    <div class="pontuacao-final">
+                        <span class="pontos-texto">Pontuação Final:</span>
+                        <span class="pontos-numero" id="pontos-finais">0</span>
+                    </div>
+                    <div class="acoes-vitoria">
+                        <button class="btn-secundario" onclick="window.location.href='../index.html'">
+                            Voltar ao Menu
+                        </button>
+                        <button class="btn-primario" onclick="location.reload()">
+                            Jogar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // ===== DADOS DOS NÍVEIS =====
+        const NIVEIS = [
+            {
+                id: 1,
+                tipo: "Números 1-8",
+                tamanho: 3,
+                instrucao: "Organize os números de 1 a 8 em ordem crescente! O espaço vazio pode ser usado para mover as peças.",
+                objetivo: [1, 2, 3, 4, 5, 6, 7, 8, null],
+                inicial: null // Será embaralhado
+            },
+            {
+                id: 2,
+                tipo: "Letras A-H",
+                tamanho: 3,
+                instrucao: "Organize as letras de A até H em ordem alfabética!",
+                objetivo: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', null],
+                inicial: null
+            },
+            {
+                id: 3,
+                tipo: "Emojis de Frutas",
+                tamanho: 3,
+                instrucao: "Organize as frutas seguindo o padrão mostrado no objetivo!",
+                objetivo: ['🍎', '🍌', '🍇', '🍊', '🍓', '🍉', '🍑', '🍒', null],
+                inicial: null
+            },
+            {
+                id: 4,
+                tipo: "Números 1-15",
+                tamanho: 4,
+                instrucao: "Desafio maior! Organize os números de 1 a 15 em um grid 4x4!",
+                objetivo: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null],
+                inicial: null
+            },
+            {
+                id: 5,
+                tipo: "Padrão de Cores",
+                tamanho: 4,
+                instrucao: "Organize os emojis coloridos seguindo o padrão do arco-íris!",
+                objetivo: ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '🟤', '⚫', '⚪', '🔶', '🔷', '💚', '💙', '💜', '🤎', null],
+                inicial: null
+            }
+        ];
+
+        // ===== ESTADO DO JOGO =====
+        let nivelAtual = 0;
+        let pontuacao = 0;
+        let movimentos = 0;
+        let estadoAtual = [];
+        let pecaSelecionada = null;
+
+        // ===== INICIALIZAÇÃO =====
+        function init() {
+            carregarNivel();
+            document.getElementById('btn-embaralhar').addEventListener('click', embaralharPuzzle);
+            document.getElementById('btn-verificar').addEventListener('click', verificarSolucao);
+        }
+
+        // ===== CARREGAR NÍVEL =====
+        function carregarNivel() {
+            const nivel = NIVEIS[nivelAtual];
+            movimentos = 0;
+            pecaSelecionada = null;
+
+            // Atualizar informações
+            document.getElementById('nivel').textContent = nivel.id;
+            document.getElementById('pontos').textContent = pontuacao;
+            document.getElementById('movimentos').textContent = movimentos;
+            document.getElementById('instrucao-texto').textContent = nivel.instrucao;
+
+            // Configurar grid
+            const puzzleGrid = document.getElementById('puzzle-grid');
+            const previewGrid = document.getElementById('preview-grid');
+            
+            puzzleGrid.className = `puzzle-grid grid-${nivel.tamanho}x${nivel.tamanho}`;
+            previewGrid.className = `preview-grid grid-${nivel.tamanho}x${nivel.tamanho}`;
+
+            // Mostrar preview do objetivo
+            previewGrid.innerHTML = nivel.objetivo.map(peca => `
+                <div class="preview-piece ${peca === null ? 'empty' : ''}">
+                    ${peca !== null ? peca : ''}
+                </div>
+            `).join('');
+
+            // Embaralhar e mostrar puzzle
+            embaralharPuzzle();
+        }
+
+        // ===== EMBARALHAR PUZZLE =====
+        function embaralharPuzzle() {
+            const nivel = NIVEIS[nivelAtual];
+            
+            // Criar cópia embaralhada (garantindo que não está resolvido)
+            do {
+                estadoAtual = embaralhar([...nivel.objetivo]);
+            } while (JSON.stringify(estadoAtual) === JSON.stringify(nivel.objetivo));
+
+            renderizarPuzzle();
+            movimentos = 0;
+            document.getElementById('movimentos').textContent = movimentos;
+            pecaSelecionada = null;
+        }
+
+        // ===== RENDERIZAR PUZZLE =====
+        function renderizarPuzzle() {
+            const puzzleGrid = document.getElementById('puzzle-grid');
+            
+            puzzleGrid.innerHTML = estadoAtual.map((peca, index) => `
+                <div class="puzzle-piece ${peca === null ? 'empty' : ''}" data-index="${index}">
+                    ${peca !== null ? peca : ''}
+                </div>
+            `).join('');
+
+            // Adicionar event listeners
+            document.querySelectorAll('.puzzle-piece:not(.empty)').forEach(piece => {
+                piece.addEventListener('click', () => selecionarPeca(piece));
+            });
+        }
+
+        // ===== SELECIONAR PEÇA =====
+        function selecionarPeca(elemento) {
+            const index = parseInt(elemento.dataset.index);
+
+            if (pecaSelecionada === null) {
+                // Primeira seleção
+                pecaSelecionada = index;
+                elemento.classList.add('selecionada');
+                tocarSom(400, 50, 'sine'); // Sons.click()
+            } else if (pecaSelecionada === index) {
+                // Desselecionar
+                pecaSelecionada = null;
+                elemento.classList.remove('selecionada');
+                tocarSom(400, 50, 'sine'); // Sons.click()
+            } else {
+                // Segunda seleção - trocar
+                trocarPecas(pecaSelecionada, index);
+                document.querySelectorAll('.puzzle-piece').forEach(p => p.classList.remove('selecionada'));
+                pecaSelecionada = null;
+            }
+        }
+
+        // ===== TROCAR PEÇAS =====
+        function trocarPecas(index1, index2) {
+            // Adicionar animação
+            const peca1 = document.querySelector(`[data-index="${index1}"]`);
+            const peca2 = document.querySelector(`[data-index="${index2}"]`);
+            
+            if (peca1) peca1.classList.add('animando');
+            if (peca2) peca2.classList.add('animando');
+
+            // Trocar no array
+            [estadoAtual[index1], estadoAtual[index2]] = [estadoAtual[index2], estadoAtual[index1]];
+            
+            movimentos++;
+            document.getElementById('movimentos').textContent = movimentos;
+            
+            tocarSom(600, 100, 'triangle'); // Sons.troca()
+
+            // Re-renderizar após animação
+            setTimeout(() => {
+                renderizarPuzzle();
+                
+                // Verificar se resolveu automaticamente
+                if (verificarResolvido()) {
+                    setTimeout(() => nivelCompleto(), 500);
+                }
+            }, 400);
+        }
+
+        // ===== VERIFICAR SE RESOLVIDO =====
+        function verificarResolvido() {
+            const nivel = NIVEIS[nivelAtual];
+            return JSON.stringify(estadoAtual) === JSON.stringify(nivel.objetivo);
+        }
+
+        // ===== VERIFICAR SOLUÇÃO =====
+        function verificarSolucao() {
+            if (verificarResolvido()) {
+                nivelCompleto();
+            } else {
+                tocarSom(200, 300, 'sawtooth'); // Sons.erro()
+                mostrarFeedback('❌ Ainda não está na ordem correta. Continue tentando!', 'erro');
+            }
+        }
+
+        // ===== NÍVEL COMPLETO =====
+        function nivelCompleto() {
+            // Calcular pontos (menos movimentos = mais pontos)
+            const nivel = NIVEIS[nivelAtual];
+            const movimentosOtimos = nivel.tamanho === 3 ? 20 : 30;
+            let pontosGanhos = 20;
+            
+            if (movimentos <= movimentosOtimos) {
+                pontosGanhos += 10; // Bônus por eficiência
+            }
+            
+            pontuacao += pontosGanhos;
+            
+            tocarSom(800, 200, 'sine'); // Sons.acerto()
+            let mensagem = `🎉 Perfeito! Puzzle resolvido em ${movimentos} movimentos! +${pontosGanhos} pontos`;
+            mostrarFeedback(mensagem, 'sucesso');
+            
+            setTimeout(() => {
+                nivelAtual++;
+                if (nivelAtual < NIVEIS.length) {
+                    carregarNivel();
+                } else {
+                    mostrarVitoria();
+                }
+            }, 2500);
+        }
+
+        // ===== MOSTRAR VITÓRIA =====
+        function mostrarVitoria() {
+            document.querySelector('.jogo-container').style.display = 'none';
+            const telaVitoria = document.getElementById('tela-vitoria');
+            telaVitoria.classList.remove('oculta');
+            
+            document.getElementById('pontos-finais').textContent = pontuacao;
+            
+            // Tocar sequência de sons de vitória
+            tocarSom(523, 200, 'sine'); // C
+            setTimeout(() => tocarSom(659, 200, 'sine'), 200); // E
+            setTimeout(() => tocarSom(784, 400, 'sine'), 400); // G
+            
+            criarConfetes();
+            
+            Progresso.salvar('quebra-cabeca', pontuacao);
+        }
+
+        // ===== INICIALIZAR JOGO =====
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

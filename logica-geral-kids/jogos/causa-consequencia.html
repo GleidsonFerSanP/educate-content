@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <title>Causa e Consequência - Lógica Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .situacao-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px solid var(--cor-acento);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .situacao-emoji {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .situacao-texto {
+            font-size: 1.3rem;
+            color: white;
+            line-height: 1.8;
+            font-weight: 600;
+        }
+
+        .opcoes-consequencia {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .opcao-consequencia {
+            background: var(--cor-card);
+            border: 3px solid transparent;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .opcao-consequencia:hover {
+            transform: translateY(-5px);
+            border-color: var(--cor-primaria);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .opcao-consequencia.selecionada {
+            border-color: var(--cor-secundaria);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .opcao-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .opcao-texto {
+            font-size: 1.1rem;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .tipo-situacao {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--cor-primaria);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .explicacao-causa {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--cor-primaria);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #94A3B8;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .explicacao-causa.mostrar {
+            display: block;
+            animation: aparecer 0.5s ease-out;
+        }
+
+        .explicacao-causa strong {
+            color: var(--cor-primaria);
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">⚡ Causa e Consequência</h1>
+                <p style="font-size: 1.2rem;">O que acontece quando fazemos algo? Descubra!</p>
+            </div>
+
+            <!-- Painel de Progresso -->
+            <div class="painel-superior">
+                <div class="info-item">
+                    <span class="info-label">Nível:</span>
+                    <span class="info-valor" id="nivel">1</span>/5
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pontos:</span>
+                    <span class="info-valor" id="pontos">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Sequência:</span>
+                    <span class="info-valor" id="sequencia">0</span>
+                </div>
+            </div>
+
+            <!-- Situação (Causa) -->
+            <div class="card-conteudo">
+                <div class="tipo-situacao" id="tipo-situacao">🎯 Causa</div>
+                <div class="situacao-card">
+                    <div class="situacao-emoji" id="situacao-emoji"></div>
+                    <p class="situacao-texto" id="situacao-texto"></p>
+                </div>
+            </div>
+
+            <!-- Pergunta -->
+            <div style="text-align: center; margin: 40px 0;">
+                <h2 style="color: var(--cor-secundaria); font-size: 1.8rem;">
+                    🤔 O que vai acontecer?
+                </h2>
+            </div>
+
+            <!-- Opções de Consequência -->
+            <div class="opcoes-consequencia" id="opcoes-container"></div>
+
+            <!-- Explicação -->
+            <div class="explicacao-causa" id="explicacao"></div>
+
+            <!-- Botões de Ação -->
+            <div class="acoes-jogo">
+                <button class="btn-voltar" onclick="window.location.href='../index.html'">
+                    ← Voltar
+                </button>
+                <button class="btn-confirmar" id="btn-responder">
+                    Confirmar Resposta ✓
+                </button>
+            </div>
+
+            <!-- Tela de Vitória -->
+            <div class="tela-vitoria oculta" id="tela-vitoria">
+                <div class="confetes" id="confetes"></div>
+                <div class="vitoria-conteudo">
+                    <div class="vitoria-emoji">🏆</div>
+                    <h2>Parabéns, Pensador Lógico!</h2>
+                    <p>Você entendeu causa e consequência!</p>
+                    <div class="pontuacao-final">
+                        <span class="pontos-texto">Pontuação Final:</span>
+                        <span class="pontos-numero" id="pontos-finais">0</span>
+                    </div>
+                    <div class="acoes-vitoria">
+                        <button class="btn-secundario" onclick="window.location.href='../index.html'">
+                            Voltar ao Menu
+                        </button>
+                        <button class="btn-primario" onclick="location.reload()">
+                            Jogar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // ===== DADOS DOS NÍVEIS =====
+        const NIVEIS = [
+            {
+                id: 1,
+                tipo: "Ações do Dia a Dia",
+                causa: {
+                    emoji: "☔",
+                    texto: "Está chovendo muito forte lá fora"
+                },
+                opcoes: [
+                    { 
+                        emoji: "🏖️", 
+                        texto: "Você vai à praia tomar sol", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "☂️", 
+                        texto: "Você pega um guarda-chuva antes de sair", 
+                        correto: true 
+                    },
+                    { 
+                        emoji: "🌞", 
+                        texto: "Você coloca óculos de sol", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🏃", 
+                        texto: "Você vai correr no parque", 
+                        correto: false 
+                    }
+                ],
+                explicacao: "Quando está chovendo, precisamos nos proteger da água! O guarda-chuva é a solução perfeita para não ficar molhado."
+            },
+            {
+                id: 2,
+                tipo: "Natureza",
+                causa: {
+                    emoji: "🌱",
+                    texto: "Você planta uma semente e rega todos os dias"
+                },
+                opcoes: [
+                    { 
+                        emoji: "🌳", 
+                        texto: "A planta cresce e fica grande", 
+                        correto: true 
+                    },
+                    { 
+                        emoji: "🍔", 
+                        texto: "Aparece um hambúrguer", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🔥", 
+                        texto: "A semente pega fogo", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "💎", 
+                        texto: "Nasce um diamante", 
+                        correto: false 
+                    }
+                ],
+                explicacao: "Plantas precisam de água e luz solar para crescer! Quando cuidamos bem delas, elas se desenvolvem e ficam grandes e bonitas."
+            },
+            {
+                id: 3,
+                tipo: "Estudos",
+                causa: {
+                    emoji: "📚",
+                    texto: "Você estuda muito para a prova de matemática"
+                },
+                opcoes: [
+                    { 
+                        emoji: "😴", 
+                        texto: "Você dorme durante a prova", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "📝", 
+                        texto: "Você consegue responder as questões facilmente", 
+                        correto: true 
+                    },
+                    { 
+                        emoji: "🎮", 
+                        texto: "Você se torna campeão de videogame", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🏊", 
+                        texto: "Você aprende a nadar", 
+                        correto: false 
+                    }
+                ],
+                explicacao: "Estudar nos prepara para os desafios! Quando nos dedicamos, conseguimos resolver os problemas com mais facilidade e confiança."
+            },
+            {
+                id: 4,
+                tipo: "Saúde",
+                causa: {
+                    emoji: "🍕",
+                    texto: "Você come muito doce e fast food todos os dias"
+                },
+                opcoes: [
+                    { 
+                        emoji: "💪", 
+                        texto: "Você fica mais forte e saudável", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🦷", 
+                        texto: "Seus dentes podem ter cáries e você pode ficar doente", 
+                        correto: true 
+                    },
+                    { 
+                        emoji: "🏃", 
+                        texto: "Você corre mais rápido", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🧠", 
+                        texto: "Você fica mais inteligente", 
+                        correto: false 
+                    }
+                ],
+                explicacao: "Uma alimentação equilibrada é importante para nossa saúde! Comer muito doce e fast food pode prejudicar nossos dentes e nosso corpo."
+            },
+            {
+                id: 5,
+                tipo: "Amizade",
+                causa: {
+                    emoji: "🤝",
+                    texto: "Você é gentil e ajuda seus colegas sempre"
+                },
+                opcoes: [
+                    { 
+                        emoji: "😡", 
+                        texto: "Todos ficam com raiva de você", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "🏆", 
+                        texto: "Você vence uma competição de natação", 
+                        correto: false 
+                    },
+                    { 
+                        emoji: "❤️", 
+                        texto: "Você faz muitos amigos e as pessoas gostam de estar com você", 
+                        correto: true 
+                    },
+                    { 
+                        emoji: "💤", 
+                        texto: "Você fica com sono", 
+                        correto: false 
+                    }
+                ],
+                explicacao: "Ser gentil e ajudar os outros cria laços de amizade! Quando somos bons com as pessoas, elas também querem ser nossas amigas."
+            }
+        ];
+
+        // ===== ESTADO DO JOGO =====
+        let nivelAtual = 0;
+        let pontuacao = 0;
+        let sequenciaAcertos = 0;
+        let opcaoSelecionada = null;
+
+        // ===== INICIALIZAÇÃO =====
+        function init() {
+            carregarNivel();
+            document.getElementById('btn-responder').addEventListener('click', verificarResposta);
+        }
+
+        // ===== CARREGAR NÍVEL =====
+        function carregarNivel() {
+            const nivel = NIVEIS[nivelAtual];
+            opcaoSelecionada = null;
+
+            // Atualizar informações
+            document.getElementById('nivel').textContent = nivel.id;
+            document.getElementById('pontos').textContent = pontuacao;
+            document.getElementById('sequencia').textContent = sequenciaAcertos;
+            document.getElementById('tipo-situacao').textContent = `🎯 ${nivel.tipo}`;
+
+            // Carregar situação (causa)
+            document.getElementById('situacao-emoji').textContent = nivel.causa.emoji;
+            document.getElementById('situacao-texto').textContent = nivel.causa.texto;
+
+            // Ocultar explicação
+            document.getElementById('explicacao').classList.remove('mostrar');
+
+            // Carregar opções (embaralhadas)
+            const opcoesEmbaralhadas = embaralhar([...nivel.opcoes]);
+            const opcoesContainer = document.getElementById('opcoes-container');
+            opcoesContainer.innerHTML = opcoesEmbaralhadas.map((opcao, index) => `
+                <div class="opcao-consequencia" data-index="${index}" data-correto="${opcao.correto}">
+                    <div class="opcao-emoji">${opcao.emoji}</div>
+                    <div class="opcao-texto">${opcao.texto}</div>
+                </div>
+            `).join('');
+
+            // Adicionar event listeners
+            document.querySelectorAll('.opcao-consequencia').forEach(opcao => {
+                opcao.addEventListener('click', () => selecionarOpcao(opcao));
+            });
+        }
+
+        // ===== SELECIONAR OPÇÃO =====
+        function selecionarOpcao(elemento) {
+            // Remover seleção anterior
+            document.querySelectorAll('.opcao-consequencia').forEach(op => op.classList.remove('selecionada'));
+            
+            // Adicionar nova seleção
+            elemento.classList.add('selecionada');
+            opcaoSelecionada = elemento.dataset.correto === 'true';
+            
+            Sons.selecao();
+        }
+
+        // ===== VERIFICAR RESPOSTA =====
+        function verificarResposta() {
+            if (opcaoSelecionada === null) {
+                mostrarFeedback('Selecione uma opção primeiro! 🤔', 'alerta');
+                return;
+            }
+
+            const nivel = NIVEIS[nivelAtual];
+            const explicacao = document.getElementById('explicacao');
+            
+            explicacao.textContent = `💡 ${nivel.explicacao}`;
+            explicacao.classList.add('mostrar');
+
+            if (opcaoSelecionada) {
+                // Acertou!
+                sequenciaAcertos++;
+                const bonus = sequenciaAcertos >= 3 ? 5 : 0;
+                const pontosGanhos = 20 + bonus;
+                pontuacao += pontosGanhos;
+                
+                Sons.acerto();
+                let mensagem = `🎯 Correto! +${pontosGanhos} pontos`;
+                if (bonus > 0) mensagem += ` (bônus de ${bonus} pela sequência!)`;
+                mostrarFeedback(mensagem, 'sucesso');
+                
+                setTimeout(() => {
+                    nivelAtual++;
+                    if (nivelAtual < NIVEIS.length) {
+                        carregarNivel();
+                    } else {
+                        mostrarVitoria();
+                    }
+                }, 3000);
+            } else {
+                // Errou!
+                sequenciaAcertos = 0;
+                Sons.erro();
+                mostrarFeedback('❌ Não é bem assim. Leia a explicação e tente novamente!', 'erro');
+                
+                // Resetar seleção após 2 segundos
+                setTimeout(() => {
+                    document.querySelectorAll('.opcao-consequencia').forEach(op => op.classList.remove('selecionada'));
+                    opcaoSelecionada = null;
+                }, 2000);
+            }
+        }
+
+        // ===== MOSTRAR VITÓRIA =====
+        function mostrarVitoria() {
+            document.querySelector('.jogo-container').style.display = 'none';
+            const telaVitoria = document.getElementById('tela-vitoria');
+            telaVitoria.classList.remove('oculta');
+            
+            document.getElementById('pontos-finais').textContent = pontuacao;
+            
+            Sons.vitoria();
+            criarConfetes();
+            
+            Progresso.salvar('causa-consequencia', pontuacao);
+        }
+
+        // ===== INICIALIZAR JOGO =====
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

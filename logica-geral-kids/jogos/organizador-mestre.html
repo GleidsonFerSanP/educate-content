@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <title>Organizador Mestre - Lógica Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .drag-area {
+            min-height: 400px;
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .categoria {
+            flex: 1;
+            min-width: 250px;
+            background: var(--cor-card);
+            border: 3px dashed var(--cor-primaria);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .categoria-titulo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .categoria-emoji {
+            font-size: 2rem;
+        }
+
+        .categoria-itens {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 10px;
+        }
+
+        .itens-disponiveis {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px solid var(--cor-acento);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .itens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .item-arrastar {
+            background: var(--cor-card);
+            border: 2px solid var(--cor-primaria);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: move;
+            transition: all 0.3s ease;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-emoji {
+            font-size: 2.5rem;
+        }
+
+        .item-nome {
+            font-size: 0.85rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        .item-arrastar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .item-arrastar.arrastando {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .item-arrastar.em-categoria {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: var(--cor-secundaria);
+        }
+
+        .categoria-itens.drag-over {
+            background: rgba(245, 158, 11, 0.2);
+            border: 3px solid var(--cor-secundaria);
+        }
+
+        .instrucao-drag {
+            text-align: center;
+            color: #94A3B8;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .drag-area {
+                flex-direction: column;
+            }
+            
+            .categoria {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">📦 Organizador Mestre</h1>
+                <p style="font-size: 1.2rem;">Arraste os itens para as categorias corretas!</p>
+            </div>
+
+            <!-- Painel de Progresso -->
+            <div class="painel-superior">
+                <div class="info-item">
+                    <span class="info-label">Nível:</span>
+                    <span class="info-valor" id="nivel">1</span>/5
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pontos:</span>
+                    <span class="info-valor" id="pontos">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Corretos:</span>
+                    <span class="info-valor" id="corretos">0</span>/<span id="total">0</span>
+                </div>
+            </div>
+
+            <!-- Instrução -->
+            <div class="instrucao-drag">
+                💡 <strong>Como jogar:</strong> Arraste cada item para a categoria correta! 
+                No celular, toque e segure o item, depois arraste até a categoria desejada.
+            </div>
+
+            <!-- Desafio Atual -->
+            <div class="card-conteudo" id="desafio-container">
+                <h2 style="color: var(--cor-primaria); margin-bottom: 20px;" id="desafio-titulo"></h2>
+                <div class="drag-area" id="categorias-area"></div>
+            </div>
+
+            <!-- Itens Disponíveis -->
+            <div class="itens-disponiveis" id="itens-container">
+                <h3 style="color: white; margin-bottom: 15px; font-size: 1.5rem;">📋 Itens para Organizar</h3>
+                <div class="itens-grid" id="itens-grid"></div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="acoes-jogo">
+                <button class="btn-voltar" onclick="window.location.href='../index.html'">
+                    ← Voltar
+                </button>
+                <button class="btn-confirmar" id="btn-verificar">
+                    Verificar Organização ✓
+                </button>
+            </div>
+
+            <!-- Tela de Vitória -->
+            <div class="tela-vitoria oculta" id="tela-vitoria">
+                <div class="confetes" id="confetes"></div>
+                <div class="vitoria-conteudo">
+                    <div class="vitoria-emoji">🏆</div>
+                    <h2>Parabéns, Organizador Mestre!</h2>
+                    <p>Você organizou tudo perfeitamente!</p>
+                    <div class="pontuacao-final">
+                        <span class="pontos-texto">Pontuação Final:</span>
+                        <span class="pontos-numero" id="pontos-finais">0</span>
+                    </div>
+                    <div class="acoes-vitoria">
+                        <button class="btn-secundario" onclick="window.location.href='../index.html'">
+                            Voltar ao Menu
+                        </button>
+                        <button class="btn-primario" onclick="location.reload()">
+                            Jogar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // ===== DADOS DOS NÍVEIS =====
+        const NIVEIS = [
+            {
+                id: 1,
+                titulo: "🍎 Alimentos: Frutas ou Vegetais?",
+                categorias: [
+                    { id: "frutas", nome: "Frutas", emoji: "🍎" },
+                    { id: "vegetais", nome: "Vegetais", emoji: "🥕" }
+                ],
+                itens: [
+                    { emoji: "🍎", nome: "Maçã", categoriaCorreta: "frutas" },
+                    { emoji: "🍌", nome: "Banana", categoriaCorreta: "frutas" },
+                    { emoji: "🥕", nome: "Cenoura", categoriaCorreta: "vegetais" },
+                    { emoji: "🍇", nome: "Uvas", categoriaCorreta: "frutas" },
+                    { emoji: "🥦", nome: "Brócolis", categoriaCorreta: "vegetais" },
+                    { emoji: "🍊", nome: "Laranja", categoriaCorreta: "frutas" },
+                    { emoji: "🌽", nome: "Milho", categoriaCorreta: "vegetais" },
+                    { emoji: "🍓", nome: "Morango", categoriaCorreta: "frutas" }
+                ]
+            },
+            {
+                id: 2,
+                titulo: "🐾 Animais: Domésticos ou Selvagens?",
+                categorias: [
+                    { id: "domesticos", nome: "Domésticos", emoji: "🏠" },
+                    { id: "selvagens", nome: "Selvagens", emoji: "🌳" }
+                ],
+                itens: [
+                    { emoji: "🐕", nome: "Cachorro", categoriaCorreta: "domesticos" },
+                    { emoji: "🦁", nome: "Leão", categoriaCorreta: "selvagens" },
+                    { emoji: "🐈", nome: "Gato", categoriaCorreta: "domesticos" },
+                    { emoji: "🐘", nome: "Elefante", categoriaCorreta: "selvagens" },
+                    { emoji: "🐇", nome: "Coelho", categoriaCorreta: "domesticos" },
+                    { emoji: "🦒", nome: "Girafa", categoriaCorreta: "selvagens" },
+                    { emoji: "🐎", nome: "Cavalo", categoriaCorreta: "domesticos" },
+                    { emoji: "🐅", nome: "Tigre", categoriaCorreta: "selvagens" }
+                ]
+            },
+            {
+                id: 3,
+                titulo: "⚽ Esportes: Individual ou Em Equipe?",
+                categorias: [
+                    { id: "individual", nome: "Individual", emoji: "🏃" },
+                    { id: "equipe", nome: "Em Equipe", emoji: "👥" }
+                ],
+                itens: [
+                    { emoji: "⚽", nome: "Futebol", categoriaCorreta: "equipe" },
+                    { emoji: "🏊", nome: "Natação", categoriaCorreta: "individual" },
+                    { emoji: "🏀", nome: "Basquete", categoriaCorreta: "equipe" },
+                    { emoji: "🎾", nome: "Tênis", categoriaCorreta: "individual" },
+                    { emoji: "🏐", nome: "Vôlei", categoriaCorreta: "equipe" },
+                    { emoji: "🏃", nome: "Corrida", categoriaCorreta: "individual" },
+                    { emoji: "🏈", nome: "Futebol Americano", categoriaCorreta: "equipe" },
+                    { emoji: "🚴", nome: "Ciclismo", categoriaCorreta: "individual" }
+                ]
+            },
+            {
+                id: 4,
+                titulo: "🌡️ Temperatura: Quente ou Frio?",
+                categorias: [
+                    { id: "quente", nome: "Quente", emoji: "🔥" },
+                    { id: "frio", nome: "Frio", emoji: "❄️" }
+                ],
+                itens: [
+                    { emoji: "☀️", nome: "Sol", categoriaCorreta: "quente" },
+                    { emoji: "⛄", nome: "Boneco de Neve", categoriaCorreta: "frio" },
+                    { emoji: "🔥", nome: "Fogo", categoriaCorreta: "quente" },
+                    { emoji: "🧊", nome: "Gelo", categoriaCorreta: "frio" },
+                    { emoji: "🌋", nome: "Vulcão", categoriaCorreta: "quente" },
+                    { emoji: "🏔️", nome: "Montanha Gelada", categoriaCorreta: "frio" },
+                    { emoji: "🏖️", nome: "Praia", categoriaCorreta: "quente" },
+                    { emoji: "⛸️", nome: "Patinação no Gelo", categoriaCorreta: "frio" }
+                ]
+            },
+            {
+                id: 5,
+                titulo: "🚗 Transporte: Terra, Mar ou Ar?",
+                categorias: [
+                    { id: "terra", nome: "Terra", emoji: "🛣️" },
+                    { id: "mar", nome: "Mar", emoji: "🌊" },
+                    { id: "ar", nome: "Ar", emoji: "☁️" }
+                ],
+                itens: [
+                    { emoji: "🚗", nome: "Carro", categoriaCorreta: "terra" },
+                    { emoji: "⛵", nome: "Barco à Vela", categoriaCorreta: "mar" },
+                    { emoji: "✈️", nome: "Avião", categoriaCorreta: "ar" },
+                    { emoji: "🚂", nome: "Trem", categoriaCorreta: "terra" },
+                    { emoji: "🚢", nome: "Navio", categoriaCorreta: "mar" },
+                    { emoji: "🚁", nome: "Helicóptero", categoriaCorreta: "ar" },
+                    { emoji: "🚲", nome: "Bicicleta", categoriaCorreta: "terra" },
+                    { emoji: "🛵", nome: "Lancha", categoriaCorreta: "mar" },
+                    { emoji: "🎈", nome: "Balão", categoriaCorreta: "ar" }
+                ]
+            }
+        ];
+
+        // ===== ESTADO DO JOGO =====
+        let nivelAtual = 0;
+        let pontuacao = 0;
+        let itensOrganizados = {};
+        let elementoArrastando = null;
+        let itensEmbaralhados = []; // Guardar array embaralhado
+
+        // ===== INICIALIZAÇÃO =====
+        function init() {
+            carregarNivel();
+            document.getElementById('btn-verificar').addEventListener('click', verificarOrganizacao);
+        }
+
+        // ===== CARREGAR NÍVEL =====
+        function carregarNivel() {
+            const nivel = NIVEIS[nivelAtual];
+            itensOrganizados = {};
+
+            // Atualizar informações
+            document.getElementById('nivel').textContent = nivel.id;
+            document.getElementById('pontos').textContent = pontuacao;
+            document.getElementById('corretos').textContent = 0;
+            document.getElementById('total').textContent = nivel.itens.length;
+            document.getElementById('desafio-titulo').textContent = nivel.titulo;
+
+            // Criar categorias
+            const categoriasArea = document.getElementById('categorias-area');
+            categoriasArea.innerHTML = nivel.categorias.map(cat => `
+                <div class="categoria">
+                    <div class="categoria-titulo">
+                        <span class="categoria-emoji">${cat.emoji}</span>
+                        <span>${cat.nome}</span>
+                    </div>
+                    <div class="categoria-itens" data-categoria="${cat.id}"></div>
+                </div>
+            `).join('');
+
+            // Configurar drop zones
+            document.querySelectorAll('.categoria-itens').forEach(zona => {
+                zona.addEventListener('dragover', handleDragOver);
+                zona.addEventListener('drop', handleDrop);
+                zona.addEventListener('dragleave', handleDragLeave);
+            });
+
+            // Criar itens (embaralhados)
+            itensEmbaralhados = embaralhar([...nivel.itens]);
+            const itensGrid = document.getElementById('itens-grid');
+            itensGrid.innerHTML = itensEmbaralhados.map((item, index) => `
+                <div class="item-arrastar" draggable="true" data-item="${index}" data-categoria="${item.categoriaCorreta}">
+                    <div class="item-emoji">${item.emoji}</div>
+                    <div class="item-nome">${item.nome}</div>
+                </div>
+            `).join('');
+
+            // Configurar drag dos itens
+            document.querySelectorAll('.item-arrastar').forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                
+                // Suporte touch para mobile
+                item.addEventListener('touchstart', handleTouchStart, { passive: false });
+                item.addEventListener('touchmove', handleTouchMove, { passive: false });
+                item.addEventListener('touchend', handleTouchEnd);
+            });
+        }
+
+        // ===== DRAG AND DROP (Desktop) =====
+        function handleDragStart(e) {
+            elementoArrastando = e.target;
+            e.target.classList.add('arrastando');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('arrastando');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            e.currentTarget.classList.add('drag-over');
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) e.stopPropagation();
+            e.currentTarget.classList.remove('drag-over');
+
+            if (elementoArrastando) {
+                // Adicionar à categoria
+                e.currentTarget.appendChild(elementoArrastando);
+                elementoArrastando.classList.add('em-categoria');
+                
+                const itemId = elementoArrastando.dataset.item;
+                const categoria = e.currentTarget.dataset.categoria;
+                itensOrganizados[itemId] = categoria;
+                
+                Sons.drop();
+                atualizarProgresso();
+            }
+
+            return false;
+        }
+
+        // ===== TOUCH (Mobile) =====
+        let touchItem = null;
+        let touchOffset = { x: 0, y: 0 };
+
+        function handleTouchStart(e) {
+            e.preventDefault();
+            touchItem = e.target;
+            touchItem.classList.add('arrastando');
+            
+            const touch = e.touches[0];
+            const rect = touchItem.getBoundingClientRect();
+            touchOffset.x = touch.clientX - rect.left;
+            touchOffset.y = touch.clientY - rect.top;
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!touchItem) return;
+
+            const touch = e.touches[0];
+            touchItem.style.position = 'fixed';
+            touchItem.style.left = (touch.clientX - touchOffset.x) + 'px';
+            touchItem.style.top = (touch.clientY - touchOffset.y) + 'px';
+            touchItem.style.zIndex = '1000';
+        }
+
+        function handleTouchEnd(e) {
+            if (!touchItem) return;
+
+            const touch = e.changedTouches[0];
+            const elemento = document.elementFromPoint(touch.clientX, touch.clientY);
+            const categoriaZona = elemento?.closest('.categoria-itens');
+
+            touchItem.style.position = '';
+            touchItem.style.left = '';
+            touchItem.style.top = '';
+            touchItem.style.zIndex = '';
+            touchItem.classList.remove('arrastando');
+
+            if (categoriaZona) {
+                categoriaZona.appendChild(touchItem);
+                touchItem.classList.add('em-categoria');
+                
+                const itemId = touchItem.dataset.item;
+                const categoria = categoriaZona.dataset.categoria;
+                itensOrganizados[itemId] = categoria;
+                
+                Sons.drop();
+                atualizarProgresso();
+            }
+
+            touchItem = null;
+        }
+
+        // ===== ATUALIZAR PROGRESSO =====
+        function atualizarProgresso() {
+            const nivel = NIVEIS[nivelAtual];
+            let corretos = 0;
+
+            Object.entries(itensOrganizados).forEach(([itemId, categoria]) => {
+                const item = itensEmbaralhados[itemId]; // Usar array embaralhado
+                if (item.categoriaCorreta === categoria) {
+                    corretos++;
+                }
+            });
+
+            document.getElementById('corretos').textContent = corretos;
+        }
+
+        // ===== VERIFICAR ORGANIZAÇÃO =====
+        function verificarOrganizacao() {
+            const nivel = NIVEIS[nivelAtual];
+            
+            // Verificar se todos os itens foram organizados
+            if (Object.keys(itensOrganizados).length < nivel.itens.length) {
+                mostrarFeedback('Organize todos os itens antes de verificar! 📦', 'alerta');
+                return;
+            }
+
+            // Verificar se estão corretos
+            let acertos = 0;
+            Object.entries(itensOrganizados).forEach(([itemId, categoria]) => {
+                const item = itensEmbaralhados[itemId]; // Usar array embaralhado
+                if (item.categoriaCorreta === categoria) {
+                    acertos++;
+                }
+            });
+
+            if (acertos === nivel.itens.length) {
+                // Perfeito!
+                pontuacao += 20;
+                Sons.acerto();
+                mostrarFeedback('🎉 Perfeito! Tudo organizado corretamente! +20 pontos', 'sucesso');
+                
+                setTimeout(() => {
+                    nivelAtual++;
+                    if (nivelAtual < NIVEIS.length) {
+                        carregarNivel();
+                    } else {
+                        mostrarVitoria();
+                    }
+                }, 2000);
+            } else {
+                // Tem erros
+                const erros = nivel.itens.length - acertos;
+                Sons.erro();
+                mostrarFeedback(`❌ Você acertou ${acertos} de ${nivel.itens.length}. Revise e tente novamente!`, 'erro');
+            }
+        }
+
+        // ===== MOSTRAR VITÓRIA =====
+        function mostrarVitoria() {
+            document.querySelector('.jogo-container').style.display = 'none';
+            const telaVitoria = document.getElementById('tela-vitoria');
+            telaVitoria.classList.remove('oculta');
+            
+            document.getElementById('pontos-finais').textContent = pontuacao;
+            
+            Sons.vitoria();
+            criarConfetes();
+            
+            Progresso.salvar('organizador-mestre', pontuacao);
+        }
+
+        // ===== INICIALIZAR JOGO =====
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

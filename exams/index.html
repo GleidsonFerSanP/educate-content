@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <title>Prova - Lição 5</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- ===== TELA 1: IDENTIFICAÇÃO ===== -->
+    <div id="tela-nome" class="tela ativa">
+        <div class="container">
+            <div class="header-prova">
+                <div class="icone-prova">📝</div>
+                <h1 class="titulo-prova">Prova - Lição 5</h1>
+                <p class="subtitulo-prova">Avaliação de conhecimentos</p>
+            </div>
+
+            <div class="card-identificacao">
+                <div class="icone-aluno">👨‍🎓</div>
+                <h2>Identificação do Aluno</h2>
+                <p class="instrucao">Por favor, digite seu nome completo para começar a prova.</p>
+                
+                <div class="form-grupo">
+                    <label for="nome-aluno">Nome Completo:</label>
+                    <input 
+                        type="text" 
+                        id="nome-aluno" 
+                        placeholder="Digite seu nome aqui"
+                        autocomplete="off"
+                        maxlength="100"
+                    >
+                    <span id="erro-nome" class="erro-mensagem"></span>
+                </div>
+
+                <button id="btn-iniciar" class="btn-primary">
+                    <span>Iniciar Prova</span>
+                    <span class="btn-icon">→</span>
+                </button>
+            </div>
+
+            <div class="info-prova">
+                <div class="info-item">
+                    <span class="info-icon">📋</span>
+                    <span class="info-text">10 questões</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">⏱️</span>
+                    <span class="info-text">Sem limite de tempo</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">✏️</span>
+                    <span class="info-text">Múltipla escolha</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TELA 2: QUESTÕES ===== -->
+    <div id="tela-questoes" class="tela">
+        <div class="header-fixo">
+            <div class="container">
+                <div class="info-header">
+                    <div class="nome-aluno-header">
+                        <span class="icon">👨‍🎓</span>
+                        <span id="nome-display"></span>
+                    </div>
+                    <div class="progresso-header">
+                        <span id="questoes-respondidas">0</span>/10 respondidas
+                    </div>
+                </div>
+                <div class="barra-progresso">
+                    <div id="barra-preenchida" class="barra-preenchida"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container questoes-container">
+            <div id="lista-questoes">
+                <!-- Questões serão geradas dinamicamente pelo JavaScript -->
+            </div>
+
+            <div class="acoes-prova">
+                <button id="btn-revisar" class="btn-secondary">
+                    <span class="btn-icon">👁️</span>
+                    <span>Revisar Respostas</span>
+                </button>
+                <button id="btn-submeter" class="btn-success">
+                    <span>Enviar Prova</span>
+                    <span class="btn-icon">✓</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TELA 3: RESULTADO ===== -->
+    <div id="tela-resultado" class="tela">
+        <div class="container">
+            <div class="card-resultado">
+                <div id="icone-resultado" class="icone-resultado"></div>
+                <h1 id="titulo-resultado" class="titulo-resultado"></h1>
+                
+                <div class="nota-display">
+                    <div class="nota-valor">
+                        <span id="nota-final" class="nota-numero">0</span>
+                        <span class="nota-total">/10</span>
+                    </div>
+                    <div class="nota-porcentagem" id="nota-porcentagem">0%</div>
+                </div>
+
+                <div class="estatisticas">
+                    <div class="stat-item stat-acertos">
+                        <div class="stat-icon">✓</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Acertos</span>
+                            <span id="total-acertos" class="stat-valor">0</span>
+                        </div>
+                    </div>
+                    <div class="stat-item stat-erros">
+                        <div class="stat-icon">✗</div>
+                        <div class="stat-info">
+                            <span class="stat-label">Erros</span>
+                            <span id="total-erros" class="stat-valor">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mensagem-final" id="mensagem-final"></div>
+
+                <div class="detalhes-toggle">
+                    <button id="btn-ver-detalhes" class="btn-link">
+                        <span>Ver detalhes das questões</span>
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                </div>
+
+                <div id="detalhes-questoes" class="detalhes-questoes oculto">
+                    <!-- Detalhes serão gerados dinamicamente -->
+                </div>
+
+                <div class="email-status" id="email-status">
+                    <div class="email-loading oculto" id="email-loading">
+                        <span class="spinner">⏳</span>
+                        <span>Enviando resultado por email...</span>
+                    </div>
+                    <div class="email-sucesso oculto" id="email-sucesso">
+                        <span class="icon">✅</span>
+                        <span>Resultado enviado com sucesso!</span>
+                    </div>
+                    <div class="email-erro oculto" id="email-erro">
+                        <span class="icon">❌</span>
+                        <span>Erro ao enviar email. Tente novamente.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE CONFIRMAÇÃO ===== -->
+    <div id="modal-overlay" class="modal-overlay oculto">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon">⚠️</div>
+                <h3 class="modal-titulo">Confirmar Envio</h3>
+            </div>
+            <div class="modal-corpo">
+                <p id="modal-mensagem"></p>
+            </div>
+            <div class="modal-acoes">
+                <button id="btn-modal-cancelar" class="btn-secondary">Cancelar</button>
+                <button id="btn-modal-confirmar" class="btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/prova.js"></script>
+</body>
+</html>

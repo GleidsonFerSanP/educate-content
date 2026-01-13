@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    <title>Detetive Lógico - Lógica Kids</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .pistas-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px solid var(--cor-acento);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .pista {
+            background: var(--cor-card);
+            border-left: 4px solid var(--cor-primaria);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            font-size: 1.1rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pista-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .opcoes-suspeitos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .suspeito-card {
+            background: var(--cor-card);
+            border: 3px solid transparent;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suspeito-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cor-primaria);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .suspeito-card.selecionado {
+            border-color: var(--cor-secundaria);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .suspeito-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .suspeito-nome {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .suspeito-caracteristica {
+            font-size: 0.95rem;
+            color: #94A3B8;
+        }
+
+        .btn-dica {
+            background: linear-gradient(135deg, var(--cor-alerta), #F97316);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+
+        .btn-dica:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-dica:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .dica-extra {
+            background: rgba(245, 158, 11, 0.2);
+            border: 2px solid var(--cor-alerta);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+            color: var(--cor-alerta);
+            font-weight: bold;
+            display: none;
+        }
+
+        .dica-extra.mostrar {
+            display: block;
+            animation: aparecer 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="estrelas"></div>
+    <div class="overlay" id="overlay"></div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="container">
+        <div class="jogo-container">
+            <!-- Header -->
+            <div style="text-align: center; color: white; margin-bottom: 30px;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">🔍 Detetive Lógico</h1>
+                <p style="font-size: 1.2rem;">Use as pistas para descobrir quem é o culpado!</p>
+            </div>
+
+            <!-- Painel de Progresso -->
+            <div class="painel-superior">
+                <div class="info-item">
+                    <span class="info-label">Nível:</span>
+                    <span class="info-valor" id="nivel">1</span>/5
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pontos:</span>
+                    <span class="info-valor" id="pontos">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Dicas usadas:</span>
+                    <span class="info-valor" id="dicas-usadas">0</span>
+                </div>
+            </div>
+
+            <!-- Cenário do Caso -->
+            <div class="card-conteudo" id="cenario-caso">
+                <h2 style="color: var(--cor-primaria); margin-bottom: 20px;">📋 O Caso</h2>
+                <p id="descricao-caso" style="font-size: 1.2rem; line-height: 1.8; color: #94A3B8; margin-bottom: 20px;"></p>
+            </div>
+
+            <!-- Pistas -->
+            <div class="pistas-container" id="pistas-container">
+                <h3 style="color: white; margin-bottom: 20px; font-size: 1.5rem;">💡 Pistas</h3>
+                <div id="lista-pistas"></div>
+                <div class="dica-extra" id="dica-extra"></div>
+                <button class="btn-dica" id="btn-dica">💡 Pedir Dica Extra (-5 pontos)</button>
+            </div>
+
+            <!-- Suspeitos -->
+            <div class="card-conteudo">
+                <h2 style="color: var(--cor-primaria); margin-bottom: 20px;">👥 Suspeitos</h2>
+                <div class="opcoes-suspeitos" id="opcoes-suspeitos"></div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="acoes-jogo">
+                <button class="btn-voltar" onclick="window.location.href='../index.html'">
+                    ← Voltar
+                </button>
+                <button class="btn-confirmar" id="btn-responder">
+                    Acusar! 🎯
+                </button>
+            </div>
+
+            <!-- Tela de Vitória -->
+            <div class="tela-vitoria oculta" id="tela-vitoria">
+                <div class="confetes" id="confetes"></div>
+                <div class="vitoria-conteudo">
+                    <div class="vitoria-emoji">🏆</div>
+                    <h2>Parabéns, Detetive!</h2>
+                    <p>Você desvendou todos os casos!</p>
+                    <div class="pontuacao-final">
+                        <span class="pontos-texto">Pontuação Final:</span>
+                        <span class="pontos-numero" id="pontos-finais">0</span>
+                    </div>
+                    <div class="acoes-vitoria">
+                        <button class="btn-secundario" onclick="window.location.href='../index.html'">
+                            Voltar ao Menu
+                        </button>
+                        <button class="btn-primario" onclick="location.reload()">
+                            Jogar Novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // ===== DADOS DOS NÍVEIS =====
+        const NIVEIS = [
+            {
+                id: 1,
+                caso: "O Mistério do Lanche Desaparecido 🍪",
+                descricao: "Alguém pegou o último biscoito do pote na cozinha. Quem foi?",
+                pistas: [
+                    { icon: "👀", texto: "O culpado estava com as mãos sujas de chocolate" },
+                    { icon: "👕", texto: "O culpado usa óculos" },
+                    { icon: "🎮", texto: "O culpado não gosta de videogames" }
+                ],
+                dicaExtra: "O culpado é a pessoa mais alta!",
+                suspeitos: [
+                    { emoji: "👦", nome: "Pedro", caract: "Usa óculos, gosta de videogames", correto: false },
+                    { emoji: "👧", nome: "Ana", caract: "Usa óculos, não gosta de games, alta", correto: true },
+                    { emoji: "👨", nome: "Carlos", caract: "Sem óculos, gosta de videogames", correto: false },
+                    { emoji: "👩", nome: "Maria", caract: "Sem óculos, não gosta de games", correto: false }
+                ]
+            },
+            {
+                id: 2,
+                caso: "O Enigma da Bola Perdida ⚽",
+                descricao: "A bola de futebol sumiu do quintal. Descubra quem pegou!",
+                pistas: [
+                    { icon: "🏃", texto: "O culpado pratica esportes todos os dias" },
+                    { icon: "🎨", texto: "O culpado não gosta de desenhar" },
+                    { icon: "📚", texto: "O culpado adora ler livros de aventura" }
+                ],
+                dicaExtra: "O culpado tem cabelo curto!",
+                suspeitos: [
+                    { emoji: "🧒", nome: "João", caract: "Pratica esportes, adora ler, cabelo curto", correto: true },
+                    { emoji: "👧", nome: "Laura", caract: "Pratica esportes, gosta de desenhar", correto: false },
+                    { emoji: "👦", nome: "Bruno", caract: "Não pratica esportes, adora ler", correto: false },
+                    { emoji: "👨", nome: "Lucas", caract: "Pratica esportes, não gosta de ler", correto: false }
+                ]
+            },
+            {
+                id: 3,
+                caso: "O Segredo do Livro Trocado 📖",
+                descricao: "Alguém trocou os livros de lugar na estante. Quem foi o responsável?",
+                pistas: [
+                    { icon: "📏", texto: "O culpado é mais baixo que 1,50m" },
+                    { icon: "🎵", texto: "O culpado adora música e toca violão" },
+                    { icon: "🐕", texto: "O culpado tem um cachorro de estimação" },
+                    { icon: "🌙", texto: "O culpado dorme tarde todos os dias" }
+                ],
+                dicaExtra: "O culpado usa boné vermelho!",
+                suspeitos: [
+                    { emoji: "👦", nome: "Miguel", caract: "Baixo, toca violão, tem cachorro", correto: true },
+                    { emoji: "👧", nome: "Sofia", caract: "Alta, toca violão, tem gato", correto: false },
+                    { emoji: "🧒", nome: "Rafael", caract: "Baixo, não toca música, tem cachorro", correto: false },
+                    { emoji: "👩", nome: "Julia", caract: "Baixa, toca piano, tem cachorro", correto: false }
+                ]
+            },
+            {
+                id: 4,
+                caso: "O Mistério da Janela Aberta 🪟",
+                descricao: "A janela da sala ficou aberta durante a noite. Quem esqueceu de fechar?",
+                pistas: [
+                    { icon: "🌟", texto: "O culpado sempre olha as estrelas antes de dormir" },
+                    { icon: "🧪", texto: "O culpado adora ciências e experimentos" },
+                    { icon: "🚴", texto: "O culpado anda de bicicleta para a escola" },
+                    { icon: "🍕", texto: "O culpado prefere pizza de calabresa" }
+                ],
+                dicaExtra: "O culpado tem um telescópio em casa!",
+                suspeitos: [
+                    { emoji: "👨‍🔬", nome: "Daniel", caract: "Adora ciências, tem telescópio, anda de bike", correto: true },
+                    { emoji: "👧", nome: "Beatriz", caract: "Adora ciências, não tem telescópio", correto: false },
+                    { emoji: "👦", nome: "Felipe", caract: "Não gosta de ciências, anda de bike", correto: false },
+                    { emoji: "👩", nome: "Camila", caract: "Adora ciências, vai de ônibus", correto: false }
+                ]
+            },
+            {
+                id: 5,
+                caso: "O Caso do Recado Misterioso 📝",
+                descricao: "Um recado apareceu no quadro, mas ninguém sabe quem escreveu. Descubra!",
+                pistas: [
+                    { icon: "✍️", texto: "O culpado tem letra muito bonita" },
+                    { icon: "🎨", texto: "O culpado ganhou prêmio de caligrafia" },
+                    { icon: "👓", texto: "O culpado usa óculos para ler" },
+                    { icon: "📐", texto: "O culpado é excelente em matemática" },
+                    { icon: "🎭", texto: "O culpado faz aulas de teatro" }
+                ],
+                dicaExtra: "O culpado é canhoto!",
+                suspeitos: [
+                    { emoji: "👦", nome: "Henrique", caract: "Letra bonita, prêmio caligrafia, usa óculos, canhoto", correto: true },
+                    { emoji: "👧", nome: "Isabella", caract: "Letra bonita, usa óculos, destro", correto: false },
+                    { emoji: "👨", nome: "Gabriel", caract: "Letra feia, usa óculos, canhoto", correto: false },
+                    { emoji: "👩", nome: "Valentina", caract: "Letra bonita, não usa óculos", correto: false }
+                ]
+            }
+        ];
+
+        // ===== ESTADO DO JOGO =====
+        let nivelAtual = 0;
+        let pontuacao = 0;
+        let dicasUsadas = 0;
+        let suspeitorSelecionado = null;
+        let dicaExtraMostrada = false;
+
+        // ===== INICIALIZAÇÃO =====
+        function init() {
+            // Resetar estado do jogo
+            nivelAtual = 0;
+            pontuacao = 0;
+            dicasUsadas = 0;
+            suspeitorSelecionado = null;
+            dicaExtraMostrada = false;
+            
+            // Garantir que a tela de vitória está oculta
+            document.getElementById('tela-vitoria').classList.add('oculta');
+            document.querySelector('.jogo-container').style.display = 'block';
+            
+            carregarNivel();
+            document.getElementById('btn-dica').addEventListener('click', mostrarDica);
+            document.getElementById('btn-responder').addEventListener('click', verificarResposta);
+        }
+
+        // ===== CARREGAR NÍVEL =====
+        function carregarNivel() {
+            const nivel = NIVEIS[nivelAtual];
+            suspeitorSelecionado = null;
+            dicaExtraMostrada = false;
+
+            // Atualizar informações
+            document.getElementById('nivel').textContent = nivel.id;
+            document.getElementById('pontos').textContent = pontuacao;
+            document.getElementById('dicas-usadas').textContent = dicasUsadas;
+
+            // Carregar caso
+            document.getElementById('descricao-caso').textContent = nivel.descricao;
+
+            // Carregar pistas
+            const listaPistas = document.getElementById('lista-pistas');
+            listaPistas.innerHTML = nivel.pistas.map(pista => `
+                <div class="pista">
+                    <span class="pista-icon">${pista.icon}</span>
+                    <span>${pista.texto}</span>
+                </div>
+            `).join('');
+
+            // Limpar dica extra
+            document.getElementById('dica-extra').classList.remove('mostrar');
+            document.getElementById('btn-dica').disabled = false;
+
+            // Carregar suspeitos
+            const opcoesSuspeitos = document.getElementById('opcoes-suspeitos');
+            opcoesSuspeitos.innerHTML = nivel.suspeitos.map((suspeito, index) => `
+                <div class="suspeito-card" data-index="${index}">
+                    <div class="suspeito-emoji">${suspeito.emoji}</div>
+                    <div class="suspeito-nome">${suspeito.nome}</div>
+                    <div class="suspeito-caracteristica">${suspeito.caract}</div>
+                </div>
+            `).join('');
+
+            // Adicionar event listeners
+            document.querySelectorAll('.suspeito-card').forEach(card => {
+                card.addEventListener('click', () => selecionarSuspeito(card));
+            });
+        }
+
+        // ===== SELECIONAR SUSPEITO =====
+        function selecionarSuspeito(card) {
+            // Remover seleção anterior
+            document.querySelectorAll('.suspeito-card').forEach(c => c.classList.remove('selecionado'));
+            
+            // Adicionar nova seleção
+            card.classList.add('selecionado');
+            suspeitorSelecionado = parseInt(card.dataset.index);
+            
+            Sons.clique();
+        }
+
+        // ===== MOSTRAR DICA EXTRA =====
+        function mostrarDica() {
+            if (dicaExtraMostrada) return;
+
+            const nivel = NIVEIS[nivelAtual];
+            const dicaElement = document.getElementById('dica-extra');
+            
+            dicaElement.textContent = `💡 Dica Extra: ${nivel.dicaExtra}`;
+            dicaElement.classList.add('mostrar');
+            
+            pontuacao = Math.max(0, pontuacao - 5);
+            dicasUsadas++;
+            dicaExtraMostrada = true;
+            
+            document.getElementById('pontos').textContent = pontuacao;
+            document.getElementById('dicas-usadas').textContent = dicasUsadas;
+            document.getElementById('btn-dica').disabled = true;
+            
+            Sons.clique();
+        }
+
+        // ===== VERIFICAR RESPOSTA =====
+        function verificarResposta() {
+            if (suspeitorSelecionado === null) {
+                mostrarFeedback('Selecione um suspeito primeiro! 🤔', 'alerta');
+                return;
+            }
+
+            const nivel = NIVEIS[nivelAtual];
+            const suspeito = nivel.suspeitos[suspeitorSelecionado];
+
+            if (suspeito.correto) {
+                // Acertou!
+                const pontosGanhos = dicaExtraMostrada ? 15 : 20;
+                pontuacao += pontosGanhos;
+                
+                Sons.acerto();
+                mostrarFeedback(`🎯 Correto! Era ${suspeito.nome}! +${pontosGanhos} pontos`, 'sucesso');
+                
+                setTimeout(() => {
+                    nivelAtual++;
+                    if (nivelAtual < NIVEIS.length) {
+                        carregarNivel();
+                    } else {
+                        mostrarVitoria();
+                    }
+                }, 2000);
+            } else {
+                // Errou!
+                Sons.erro();
+                mostrarFeedback(`❌ Ops! ${suspeito.nome} não é o culpado. Tente novamente!`, 'erro');
+            }
+        }
+
+        // ===== MOSTRAR VITÓRIA =====
+        function mostrarVitoria() {
+            document.querySelector('.jogo-container').style.display = 'none';
+            const telaVitoria = document.getElementById('tela-vitoria');
+            telaVitoria.classList.remove('oculta');
+            
+            document.getElementById('pontos-finais').textContent = pontuacao;
+            
+            Sons.vitoria();
+            criarConfetes();
+            
+            Progresso.salvar('detetive-logico', pontuacao);
+        }
+
+        // ===== INICIALIZAR JOGO =====
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
