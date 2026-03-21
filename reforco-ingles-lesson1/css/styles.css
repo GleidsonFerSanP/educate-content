@@ -289,12 +289,97 @@ body {
   color: #134e4a;
 }
 
+.input {
+  width: 100%;
+  margin-top: 6px;
+  min-height: 46px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #0f172a;
+  color: #f9fafb;
+  font: inherit;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+}
+
+.field span {
+  font-weight: 700;
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.exam-meta-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.lock-banner {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fde68a;
+}
+
+.assessment-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 10px 0 14px;
+}
+
+.assessment-nav {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.assessment-nav .btn {
+  flex: 1 1 220px;
+}
+
+.option-selected {
+  outline: 3px solid rgba(245, 158, 11, 0.35);
+  background: #fbbf24;
+  color: #111827;
+}
+
+.review-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.review-item {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
 @media (min-width: 768px) {
   .screen {
     padding: 22px;
   }
 
   .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .exam-meta-grid {
     grid-template-columns: 1fr 1fr;
   }
 }

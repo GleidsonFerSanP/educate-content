@@ -2,16 +2,7 @@ import { finalQuizQuestions } from "../data.js";
 
 export function renderFinalQuiz(
   container,
-  {
-    appState,
-    showToast,
-    animateCorrect,
-    animateWrong,
-    completeScreen,
-    resetAll,
-    goTo,
-    speak,
-  },
+  { appState, showToast, animateCorrect, animateWrong, completeScreen, resetAll, goTo, speak },
 ) {
   completeScreen("final-quiz");
 
@@ -24,10 +15,15 @@ export function renderFinalQuiz(
       <section class="card center screen-enter">
         <h2>Final Quiz</h2>
         <p class="score">${appState.finalQuizScore} / ${total}</p>
-        <p>${appState.finalQuizScore >= 4 ? "Great!" : "Nice!"}</p>
-        <div class="choice-list">
+        <p>${appState.finalQuizScore >= 4 ? "Great job!" : "Nice work!"}</p>
+        <div class="chip-row">
+          <span class="chip">Score ${appState.score}</span>
+          <span class="chip">${appState.foundKitten ? "Kitten found" : "Try pet shop again"}</span>
+        </div>
+        <div class="choice-list" style="margin-top:14px;">
           <button id="replayBtn" class="btn btn-primary btn-block" aria-label="Replay lesson">Replay</button>
-          <button id="examBtn" class="btn btn-secondary btn-block" aria-label="Go to assessment">Take assessment</button>
+          <button id="examBtn" class="btn btn-success btn-block" aria-label="Take assessment">Take assessment</button>
+          <button id="hubBtn" class="btn btn-secondary btn-block" aria-label="Go to Educate hub">Go to hub</button>
         </div>
       </section>
     `;
@@ -39,18 +35,22 @@ export function renderFinalQuiz(
     container.querySelector("#examBtn")?.addEventListener("click", () => {
       goTo("exam");
     });
+
+    container.querySelector("#hubBtn")?.addEventListener("click", () => {
+      window.location.href = "../index.html";
+    });
     return;
   }
 
   container.innerHTML = `
     <section class="card center screen-enter">
       <h2>Final Quiz ${idx + 1} / ${finalQuizQuestions.length}</h2>
-      <div class="word-emoji" aria-hidden="true">${question.emoji || "❓"}</div>
+      <div class="word-emoji" aria-hidden="true">${question.emoji}</div>
       <h3 class="question-title">${question.prompt}</h3>
       <article class="tip-card" aria-label="Dica do quiz final">
         <button id="tipToggleBtn" class="tip-btn" aria-label="Mostrar dica">💡 Mostrar tip</button>
         <div id="tipContent" class="tip-content is-hidden">
-          <p>Leia com calma. Se for pergunta com “Is it...?”, pense em “sim” ou “não”. Se for “What’s this?”, observe a figura.</p>
+          <p>Leia com calma. Use a imagem, a historia e a contagem para escolher a melhor resposta.</p>
           <button id="tipAudioBtn" class="tip-btn" aria-label="Ouvir dica">🔊 Ouvir dica</button>
         </div>
       </article>
@@ -68,31 +68,19 @@ export function renderFinalQuiz(
 
   container.querySelector("#tipAudioBtn")?.addEventListener("click", () => {
     speak(
-      "Dica: use a imagem para ajudar. Em what is this escolha a palavra certa. Em is it responda yes ou no.",
+      "Dica: observe a figura e lembre da frase treinada durante a licao.",
       { lang: "pt-BR", rate: 0.95, pitch: 1.0 },
     );
   });
 
   const optionsContainer = container.querySelector("#quizOptions");
-  const options =
-    question.type === "yesno"
-      ? [
-          { label: "Yes, it is.", value: "yes", cls: "btn-success" },
-          { label: "No, it’s not.", value: "no", cls: "btn-error" },
-        ]
-      : question.options.map((opt) => ({
-          label: opt,
-          value: opt,
-          cls: "btn-secondary",
-        }));
-
-  options.forEach((opt) => {
+  question.options.forEach((option) => {
     const button = document.createElement("button");
-    button.className = `btn ${opt.cls} btn-block`;
-    button.textContent = opt.label;
-    button.setAttribute("aria-label", `Option ${opt.label}`);
+    button.className = "btn btn-secondary btn-block";
+    button.textContent = option;
+    button.setAttribute("aria-label", `Option ${option}`);
     button.addEventListener("click", () => {
-      if (opt.value === question.answer) {
+      if (option === question.answer) {
         appState.finalQuizScore += 1;
         showToast("Good job!");
         animateCorrect(button);

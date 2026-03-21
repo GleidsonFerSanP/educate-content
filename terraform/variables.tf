@@ -27,3 +27,15 @@ variable "site_domain" {
   type        = string
   default     = "educate.quantumopsai.com"
 }
+
+variable "results_email_recipient" {
+  description = "Email que receberá os resultados das avaliações"
+  type        = string
+  default     = "gleidson.ferreirasantos@gmail.com"
+}
+
+variable "results_email_sender_local_part" {
+  description = "Parte local do remetente usado pelo SES"
+  type        = string
+  default     = "assessments"
+}

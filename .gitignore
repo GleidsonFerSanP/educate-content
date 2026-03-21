@@ -1,0 +1,4 @@
+.DS_Store
+terraform/exam_api.zip
+terraform/lambda/__pycache__/
+*.pyc

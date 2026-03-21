@@ -27,3 +27,23 @@ output "s3_origin_domain" {
   description = "Domain do bucket (origem privada do CloudFront)"
   value       = aws_s3_bucket.site.bucket_regional_domain_name
 }
+
+output "exam_api_public_path" {
+  description = "Path público da API de avaliações servida pelo CloudFront"
+  value       = "https://${var.site_domain}/api/exam"
+}
+
+output "exam_lambda_url" {
+  description = "Function URL da API de avaliações"
+  value       = aws_lambda_function_url.exam_api.function_url
+}
+
+output "exam_results_table_name" {
+  description = "Tabela DynamoDB usada para tentativas e resultados das avaliações"
+  value       = aws_dynamodb_table.exam_attempts.name
+}
+
+output "results_email_sender" {
+  description = "Email remetente configurado para envio dos resultados"
+  value       = local.results_email_sender
+}

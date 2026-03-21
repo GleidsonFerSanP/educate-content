@@ -1,5 +1,6 @@
 locals {
-  source_dir = var.content_source_dir != "" ? var.content_source_dir : abspath("${path.module}/..")
+  source_dir           = var.content_source_dir != "" ? var.content_source_dir : abspath("${path.module}/..")
+  results_email_sender = "${var.results_email_sender_local_part}@${var.root_domain}"
 
   candidate_files = fileset(local.source_dir, "**/*")
 
@@ -13,6 +14,7 @@ locals {
     && !strcontains(file, "/.DS_Store")
     && file != ".DS_Store"
     && length(regexall("\\.(html|css|js|json|txt|xml|svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|mp3|wav|ogg|m4a)$", lower(file))) > 0
+    && can(filemd5("${local.source_dir}/${file}"))
   ]
 
   content_types = {
@@ -38,6 +40,14 @@ locals {
     ogg   = "audio/ogg"
     m4a   = "audio/mp4"
   }
+}
+
+data "aws_caller_identity" "current" {}
+
+data "archive_file" "exam_api" {
+  type        = "zip"
+  source_file = "${path.module}/lambda/exam_api.py"
+  output_path = "${path.module}/exam_api.zip"
 }
 
 resource "aws_s3_bucket" "site" {
@@ -69,6 +79,157 @@ resource "aws_s3_object" "site_files" {
   source       = "${local.source_dir}/${each.value}"
   etag         = filemd5("${local.source_dir}/${each.value}")
   content_type = lookup(local.content_types, reverse(split(".", lower(each.value)))[0], "application/octet-stream")
+}
+
+resource "aws_dynamodb_table" "exam_attempts" {
+  name         = "educate-exam-attempts"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "attempt_id"
+
+  attribute {
+    name = "attempt_id"
+    type = "S"
+  }
+}
+
+resource "aws_iam_role" "exam_api" {
+  name = "educate-exam-api-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "exam_api" {
+  name = "educate-exam-api-policy"
+  role = aws_iam_role.exam_api.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:${var.aws_region}:${data.aws_caller_identity.current.account_id}:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:UpdateItem"
+        ]
+        Resource = aws_dynamodb_table.exam_attempts.arn
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ]
+        Resource = "arn:aws:ses:${var.aws_region}:${data.aws_caller_identity.current.account_id}:identity/${var.root_domain}"
+      }
+    ]
+  })
+}
+
+resource "aws_cloudwatch_log_group" "exam_api" {
+  name              = "/aws/lambda/educate-exam-api"
+  retention_in_days = 14
+}
+
+resource "aws_lambda_function" "exam_api" {
+  function_name    = "educate-exam-api"
+  role             = aws_iam_role.exam_api.arn
+  handler          = "exam_api.lambda_handler"
+  runtime          = "python3.12"
+  filename         = data.archive_file.exam_api.output_path
+  source_code_hash = data.archive_file.exam_api.output_base64sha256
+  timeout          = 15
+
+  environment {
+    variables = {
+      EXAM_TABLE_NAME         = aws_dynamodb_table.exam_attempts.name
+      RESULTS_EMAIL_RECIPIENT = var.results_email_recipient
+      RESULTS_EMAIL_SENDER    = local.results_email_sender
+    }
+  }
+
+  depends_on = [aws_cloudwatch_log_group.exam_api]
+}
+
+resource "aws_lambda_permission" "exam_api_url" {
+  statement_id           = "AllowPublicFunctionUrlInvoke"
+  action                 = "lambda:InvokeFunctionUrl"
+  function_name          = aws_lambda_function.exam_api.function_name
+  principal              = "*"
+  function_url_auth_type = "NONE"
+}
+
+resource "aws_lambda_permission" "exam_api_invoke" {
+  statement_id  = "AllowPublicFunctionInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.exam_api.function_name
+  principal     = "*"
+}
+
+resource "aws_lambda_function_url" "exam_api" {
+  function_name      = aws_lambda_function.exam_api.function_name
+  authorization_type = "NONE"
+
+  cors {
+    allow_credentials = false
+    allow_headers     = ["content-type"]
+    allow_methods     = ["GET", "POST"]
+    allow_origins     = ["https://${var.site_domain}", "http://localhost:8000", "http://127.0.0.1:8000"]
+    expose_headers    = []
+    max_age           = 300
+  }
+
+  depends_on = [
+    aws_lambda_permission.exam_api_url,
+    aws_lambda_permission.exam_api_invoke,
+  ]
+}
+
+resource "aws_ses_domain_identity" "results" {
+  domain = var.root_domain
+}
+
+resource "aws_route53_record" "ses_verification" {
+  allow_overwrite = true
+  zone_id         = data.aws_route53_zone.root.zone_id
+  name            = "_amazonses.${var.root_domain}"
+  type            = "TXT"
+  ttl             = 600
+  records         = [aws_ses_domain_identity.results.verification_token]
+}
+
+resource "aws_ses_domain_dkim" "results" {
+  domain = aws_ses_domain_identity.results.domain
+}
+
+resource "aws_route53_record" "ses_dkim" {
+  allow_overwrite = true
+  count           = 3
+  zone_id         = data.aws_route53_zone.root.zone_id
+  name            = "${aws_ses_domain_dkim.results.dkim_tokens[count.index]}._domainkey.${var.root_domain}"
+  type            = "CNAME"
+  ttl             = 600
+  records         = ["${aws_ses_domain_dkim.results.dkim_tokens[count.index]}.dkim.amazonses.com"]
 }
 
 data "aws_route53_zone" "root" {
@@ -121,6 +282,14 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
 
+data "aws_cloudfront_cache_policy" "caching_disabled" {
+  name = "Managed-CachingDisabled"
+}
+
+data "aws_cloudfront_origin_request_policy" "all_viewer_except_host" {
+  name = "Managed-AllViewerExceptHostHeader"
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -134,6 +303,18 @@ resource "aws_cloudfront_distribution" "site" {
     origin_access_control_id = aws_cloudfront_origin_access_control.site.id
   }
 
+  origin {
+    domain_name = trimsuffix(trimprefix(aws_lambda_function_url.exam_api.function_url, "https://"), "/")
+    origin_id   = "exam-api-origin"
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
@@ -142,6 +323,17 @@ resource "aws_cloudfront_distribution" "site" {
     viewer_protocol_policy = "redirect-to-https"
     compress               = true
     cache_policy_id        = data.aws_cloudfront_cache_policy.caching_optimized.id
+  }
+
+  ordered_cache_behavior {
+    path_pattern             = "/api/*"
+    allowed_methods          = ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "POST", "DELETE"]
+    cached_methods           = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id         = "exam-api-origin"
+    viewer_protocol_policy   = "redirect-to-https"
+    compress                 = true
+    cache_policy_id          = data.aws_cloudfront_cache_policy.caching_disabled.id
+    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer_except_host.id
   }
 
   custom_error_response {

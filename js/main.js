@@ -151,4 +151,4 @@ const Debug = {
 };
 
 Debug.log("Website inicializado!");
-Debug.log("Módulos disponíveis:", 5);
+Debug.log("Módulos disponíveis:", 6);

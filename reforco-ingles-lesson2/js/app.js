@@ -18,12 +18,12 @@ import {
 import { speak, speakAsync, stopSpeak } from "./audio.js";
 
 import { renderHome } from "./screens/home.js";
-import { renderVocabulary } from "./screens/vocabulary.js";
+import { renderWordsFirst } from "./screens/words-first.js";
+import { renderInstructors } from "./screens/instructors.js";
+import { renderSwimmingClass } from "./screens/swimming-class.js";
+import { renderPetShop } from "./screens/pet-shop.js";
+import { renderCounting } from "./screens/counting.js";
 import { renderWhatsThis } from "./screens/whats-this.js";
-import { renderYesNo } from "./screens/yes-no.js";
-import { renderAbout } from "./screens/about.js";
-import { renderDialogue } from "./screens/dialogue.js";
-import { renderChant } from "./screens/chant.js";
 import { renderFinalQuiz } from "./screens/final-quiz.js";
 import { renderExam } from "./screens/exam.js";
 
@@ -33,12 +33,12 @@ const nextBtn = document.getElementById("nextBtn");
 
 const renderers = {
   home: renderHome,
-  vocabulary: renderVocabulary,
+  "words-first": renderWordsFirst,
+  instructors: renderInstructors,
+  "swimming-class": renderSwimmingClass,
+  "pet-shop": renderPetShop,
+  counting: renderCounting,
   "whats-this": renderWhatsThis,
-  "yes-no": renderYesNo,
-  about: renderAbout,
-  dialogue: renderDialogue,
-  chant: renderChant,
   "final-quiz": renderFinalQuiz,
   exam: renderExam,
 };
@@ -67,7 +67,7 @@ function renderCurrentRoute() {
     if (screen) {
       screen.innerHTML = `
         <section class="card center screen-enter">
-          <h2>⚠️ O conteúdo não carregou</h2>
+          <h2>⚠️ O conteudo nao carregou</h2>
           <p class="hint">Vamos tentar novamente.</p>
           <button id="retryBtn" class="btn btn-primary btn-block">Recarregar tela</button>
           <button id="homeBtn" class="btn btn-secondary btn-block" style="margin-top:8px;">Ir para Home</button>
