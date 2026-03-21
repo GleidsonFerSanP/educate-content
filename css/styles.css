@@ -233,6 +233,10 @@ body {
     background: linear-gradient(90deg, #25D366, #128C7E);
 }
 
+.module-card[data-color="english"]::before {
+    background: linear-gradient(90deg, #F59E0B, #F97316);
+}
+
 .module-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
@@ -316,6 +320,10 @@ body {
 
 .module-card[data-color="pink"] .module-button {
     background: linear-gradient(135deg, #9333EA, #EC4899);
+}
+
+.module-card[data-color="english"] .module-button {
+    background: linear-gradient(135deg, #F59E0B, #F97316);
 }
 
 .module-card[data-color="whatsapp"] .module-button {

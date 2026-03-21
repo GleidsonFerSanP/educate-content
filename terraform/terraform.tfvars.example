@@ -1,0 +1,5 @@
+aws_region         = "us-east-1"
+bucket_name        = "education-web-content"
+content_source_dir = ".."
+root_domain        = "quantumopsai.com"
+site_domain        = "educate.quantumopsai.com"

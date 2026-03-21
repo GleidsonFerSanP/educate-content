@@ -1,0 +1,300 @@
+:root {
+  --bg: #101827;
+  --surface: #1f2937;
+  --surface-2: #111827;
+  --text: #f9fafb;
+  --muted: #d1d5db;
+  --primary: #f59e0b;
+  --secondary: #60a5fa;
+  --success: #34d399;
+  --error: #f87171;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(160deg, var(--bg), #172554);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 12px;
+  gap: 12px;
+}
+
+.app-header,
+.screen,
+.app-footer {
+  background: rgba(17, 24, 39, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+}
+
+.app-header {
+  padding: 14px;
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.app-header p {
+  margin: 6px 0 12px;
+  color: var(--muted);
+}
+
+.progress-wrap {
+  width: 100%;
+  height: 12px;
+  background: #374151;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #fbbf24);
+  transition: width 0.3s ease;
+}
+
+.screen {
+  padding: 16px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr;
+}
+
+.word-card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.word-emoji {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+
+.word-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.btn {
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 12px 14px;
+  cursor: pointer;
+  min-height: 48px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #111827;
+}
+
+.btn-secondary {
+  background: var(--secondary);
+  color: #0f172a;
+}
+
+.btn-success {
+  background: var(--success);
+  color: #052e16;
+}
+
+.btn-error {
+  background: var(--error);
+  color: #450a0a;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.app-footer {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.choice-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.dialogue-line {
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: #1e3a8a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dialogue-row-top {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.dialogue-text {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.dialogue-speaker {
+  font-weight: 800;
+  color: #fcd34d;
+}
+
+.dialogue-tip-text {
+  margin: 8px 0 6px;
+  padding: 8px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.45);
+  color: #d1fae5;
+  font-size: 0.93rem;
+  line-height: 1.4;
+}
+
+.dialogue-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.center {
+  text-align: center;
+}
+
+.score {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fcd34d;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  min-width: 220px;
+  max-width: 90vw;
+  text-align: center;
+  background: #111827;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.karaoke-line {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.karaoke-line.active {
+  background: #f59e0b;
+  color: #111827;
+  font-weight: 700;
+}
+
+.question-title {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+}
+
+.tip-card {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #0f766e;
+  color: #ecfeff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.tip-card h4 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.tip-card p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.tip-content {
+  margin-top: 8px;
+  display: grid;
+  gap: 8px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.tip-btn {
+  margin-top: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: #99f6e4;
+  color: #134e4a;
+}
+
+@media (min-width: 768px) {
+  .screen {
+    padding: 22px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}

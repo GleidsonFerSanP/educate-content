@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lesson 1 - A Book</title>
+  <meta name="description" content="Reforço escolar de inglês - Lesson 1: A Book" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="app-header">
+      <h1>Lesson 1 - A Book</h1>
+      <p>English practice for kids</p>
+      <div class="progress-wrap" aria-label="Progresso da atividade">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </header>
+
+    <main id="screen" class="screen" aria-live="polite"></main>
+
+    <footer class="app-footer">
+      <button id="prevBtn" class="btn btn-secondary" aria-label="Tela anterior">Back</button>
+      <button id="nextBtn" class="btn btn-primary" aria-label="Próxima tela">Next</button>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="assertive"></div>
+
+  <script type="module" src="js/app.js?v=20260309-3"></script>
+</body>
+</html>

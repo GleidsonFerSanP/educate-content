@@ -107,6 +107,34 @@ body {
     font-weight: 500;
 }
 
+.card-disciplina {
+    display: flex;
+    align-items: center;
+    gap: var(--espacamento-md);
+    background: #eef2ff;
+    border: 2px solid #c7d2fe;
+    border-radius: var(--border-radius-lg);
+    padding: var(--espacamento-md);
+    margin-bottom: var(--espacamento-lg);
+}
+
+.card-disciplina-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.card-disciplina-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    color: #3730a3;
+}
+
+.card-disciplina-content p {
+    margin: 0;
+    color: #4338ca;
+    font-size: 0.95rem;
+}
+
 .card-identificacao {
     background: var(--cor-card);
     border-radius: var(--border-radius-lg);

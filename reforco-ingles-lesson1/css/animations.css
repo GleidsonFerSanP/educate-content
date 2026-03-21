@@ -1,0 +1,43 @@
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceSoft {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shakeSoft {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+.screen-enter {
+  animation: fadeInUp 0.35s ease;
+}
+
+.correct-pop {
+  animation: bounceSoft 0.3s ease;
+}
+
+.wrong-shake {
+  animation: shakeSoft 0.2s ease;
+}

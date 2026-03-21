@@ -62,8 +62,9 @@ document.querySelectorAll(".module-button").forEach((button) => {
 // Função para tocar sons (Web Audio API)
 function tocarSom(frequencia, duracao, tipo = "sine") {
   try {
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
@@ -76,7 +77,7 @@ function tocarSom(frequencia, duracao, tipo = "sine") {
     gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(
       0.01,
-      audioContext.currentTime + duracao / 1000
+      audioContext.currentTime + duracao / 1000,
     );
 
     oscillator.start(audioContext.currentTime);
@@ -143,11 +144,11 @@ const Debug = {
       console.error(
         "%c[Educate Error]",
         "color: #EF4444; font-weight: bold;",
-        ...args
+        ...args,
       );
     }
   },
 };
 
 Debug.log("Website inicializado!");
-Debug.log("Módulos disponíveis:", 4);
+Debug.log("Módulos disponíveis:", 5);

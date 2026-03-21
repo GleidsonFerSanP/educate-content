@@ -9,120 +9,116 @@ const PROVA_DATA = {
   questoes: [
     {
       id: 1,
-      enunciado: "Complete a pergunta corretamente: '_____ my helmet?'",
+      enunciado: "Observe o emoji 🦖 e responda: What’s this?",
       alternativas: [
-        { letra: "A", texto: "Where's" },
-        { letra: "B", texto: "What's" },
-        { letra: "C", texto: "Who's" },
-        { letra: "D", texto: "When's" },
-      ],
-      gabarito: "A",
-    },
-    {
-      id: 2,
-      enunciado:
-        "Seu amigo pergunta: 'Where's the hammer?' O martelo está dentro da caixa de ferramentas. Qual é a resposta correta?",
-      alternativas: [
-        { letra: "A", texto: "It's on the toolbox" },
-        { letra: "B", texto: "It's in the toolbox" },
-        { letra: "C", texto: "It's under the toolbox" },
-        { letra: "D", texto: "It's at the toolbox" },
+        { letra: "A", texto: "book" },
+        { letra: "B", texto: "dinosaur" },
+        { letra: "C", texto: "car" },
+        { letra: "D", texto: "folder" },
       ],
       gabarito: "B",
     },
     {
+      id: 2,
+      enunciado: "Emoji 📘. Pergunta: Is it a book?",
+      alternativas: [
+        { letra: "A", texto: "Yes, it is." },
+        { letra: "B", texto: "No, it’s not." },
+        { letra: "C", texto: "It’s a surprise." },
+        { letra: "D", texto: "You’re welcome." },
+      ],
+      gabarito: "A",
+    },
+    {
       id: 3,
       enunciado:
-        "Qual preposição usamos quando algo está em cima de uma superfície?",
+        "Qual frase representa uma resposta NEGATIVA correta em inglês?",
       alternativas: [
-        { letra: "A", texto: "IN" },
-        { letra: "B", texto: "UNDER" },
-        { letra: "C", texto: "ON" },
-        { letra: "D", texto: "AT" },
+        { letra: "A", texto: "Yes, it is." },
+        { letra: "B", texto: "No, it’s not." },
+        { letra: "C", texto: "What’s this?" },
+        { letra: "D", texto: "Thanks a lot." },
+      ],
+      gabarito: "B",
+    },
+    {
+      id: 4,
+      enunciado: "A palavra 'about' na frase 'Is it about cars?' significa:",
+      alternativas: [
+        { letra: "A", texto: "debaixo de" },
+        { letra: "B", texto: "ao lado de" },
+        { letra: "C", texto: "sobre / a respeito de" },
+        { letra: "D", texto: "na frente de" },
       ],
       gabarito: "C",
     },
     {
-      id: 4,
-      enunciado:
-        "A prancha de surf está embaixo da mesa. Como você responde 'Where's the surfboard?'",
-      alternativas: [
-        { letra: "A", texto: "It's on the table" },
-        { letra: "B", texto: "It's in the table" },
-        { letra: "C", texto: "It's at the table" },
-        { letra: "D", texto: "It's under the table" },
-      ],
-      gabarito: "D",
-    },
-    {
       id: 5,
-      enunciado: "Escolha a frase CORRETA em inglês:",
+      enunciado: "Complete: 'It’s a book _____ dinosaurs.'",
       alternativas: [
-        { letra: "A", texto: "The helmet is in the garage" },
-        { letra: "B", texto: "The helmet in garage" },
-        { letra: "C", texto: "The helmet are in the garage" },
-        { letra: "D", texto: "Helmet is on garage" },
+        { letra: "A", texto: "about" },
+        { letra: "B", texto: "is" },
+        { letra: "C", texto: "and" },
+        { letra: "D", texto: "with" },
       ],
       gabarito: "A",
     },
     {
       id: 6,
-      enunciado:
-        "Você encontra um livro sobre o sofá. Como você diz isso em inglês?",
+      enunciado: "No diálogo, qual resposta vem depois de 'Thanks a lot.'?",
       alternativas: [
-        { letra: "A", texto: "The book is under the sofa" },
-        { letra: "B", texto: "The book is on the sofa" },
-        { letra: "C", texto: "The book is in the sofa" },
-        { letra: "D", texto: "The book is at the sofa" },
+        { letra: "A", texto: "Come in." },
+        { letra: "B", texto: "No, it’s not." },
+        { letra: "C", texto: "You’re welcome." },
+        { letra: "D", texto: "It’s a surprise." },
       ],
-      gabarito: "B",
+      gabarito: "C",
     },
     {
       id: 7,
-      enunciado: "Analise as frases abaixo. Qual está INCORRETA?",
+      enunciado: "Emoji 📁. Qual palavra corresponde melhor à imagem?",
       alternativas: [
-        { letra: "A", texto: "Where's my helmet?" },
-        { letra: "B", texto: "It's in the box" },
-        { letra: "C", texto: "The hammer is under the table" },
-        { letra: "D", texto: "Where's is the surfboard?" },
+        { letra: "A", texto: "folder" },
+        { letra: "B", texto: "girl" },
+        { letra: "C", texto: "dinosaur" },
+        { letra: "D", texto: "notepad" },
       ],
-      gabarito: "D",
+      gabarito: "A",
     },
     {
       id: 8,
       enunciado:
-        "Se algo está guardado dentro de um armário fechado, qual preposição você deve usar?",
+        "Escolha a pergunta correta para descobrir o nome de um objeto:",
       alternativas: [
-        { letra: "A", texto: "ON - porque está no armário" },
-        { letra: "B", texto: "UNDER - porque está escondido" },
-        { letra: "C", texto: "AT - porque está no lugar" },
-        { letra: "D", texto: "IN - porque está dentro dele" },
+        { letra: "A", texto: "Where are you?" },
+        { letra: "B", texto: "What’s this?" },
+        { letra: "C", texto: "How old are you?" },
+        { letra: "D", texto: "Who is she?" },
       ],
-      gabarito: "D",
+      gabarito: "B",
     },
     {
       id: 9,
-      enunciado:
-        "Seu amigo pergunta onde está o capacete e você responde: 'It's on the shelf'. O que isso significa?",
+      enunciado: "Emoji 👧. Pergunta: Is it a boy? Qual a melhor resposta?",
       alternativas: [
-        { letra: "A", texto: "O capacete está embaixo da prateleira" },
-        { letra: "B", texto: "O capacete está na prateleira (em cima)" },
-        { letra: "C", texto: "O capacete está dentro da prateleira" },
-        { letra: "D", texto: "O capacete está ao lado da prateleira" },
+        { letra: "A", texto: "No, it’s not." },
+        { letra: "B", texto: "Yes, it is." },
+        { letra: "C", texto: "It’s a surprise." },
+        { letra: "D", texto: "What’s this?" },
       ],
-      gabarito: "B",
+      gabarito: "A",
     },
     {
       id: 10,
       enunciado:
-        "Complete corretamente o diálogo: <br><br>Person A: 'Where's my hammer?'<br>Person B: '_____ the toolbox, _____ the table.'",
+        "Complete o diálogo: <br><br>Person A: 'Is it about cars?'<br>Person B: 'No, _____. It’s about dinosaurs!'",
       alternativas: [
-        { letra: "A", texto: "It's on / under" },
-        { letra: "B", texto: "It's in / on" },
-        { letra: "C", texto: "Is in / under" },
-        { letra: "D", texto: "It's under / in" },
+        { letra: "A", texto: "it’s not" },
+        { letra: "B", texto: "it is" },
+        { letra: "C", texto: "you are" },
+        { letra: "D", texto: "this is" },
       ],
-      gabarito: "B",
+      gabarito: "A",
     },
   ],
 };
@@ -138,11 +134,11 @@ const Estado = {
 // ===== STORAGE (LocalStorage) =====
 const Storage = {
   salvar: () => {
-    localStorage.setItem("prova_licao5", JSON.stringify(Estado));
+    localStorage.setItem("prova_ingles_lesson1", JSON.stringify(Estado));
   },
 
   carregar: () => {
-    const dados = localStorage.getItem("prova_licao5");
+    const dados = localStorage.getItem("prova_ingles_lesson1");
     if (dados) {
       const dadosCarregados = JSON.parse(dados);
       Object.assign(Estado, dadosCarregados);
@@ -152,7 +148,7 @@ const Storage = {
   },
 
   limpar: () => {
-    localStorage.removeItem("prova_licao5");
+    localStorage.removeItem("prova_ingles_lesson1");
   },
 };
 
@@ -168,13 +164,13 @@ const EmailService = {
               d.correto ? "✓ CORRETA" : "✗ ERRADA"
             } | Resposta do aluno: ${
               d.respostaAluno || "Não respondida"
-            } | Gabarito: ${d.gabarito}`
+            } | Gabarito: ${d.gabarito}`,
         )
         .join("\n");
 
       // Criar mensagem formatada
       const mensagem = `
-📝 RESULTADO DA PROVA - LIÇÃO 5
+📝 RESULTADO DA PROVA - INGLÊS LESSON 1
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 👨‍🎓 Aluno: ${dados.nomeAluno}
@@ -204,7 +200,7 @@ ${detalhesFormatados}
         },
         body: JSON.stringify({
           access_key: WEB3FORMS_CONFIG.accessKey,
-          subject: `📝 Prova Lição 5 - ${dados.nomeAluno} - Nota: ${dados.nota}/${PROVA_DATA.questoes.length}`,
+          subject: `📝 Prova Inglês Lesson 1 - ${dados.nomeAluno} - Nota: ${dados.nota}/${PROVA_DATA.questoes.length}`,
           from_name: "Sistema de Provas - Isabella",
           email: WEB3FORMS_CONFIG.recipientEmail,
           message: mensagem,
@@ -356,7 +352,7 @@ const TelaQuestoes = {
                             <span>${alt.texto}</span>
                         </label>
                     </div>
-                `
+                `,
                   )
                   .join("")}
             </div>
@@ -407,7 +403,7 @@ const TelaQuestoes = {
 
     btnRevisar.addEventListener("click", () => {
       const primeiraVazia = PROVA_DATA.questoes.find(
-        (q) => !Estado.respostas[q.id]
+        (q) => !Estado.respostas[q.id],
       );
       if (primeiraVazia) {
         document.getElementById(`questao-${primeiraVazia.id}`).scrollIntoView({
@@ -538,9 +534,8 @@ const TelaResultado = {
     document.getElementById("icone-resultado").textContent = icone;
     document.getElementById("titulo-resultado").textContent = titulo;
     document.getElementById("nota-final").textContent = nota;
-    document.getElementById(
-      "nota-porcentagem"
-    ).textContent = `${porcentagem.toFixed(0)}%`;
+    document.getElementById("nota-porcentagem").textContent =
+      `${porcentagem.toFixed(0)}%`;
     document.getElementById("total-acertos").textContent = acertos;
     document.getElementById("total-erros").textContent = erros;
     document.getElementById("mensagem-final").textContent = mensagem;
@@ -564,7 +559,7 @@ const TelaResultado = {
                     Gabarito: <strong>${d.gabarito}</strong>
                 </div>
             </div>
-        `
+        `,
       )
       .join("");
 
@@ -616,8 +611,9 @@ const TelaResultado = {
 // ===== UTILITÁRIOS =====
 function tocarSom(frequencia, duracao) {
   try {
-    const audioContext = new (window.AudioContext ||
-      window.webkitAudioContext)();
+    const audioContext = new (
+      window.AudioContext || window.webkitAudioContext
+    )();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
@@ -630,7 +626,7 @@ function tocarSom(frequencia, duracao) {
     gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(
       0.01,
-      audioContext.currentTime + duracao / 1000
+      audioContext.currentTime + duracao / 1000,
     );
 
     oscillator.start(audioContext.currentTime);
@@ -677,8 +673,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   console.log(
-    "%c📝 Prova - Lição 5 inicializada!",
-    "color: #6366F1; font-weight: bold; font-size: 14px;"
+    "%c📝 Prova - Inglês Lesson 1 inicializada!",
+    "color: #6366F1; font-weight: bold; font-size: 14px;",
   );
 });
 
